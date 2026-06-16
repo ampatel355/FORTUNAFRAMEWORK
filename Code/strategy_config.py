@@ -22,12 +22,14 @@ try:
         BARS_PER_TRADING_DAY,
         inverse_scale_daily_float,
         scale_daily_bars,
+        scale_daily_signal_bars,
     )
 except ModuleNotFoundError:
     from Code.timeframe_config import (
         BARS_PER_TRADING_DAY,
         inverse_scale_daily_float,
         scale_daily_bars,
+        scale_daily_signal_bars,
     )
 
 
@@ -53,11 +55,30 @@ def _env_int_scaled(name: str, daily_default: int) -> int:
     as-is (no scaling).  Otherwise the daily default is multiplied by
     BARS_PER_TRADING_DAY so indicator windows and holding periods cover the
     same calendar duration across timeframes.
+
+    Use this for **structural** parameters: long MAs (100, 200), holding
+    periods, time stops, regime history, and lookback windows for
+    structural levels (rolling highs/lows for stop placement).
     """
     explicit = os.environ.get(name)
     if explicit is not None:
         return int(explicit)
     return scale_daily_bars(daily_default)
+
+
+def _env_int_signal_scaled(name: str, daily_default: int) -> int:
+    """Read an env var or signal-scale a daily default for intraday use.
+
+    Uses ``sqrt(BARS_PER_TRADING_DAY)`` scaling so signal-generating
+    indicators (RSI, ADX, ATR, Bollinger, MACD) stay responsive on faster
+    timeframes while still being longer than their daily bar-count defaults.
+
+    On daily data this is identical to ``_env_int_scaled``.
+    """
+    explicit = os.environ.get(name)
+    if explicit is not None:
+        return int(explicit)
+    return scale_daily_signal_bars(daily_default)
 
 
 def _env_float_inverse_scaled(name: str, daily_default: float) -> float:
@@ -172,25 +193,35 @@ AGENT_COLORS = {
 # Feature-engineering defaults (auto-scaled for the active timeframe)
 # ---------------------------------------------------------------------------
 # On daily bars these are the classic chartist settings: 20-day EMA,
-# 50/100/200-day SMAs, 14-day RSI/ATR/ADX, etc.  On faster timeframes
-# every bar-count window is multiplied by BARS_PER_TRADING_DAY so
-# indicators still cover the same calendar duration.
-MA_20_BARS = _env_int_scaled("MA_20_BARS", 20)
-MA_50_BARS = _env_int_scaled("MA_50_BARS", 50)
+# 50/100/200-day SMAs, 14-day RSI/ATR/ADX, etc.
+#
+# Two scaling modes are used:
+#   _env_int_scaled        → full calendar scaling (BARS_PER_TRADING_DAY)
+#                             for structural trend filters and level lookbacks
+#   _env_int_signal_scaled → sqrt scaling (SIGNAL_SCALING_FACTOR)
+#                             for signal-generating indicators (RSI, ADX, ATR,
+#                             Bollinger, MACD) so they stay responsive on
+#                             intraday data
+#
+# Short-horizon MAs (20, 50) are signal-scaled because they drive entry/exit
+# signals. Long-horizon MAs (100, 200) are fully scaled because they serve
+# as structural trend filters.
+MA_20_BARS = _env_int_signal_scaled("MA_20_BARS", 20)
+MA_50_BARS = _env_int_signal_scaled("MA_50_BARS", 50)
 MA_100_BARS = _env_int_scaled("MA_100_BARS", 100)
 MA_200_BARS = _env_int_scaled("MA_200_BARS", 200)
-PRICE_STD_LOOKBACK_BARS = _env_int_scaled("PRICE_STD_LOOKBACK_BARS", 20)
-SHORT_RETURN_LOOKBACK_BARS = _env_int_scaled("SHORT_RETURN_LOOKBACK_BARS", 5)
-MEDIUM_RETURN_LOOKBACK_BARS = _env_int_scaled("MEDIUM_RETURN_LOOKBACK_BARS", 20)
-RSI_LOOKBACK_DAYS = _env_int_scaled("RSI_LOOKBACK_DAYS", 14)
-ATR_LOOKBACK_DAYS = _env_int_scaled("ATR_LOOKBACK_DAYS", 14)
-BOLLINGER_LOOKBACK_DAYS = _env_int_scaled("BOLLINGER_LOOKBACK_DAYS", 20)
+PRICE_STD_LOOKBACK_BARS = _env_int_signal_scaled("PRICE_STD_LOOKBACK_BARS", 20)
+SHORT_RETURN_LOOKBACK_BARS = _env_int_signal_scaled("SHORT_RETURN_LOOKBACK_BARS", 5)
+MEDIUM_RETURN_LOOKBACK_BARS = _env_int_signal_scaled("MEDIUM_RETURN_LOOKBACK_BARS", 20)
+RSI_LOOKBACK_DAYS = _env_int_signal_scaled("RSI_LOOKBACK_DAYS", 14)
+ATR_LOOKBACK_DAYS = _env_int_signal_scaled("ATR_LOOKBACK_DAYS", 14)
+BOLLINGER_LOOKBACK_DAYS = _env_int_signal_scaled("BOLLINGER_LOOKBACK_DAYS", 20)
 BOLLINGER_STD_MULTIPLIER = _env_float("BOLLINGER_STD_MULTIPLIER", 2.0)
-VOLUME_LOOKBACK_DAYS = _env_int_scaled("VOLUME_LOOKBACK_DAYS", 20)
-MACD_FAST_DAYS = _env_int_scaled("MACD_FAST_DAYS", 12)
-MACD_SLOW_DAYS = _env_int_scaled("MACD_SLOW_DAYS", 26)
-MACD_SIGNAL_DAYS = _env_int_scaled("MACD_SIGNAL_DAYS", 9)
-ADX_LOOKBACK_DAYS = _env_int_scaled("ADX_LOOKBACK_DAYS", 14)
+VOLUME_LOOKBACK_DAYS = _env_int_signal_scaled("VOLUME_LOOKBACK_DAYS", 20)
+MACD_FAST_DAYS = _env_int_signal_scaled("MACD_FAST_DAYS", 12)
+MACD_SLOW_DAYS = _env_int_signal_scaled("MACD_SLOW_DAYS", 26)
+MACD_SIGNAL_DAYS = _env_int_signal_scaled("MACD_SIGNAL_DAYS", 9)
+ADX_LOOKBACK_DAYS = _env_int_signal_scaled("ADX_LOOKBACK_DAYS", 14)
 
 
 # ---------------------------------------------------------------------------
@@ -205,8 +236,8 @@ ADX_LOOKBACK_DAYS = _env_int_scaled("ADX_LOOKBACK_DAYS", 14)
 TREND_PULLBACK_RSI_MIN = _env_float("TREND_PULLBACK_RSI_MIN", 35.0)
 TREND_PULLBACK_RSI_MAX = _env_float("TREND_PULLBACK_RSI_MAX", 65.0)
 TREND_PULLBACK_ADX_MIN = _env_float("TREND_PULLBACK_ADX_MIN", 18.0)
-TREND_PULLBACK_STOP_LOOKBACK_DAYS = _env_int_scaled("TREND_PULLBACK_STOP_LOOKBACK_DAYS", 10)
-TREND_PULLBACK_TARGET_LOOKBACK_DAYS = _env_int_scaled("TREND_PULLBACK_TARGET_LOOKBACK_DAYS", 20)
+TREND_PULLBACK_STOP_LOOKBACK_DAYS = _env_int_signal_scaled("TREND_PULLBACK_STOP_LOOKBACK_DAYS", 10)
+TREND_PULLBACK_TARGET_LOOKBACK_DAYS = _env_int_signal_scaled("TREND_PULLBACK_TARGET_LOOKBACK_DAYS", 20)
 TREND_PULLBACK_STOP_ATR_BUFFER = _env_float("TREND_PULLBACK_STOP_ATR_BUFFER", 1.0)
 
 
@@ -215,10 +246,10 @@ TREND_PULLBACK_STOP_ATR_BUFFER = _env_float("TREND_PULLBACK_STOP_ATR_BUFFER", 1.
 # ---------------------------------------------------------------------------
 # Bar-count parameters (lookbacks, time stops) are auto-scaled.
 # Thresholds, ratios, and price buffers are scale-independent.
-BREAKOUT_LOOKBACK_DAYS = _env_int_scaled("BREAKOUT_LOOKBACK_DAYS", 20)
-BREAKOUT_STOP_LOOKBACK_DAYS = _env_int_scaled("BREAKOUT_STOP_LOOKBACK_DAYS", 10)
+BREAKOUT_LOOKBACK_DAYS = _env_int_signal_scaled("BREAKOUT_LOOKBACK_DAYS", 20)
+BREAKOUT_STOP_LOOKBACK_DAYS = _env_int_signal_scaled("BREAKOUT_STOP_LOOKBACK_DAYS", 10)
 BREAKOUT_VOLUME_MULTIPLIER = _env_float("BREAKOUT_VOLUME_MULTIPLIER", 1.1)
-BREAKOUT_MOMENTUM_LOOKBACK_DAYS = _env_int_scaled("BREAKOUT_MOMENTUM_LOOKBACK_DAYS", 12)
+BREAKOUT_MOMENTUM_LOOKBACK_DAYS = _env_int_signal_scaled("BREAKOUT_MOMENTUM_LOOKBACK_DAYS", 12)
 BREAKOUT_MOMENTUM_THRESHOLD = _env_float("BREAKOUT_MOMENTUM_THRESHOLD", 0.005)
 BREAKOUT_ADX_MIN = _env_float("BREAKOUT_ADX_MIN", 18.0)
 BREAKOUT_REWARD_TO_RISK = _env_float("BREAKOUT_REWARD_TO_RISK", 2.0)
@@ -236,15 +267,15 @@ BREAKOUT_NO_VOLUME_RANGE_EXPANSION_RATIO = _env_float(
 # Mean Reversion + Volatility Filter parameters
 # ---------------------------------------------------------------------------
 # Bar-count lookbacks are auto-scaled.  Thresholds / ratios are not.
-MEAN_REVERSION_ATR_FILTER_LOOKBACK_DAYS = _env_int_scaled(
+MEAN_REVERSION_ATR_FILTER_LOOKBACK_DAYS = _env_int_signal_scaled(
     "MEAN_REVERSION_ATR_FILTER_LOOKBACK_DAYS",
     20,
 )
-MEAN_REVERSION_BB_FILTER_LOOKBACK_DAYS = _env_int_scaled(
+MEAN_REVERSION_BB_FILTER_LOOKBACK_DAYS = _env_int_signal_scaled(
     "MEAN_REVERSION_BB_FILTER_LOOKBACK_DAYS",
     20,
 )
-MEAN_REVERSION_STOP_LOOKBACK_DAYS = _env_int_scaled("MEAN_REVERSION_STOP_LOOKBACK_DAYS", 5)
+MEAN_REVERSION_STOP_LOOKBACK_DAYS = _env_int_signal_scaled("MEAN_REVERSION_STOP_LOOKBACK_DAYS", 5)
 MEAN_REVERSION_STOP_ATR_BUFFER = _env_float("MEAN_REVERSION_STOP_ATR_BUFFER", 1.0)
 MEAN_REVERSION_RSI_ENTRY_MAX = _env_float("MEAN_REVERSION_RSI_ENTRY_MAX", 35.0)
 MEAN_REVERSION_RSI_EXIT_MIN = _env_float("MEAN_REVERSION_RSI_EXIT_MIN", 50.0)
@@ -277,7 +308,7 @@ _rel_strength_explicit = os.environ.get(
 RELATIVE_STRENGTH_LOOKBACK_DAYS = (
     int(_rel_strength_explicit)
     if _rel_strength_explicit is not None
-    else scale_daily_bars(60)
+    else scale_daily_signal_bars(60)
 )
 MOMENTUM_LOOKBACK_DAYS = RELATIVE_STRENGTH_LOOKBACK_DAYS
 RELATIVE_STRENGTH_TOP_N = _env_int("RELATIVE_STRENGTH_TOP_N", 1)
@@ -441,6 +472,11 @@ VOLATILITY_SQUEEZE_MAX_HOLDING_BARS = _env_int_scaled(
 
 
 # Connors RSI(2) Pullback: short-horizon dip buying inside structural uptrends.
+# The RSI lookback and SMA exit window are part of the strategy's identity on
+# daily bars (period=2, SMA=5).  On faster timeframes they are scaled so the
+# signal still covers the same calendar horizon (~2 days / ~5 days).
+CONNORS_RSI2_RSI_LOOKBACK_BARS = _env_int_signal_scaled("CONNORS_RSI2_RSI_LOOKBACK_BARS", 2)
+CONNORS_RSI2_EXIT_SMA_BARS = _env_int_signal_scaled("CONNORS_RSI2_EXIT_SMA_BARS", 5)
 CONNORS_RSI2_ENTRY_MAX = _env_float("CONNORS_RSI2_ENTRY_MAX", 5.0)
 CONNORS_RSI2_EXIT_MIN = _env_float("CONNORS_RSI2_EXIT_MIN", 70.0)
 CONNORS_RSI2_STOP_ATR_MULTIPLIER = _env_float(
@@ -455,8 +491,8 @@ CONNORS_RSI2_REQUIRE_SMA200_FILTER = _env_text(
 
 
 # Donchian Trend Reentry: trend breakouts with medium-term channel anchors.
-DONCHIAN_BREAKOUT_LOOKBACK_DAYS = _env_int_scaled("DONCHIAN_BREAKOUT_LOOKBACK_DAYS", 55)
-DONCHIAN_STOP_LOOKBACK_DAYS = _env_int_scaled("DONCHIAN_STOP_LOOKBACK_DAYS", 20)
+DONCHIAN_BREAKOUT_LOOKBACK_DAYS = _env_int_signal_scaled("DONCHIAN_BREAKOUT_LOOKBACK_DAYS", 55)
+DONCHIAN_STOP_LOOKBACK_DAYS = _env_int_signal_scaled("DONCHIAN_STOP_LOOKBACK_DAYS", 20)
 DONCHIAN_ADX_MIN = _env_float("DONCHIAN_ADX_MIN", 15.0)
 DONCHIAN_STOP_ATR_MULTIPLIER = _env_float("DONCHIAN_STOP_ATR_MULTIPLIER", 2.0)
 DONCHIAN_TARGET_ATR_MULTIPLIER = _env_float("DONCHIAN_TARGET_ATR_MULTIPLIER", 4.0)
@@ -506,6 +542,8 @@ TREND_PULLBACK_TARGET_HIGH_COLUMN = f"rolling_high_{TREND_PULLBACK_TARGET_LOOKBA
 MEAN_REVERSION_STOP_LOW_COLUMN = f"rolling_low_{MEAN_REVERSION_STOP_LOOKBACK_DAYS}_prev"
 DONCHIAN_BREAKOUT_HIGH_COLUMN = f"rolling_high_{DONCHIAN_BREAKOUT_LOOKBACK_DAYS}_prev"
 DONCHIAN_BREAKOUT_STOP_LOW_COLUMN = f"rolling_low_{DONCHIAN_STOP_LOOKBACK_DAYS}_prev"
+SHORT_RETURN_COLUMN = f"trailing_return_{SHORT_RETURN_LOOKBACK_BARS}"
+MEDIUM_RETURN_COLUMN = f"trailing_return_{MEDIUM_RETURN_LOOKBACK_BARS}"
 
 
 def format_strategy_name(agent_name: str, *, short: bool = False) -> str:

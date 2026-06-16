@@ -1,0 +1,40 @@
+cff-version: 1.2.0
+message: "If you use this software or data, please cite both the article and the archived release."
+title: "Fortuna: Structure-Preserving Randomization Inference for Decision Timing"
+abstract: >-
+  Replication code and derived data for a conditional randomization-inference
+  framework for decision timing. The structure-preserving null holds the realized
+  trade structure and price path fixed and re-randomizes only trade placement,
+  yielding a finite-sample-exact test, a measure-family sensitivity range with an
+  intersection-union reading, a comparison against White's Reality Check and
+  Hansen's SPA, and a 322-test cross-asset panel under multiplicity control.
+type: software
+authors:
+  - family-names: Patel
+    given-names: Aryan
+repository-code: "https://github.com/ampatel355/FORTUNAFRAMEWORK"
+url: "https://github.com/ampatel355/FORTUNAFRAMEWORK"
+license: MIT
+keywords:
+  - conditional randomization inference
+  - model risk
+  - uncertainty quantification
+  - Monte Carlo methods
+  - partial identification
+  - backtesting
+  - data snooping
+  - reproducibility
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.20695539
+    description: "Archived release on Zenodo"
+preferred-citation:
+  type: article
+  title: "Structure-Preserving Randomization Inference for Decision Timing"
+  authors:
+    - family-names: Patel
+      given-names: Aryan
+  journal: "Risks"
+  year: 2026
+  publisher:
+    name: "MDPI"

@@ -1,0 +1,37 @@
+{
+  "artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_adx_trend_following_monte_carlo_results.csv",
+  "canonical_policy": "always",
+  "column_names": [
+    "simulation_id",
+    "simulated_cumulative_return"
+  ],
+  "created_at_utc": "2026-05-01T17:39:54Z",
+  "dependencies": [
+    {
+      "exists": true,
+      "modified_time_ns": 1777657179727047963,
+      "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_adx_trend_following_trades.csv",
+      "sha256": "c42e81bbf5d13e2b292f7fe282450bc3273fb033c089119b0559e160f3b0ab02",
+      "size_bytes": 30317
+    },
+    {
+      "exists": true,
+      "modified_time_ns": 1777657174106242181,
+      "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_regimes.csv",
+      "sha256": "18961dbab7bdf7cc75a730f9ea9cb7e47f241853f6e25df81ff71d26132d9bef",
+      "size_bytes": 5662438
+    }
+  ],
+  "parameters": {
+    "agent_name": "adx_trend_following",
+    "null_model_type": "timing_null_results",
+    "simulation_count": 2000
+  },
+  "pipeline_profile": "standard",
+  "producer": "monte_carlo.save_simulation_results",
+  "research_grade": false,
+  "row_count": 2000,
+  "run_id": "run_20260501T173928Z_pid57449",
+  "ticker": "EURUSD=X",
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_adx_trend_following_monte_carlo_results__run_20260501T173928Z_pid57449.csv"
+}

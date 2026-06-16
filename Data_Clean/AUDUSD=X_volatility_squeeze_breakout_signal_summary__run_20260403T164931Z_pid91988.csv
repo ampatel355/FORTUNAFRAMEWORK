@@ -1,0 +1,2 @@
+ticker,agent,timeframe_label,data_interval,signal_count,executed_trade_count,rejected_signal_count,months_covered
+AUDUSD=X,volatility_squeeze_breakout,Daily,1d,10,10,0,193.01848049281315

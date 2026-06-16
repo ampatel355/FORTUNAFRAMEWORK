@@ -19,14 +19,14 @@
     "stop_loss_exit_rate",
     "take_profit_exit_rate"
   ],
-  "created_at_utc": "2026-04-02T23:33:05Z",
+  "created_at_utc": "2026-04-03T20:49:21Z",
   "dependencies": [
     {
       "exists": true,
-      "modified_time_ns": 1775172775655150343,
+      "modified_time_ns": 1775249350891472582,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/SPY_adx_trend_following_trades.csv",
-      "sha256": "f6aeb0356a66a409676d7bfe03638b8e2bc97c82e43deff432b6098d1b791aa9",
-      "size_bytes": 72818
+      "sha256": "2c0ebc6be409f7aa8f4434e0db0ad7c85b61c82e7c98beac7b9052b7b885b721",
+      "size_bytes": 74010
     }
   ],
   "parameters": {
@@ -36,7 +36,7 @@
   "producer": "create_and_save_metrics",
   "research_grade": true,
   "row_count": 1,
-  "run_id": "run_20260402T233246Z_pid64730",
+  "run_id": "run_20260403T204901Z_pid9279",
   "ticker": "SPY",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/SPY_adx_trend_following_metrics__run_20260402T233246Z_pid64730.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/SPY_adx_trend_following_metrics__run_20260403T204901Z_pid9279.csv"
 }

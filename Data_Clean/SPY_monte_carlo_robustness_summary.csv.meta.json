@@ -116,14 +116,14 @@
     "verdict_label",
     "final_classification"
   ],
-  "created_at_utc": "2026-04-02T23:33:20Z",
+  "created_at_utc": "2026-04-03T14:54:34Z",
   "dependencies": [
     {
       "exists": true,
-      "modified_time_ns": 1775172800403803840,
+      "modified_time_ns": 1775228074685399544,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/SPY_monte_carlo_robustness_runs.csv",
-      "sha256": "acd2843503905088e6901095944fb457929aad47e59a19e6ffa90066394d7666",
-      "size_bytes": 46245
+      "sha256": "218f877ad31b49fe6977565e455f8294734e7a2c855c5dfe020f92b76028daee",
+      "size_bytes": 46257
     }
   ],
   "parameters": {
@@ -135,7 +135,7 @@
   "producer": "monte_carlo_robustness.main",
   "research_grade": false,
   "row_count": 11,
-  "run_id": "run_20260402T233246Z_pid64730",
+  "run_id": "run_20260403T145357Z_pid83882",
   "ticker": "SPY",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/SPY_monte_carlo_robustness_summary__run_20260402T233246Z_pid64730.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/SPY_monte_carlo_robustness_summary__run_20260403T145357Z_pid83882.csv"
 }

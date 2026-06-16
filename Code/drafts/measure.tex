@@ -1,0 +1,109 @@
+\section{Discussion}
+\label{sec:discussion}
+
+% Author's note: this Section replaces the prior Discussion body. It drops the
+% empirical-record recap, the "what the framework changes," and the regime
+% subsections (those points are now made once, where they belong, in the
+% Empirical results and Conclusion). The three subsections below earn their
+% place: the measure family as the inferential object; economic significance;
+% the general principle. "What skill means," "what the test does not claim,"
+% and "conditioning is conservative" are each stated once and not repeated.
+
+\subsection{The measure family as the inferential object}
+\label{sec:discussion-measure}
+
+The most serious objection to the framework is not that any particular verdict is
+wrong but that the verdict is defined relative to a choice the analyst makes. The null
+is indexed by a conditioning measure $\mathbb{Q}_\theta$ drawn from the family
+$\mathfrak{Q}=\{\mathbb{Q}_\theta:\theta\in\Theta\}$ of Section~\ref{sec:theory}; all
+members fix the realized path $\{P_t\}$ and structural profile $\mathcal{S}$, and they
+differ only in which additional features of the realized schedule they hold fixed. That
+choice is not pinned down by the data. It is a modeling decision on the same footing as
+the specification of a regression or the choice of an instrument, and it should be
+declared and defended as one. Each $\mathbb{Q}_\theta$ carries its own null $H_0^\theta$
+and its own estimand $q_\theta=\mathbb{Q}_\theta\big(T(S)\ge T(S_0)\big)$, so what the
+data deliver is not a single verdict but an \emph{identified set} of measure-specific
+verdicts, one per admissible $\theta$. The object of inference is therefore that set, and
+the analyst's task is to specify the admissible class $\Theta_0$ over which the set is to
+be read---to declare, in advance, which partitions of the realized record into
+``structure'' and ``placement'' are defensible for the question at hand.
+
+Stating $\Theta_0$ in advance is what turns a free parameter into a model, and it is what
+makes the partial-identification language of Section~\ref{sec:theory} operative rather
+than decorative. The width of the identified set across $\Theta_0$ is the relevant
+robustness statement: a verdict that is constant across the admissible class is sharply
+identified, and one that flips is identified only as a set whose elements disagree. We
+define \emph{measure-invariant entry-placement skill} as rejection of $H_0^\theta$ for
+every $\theta\in\Theta_0$, and we adopt agreement across $\Theta_0$ as the bar a timing
+claim must clear. The reason is not conservatism for its own sake but identification.
+Because the measures differ precisely in where they draw the structure/placement line, a
+rejection under $\mathbb{Q}_\theta$ but not $\mathbb{Q}_{\theta'}$ is confounded with the
+conditioning choice $\theta$; only invariance to that choice isolates placement as
+opposed to the analyst's partition. Measure invariance is thus a strictly stronger and
+more credible claim than rejection under any single hand-picked measure, and it is the
+right standard for a timing claim because the timing question is exactly the question that
+the structure/placement partition is meant to answer.
+
+Two boundaries of this standard must be stated plainly, and only once. Invariance is
+\emph{necessary but not sufficient}: a confound shared by every admissible measure would
+survive across $\Theta_0$, so agreement bounds the set of explanations but does not
+collapse it to skill. And invariance is \emph{not necessary} for genuine ability, because
+a conditioning measure can absorb real state-conditional skill into the structure it holds
+fixed; a strategy that times entries well only within a market state which the measure
+matches on will, correctly under that measure's null, fail to reject. The
+schedule-measure sensitivity of Section~\ref{sec:schedule-sensitivity} is the canonical
+illustration that these are features, not nuisances. The neutral gap-permutation measure
+rejects none of the eleven strategies, while the context-matched measure---restricting
+random entries to bars of comparable trailing volatility---rejects four of them
+(Connors RSI2, ADX Trend, Breakout Vol+Mom, and Squeeze Breakout). The disagreement is
+the substance. It locates the verdict's dependence on $\theta$ at a specific, interpretable
+margin: whatever advantage those four strategies show is inseparable, on this evidence,
+from a volatility-state alignment that the context-matched measure either credits as
+placement or conditions away as structure, depending on which side of the line one draws.
+Because no strategy rejects under both measures, the identified set of verdicts contains
+both ``skill'' and ``no skill'' for those four, and the conjunctive standard returns the
+honest reading: the absence of robust, measure-invariant entry-placement skill, with the
+disagreement marking exactly where genuine state-conditional skill, if present, would have
+to live. Measure-dependence is then not a defect of the framework to be apologized for but
+the form in which the framework reports what the data can and cannot identify.
+
+\subsection{Economic significance}
+\label{sec:discussion-economic}
+
+The finding carries a direct economic reading. Across the panel, entry-timing performance
+is largely not separately identifiable from structural exposure to a drifting asset: to
+first order the realized return is reproducible by randomized placement of the same trades.
+For performance attribution and manager due diligence, a profitable track record is on its
+own uninformative about timing skill, so an allocator should require a timing claim to
+clear a structure-matched counterfactual before paying for it; the test supplies that
+instrument, model-free and computable from a trade log. For the market-efficiency reading,
+the result sharpens the object of study---rather than asking whether a strategy beats a
+benchmark, it isolates the placement margin most often mistaken for skill and finds it
+scarce and measure-fragile even where profitability is common. For strategy development, the
+diagnostic redirects effort away from rules whose edge is conditioned away as structural
+exposure, which will not survive live trading on a different path, and toward the regimes in
+which placement evidence does concentrate (Section~\ref{sec:realistic-signals}), where
+genuine if modest signal may reside.
+
+\subsection{Beyond entry timing: a general principle}
+\label{sec:discussion-general}
+
+The construction is not specific to entry timing, to long-only trading, or to gold. It
+applies whenever a decision sequence is overlaid on an exogenous process and one wishes to
+separate the marginal contribution of the decisions from the structural exposure they
+create: hold the structural footprint fixed, randomize only the decision margin, and refer
+the realized statistic to the law this induces. Replacing ``entry placement on a price
+path'' with the analogous decision--structure pair yields a test for factor-timing and
+tactical asset-allocation rules (randomize the rebalancing schedule while holding portfolio
+weights and the realized factor path fixed), for execution algorithms (randomize child-order
+placement while holding the parent order and the realized microstructure path fixed), for
+the evaluation of reinforcement-learning and agentic policies (randomize action timing while
+holding the policy's structural footprint fixed, scoring against a structure-matched random
+policy), and for the timing of macro forecasts and event signals (randomize the
+announcement-relative placement). In each case the same three ingredients recur---a fixed
+exogenous path, a preserved structural profile, and a randomized decision margin---so the
+finite-sample validity of Proposition~\ref{prop:q-validity}, the local-power and
+orthogonality results of Section~\ref{sec:theory}, and the calibration machinery transfer
+without modification, and the measure family of Section~\ref{sec:discussion-measure} returns
+as the object to specify. We develop the trading-timing instance in full and present these
+as the program the framework opens.

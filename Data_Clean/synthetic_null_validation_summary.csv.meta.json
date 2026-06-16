@@ -1,0 +1,59 @@
+{
+  "artifact_path": "/Users/aryanpatel/Desktop/Fortuna/Data_Clean/synthetic_null_validation_summary.csv",
+  "canonical_policy": "auto",
+  "canonical_updated": true,
+  "column_names": [
+    "experiment",
+    "world",
+    "signal_strength",
+    "replications",
+    "simulations_per_replication",
+    "mean_actual_cumulative_return",
+    "mean_p_value",
+    "median_p_value",
+    "reject_rate_alpha",
+    "reject_rate_0_10",
+    "reject_rate_0_05",
+    "mc_se_reject_0_05",
+    "reject_rate_0_01",
+    "ks_stat_uniform",
+    "ks_pvalue_uniform",
+    "mean_percentile",
+    "mean_RCSI_z",
+    "profitable_actual_rate"
+  ],
+  "created_at_utc": "2026-06-14T22:59:57Z",
+  "dependencies": [
+    {
+      "exists": true,
+      "modified_time_ns": 1781477997434038569,
+      "path": "/Users/aryanpatel/Desktop/Fortuna/Data_Clean/synthetic_null_validation_runs.csv",
+      "sha256": "04722c11b08198012d14e16033893ee3946f4a729f1345087808fb984a539db1",
+      "size_bytes": 1964592
+    }
+  ],
+  "parameters": {
+    "alpha": 0.05,
+    "base_seed": 9100,
+    "horizon_bars": 1250,
+    "power_replications": 400,
+    "power_signal_strengths": [
+      0.0,
+      0.0005,
+      0.001,
+      0.002,
+      0.0035,
+      0.005
+    ],
+    "replications": 1500,
+    "simulations": 2000,
+    "trade_count": 40
+  },
+  "pipeline_profile": "standard",
+  "producer": "synthetic_timing_experiments.main",
+  "research_grade": true,
+  "row_count": 11,
+  "run_id": "run_20260614T225957Z_pid29938",
+  "ticker": "",
+  "versioned_artifact_path": "/Users/aryanpatel/Desktop/Fortuna/Data_Clean/synthetic_null_validation_summary__run_20260614T225957Z_pid29938.csv"
+}

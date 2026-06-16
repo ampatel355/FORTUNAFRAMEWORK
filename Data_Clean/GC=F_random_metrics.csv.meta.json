@@ -19,14 +19,14 @@
     "stop_loss_exit_rate",
     "take_profit_exit_rate"
   ],
-  "created_at_utc": "2026-04-02T23:26:17Z",
+  "created_at_utc": "2026-04-04T12:44:15Z",
   "dependencies": [
     {
       "exists": true,
-      "modified_time_ns": 1775172371266715881,
+      "modified_time_ns": 1775306649933180497,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GC=F_random_trades.csv",
-      "sha256": "5a9bb114c14b02241b05cf93a3ad04f1a2dd5cfdce59e57ddad1e5cde55e6559",
-      "size_bytes": 99859
+      "sha256": "62d276fcddc11c26129c157cce5cc50fbd18ebcd54f60bc326ae327f3cd0cff3",
+      "size_bytes": 101845
     }
   ],
   "parameters": {
@@ -36,7 +36,7 @@
   "producer": "create_and_save_metrics",
   "research_grade": true,
   "row_count": 1,
-  "run_id": "run_20260402T232555Z_pid63687",
+  "run_id": "run_20260404T124355Z_pid61269",
   "ticker": "GC=F",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GC=F_random_metrics__run_20260402T232555Z_pid63687.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GC=F_random_metrics__run_20260404T124355Z_pid61269.csv"
 }

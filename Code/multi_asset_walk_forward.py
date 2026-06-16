@@ -63,7 +63,7 @@ try:
         format_verdict_label,
         verdict_from_evidence_bucket,
     )
-    from timeframe_config import infer_bars_per_year, normalize_timestamp_series
+    from timeframe_config import infer_bars_per_year, normalize_timestamp_series, scale_daily_bars
 except ModuleNotFoundError:
     from Code.artifact_provenance import write_dataframe_artifact
     from Code.data_loader import main as refresh_raw_data_for_ticker
@@ -115,7 +115,7 @@ except ModuleNotFoundError:
         format_verdict_label,
         verdict_from_evidence_bucket,
     )
-    from Code.timeframe_config import infer_bars_per_year, normalize_timestamp_series
+    from Code.timeframe_config import infer_bars_per_year, normalize_timestamp_series, scale_daily_bars
 
 
 DEFAULT_TICKERS = [
@@ -163,8 +163,13 @@ def configured_min_trades_per_panel() -> int:
     return 5
 
 
-TEST_BARS = _env_int("WALK_FORWARD_TEST_BARS", "TEST_BARS", default=504)
-STEP_BARS = _env_int("WALK_FORWARD_STEP_BARS", "STEP_BARS", default=252)
+TEST_BARS = _env_int("WALK_FORWARD_TEST_BARS", "TEST_BARS", default=scale_daily_bars(504))
+STEP_BARS = _env_int("WALK_FORWARD_STEP_BARS", "STEP_BARS", default=scale_daily_bars(252))
+MAX_FOLDS_PER_TICKER = _env_int(
+    "WALK_FORWARD_MAX_FOLDS_PER_TICKER",
+    "MAX_FOLDS_PER_TICKER",
+    default=0,
+)
 MIN_TRADES_PER_PANEL = configured_min_trades_per_panel()
 SIMULATIONS_PER_RUN = _env_int(
     "WALK_FORWARD_SIMULATIONS_PER_RUN",
@@ -262,7 +267,17 @@ def build_folds(market_df: pd.DataFrame) -> list[dict[str, object]]:
             }
         )
 
-    return folds
+    return limit_folds_to_recent(folds, MAX_FOLDS_PER_TICKER)
+
+
+def limit_folds_to_recent(
+    folds: list[dict[str, object]],
+    max_folds_per_ticker: int,
+) -> list[dict[str, object]]:
+    """Optionally keep only the most recent folds for bounded robustness runs."""
+    if max_folds_per_ticker <= 0 or len(folds) <= max_folds_per_ticker:
+        return folds
+    return folds[-max_folds_per_ticker:]
 
 
 def calculate_fold_annualized_return(
@@ -929,6 +944,7 @@ def main() -> None:
             "tickers": TICKERS,
             "test_bars": TEST_BARS,
             "step_bars": STEP_BARS,
+            "max_folds_per_ticker": MAX_FOLDS_PER_TICKER,
             "outer_runs": OUTER_RUNS,
             "simulations_per_run": SIMULATIONS_PER_RUN,
             "min_trades_per_panel": MIN_TRADES_PER_PANEL,
@@ -949,6 +965,7 @@ def main() -> None:
             "tickers": TICKERS,
             "test_bars": TEST_BARS,
             "step_bars": STEP_BARS,
+            "max_folds_per_ticker": MAX_FOLDS_PER_TICKER,
             "outer_runs": OUTER_RUNS,
             "simulations_per_run": SIMULATIONS_PER_RUN,
             "min_trades_per_panel": MIN_TRADES_PER_PANEL,
@@ -968,6 +985,7 @@ def main() -> None:
             "tickers": TICKERS,
             "test_bars": TEST_BARS,
             "step_bars": STEP_BARS,
+            "max_folds_per_ticker": MAX_FOLDS_PER_TICKER,
             "outer_runs": OUTER_RUNS,
             "simulations_per_run": SIMULATIONS_PER_RUN,
             "min_trades_per_panel": MIN_TRADES_PER_PANEL,

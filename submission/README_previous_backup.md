@@ -1,0 +1,193 @@
+# Distinguishing Skill from Luck in Trading Strategies
+
+## Overview
+
+This project tests whether rule-based trading strategies outperform a defensible randomness baseline under realistic execution assumptions.
+
+The central question is not whether a strategy made money on one historical path. It is whether the realized outcome is statistically unusual relative to randomized alternatives that preserve key structural features of the strategy, including trade count, holding durations, transaction costs, and capital constraints.
+
+## Research Objective
+
+The framework is built to answer one question:
+
+> Does a strategy exhibit reproducible edge, or can its observed performance be explained by chance?
+
+To answer that question, the project combines:
+
+- deterministic backtests
+- matched random-timing Monte Carlo baselines
+- repeated-run robustness testing across seeds
+- regime-conditioned analysis
+
+## Strategies Included
+
+The active pipeline evaluates six live strategies plus a passive benchmark:
+
+- `trend_pullback`
+- `breakout_volume_momentum`
+- `mean_reversion_vol_filter`
+- `momentum_relative_strength`
+- `trend_momentum_verification`
+- `random`
+- `buy_and_hold` benchmark
+
+## Core Methodology
+
+### 1. Strategy Execution
+
+Strategies are generated from the configured research interval (daily by default) using past-only signals. Orders are executed on the next bar, not on the signal bar.
+
+### 2. Realistic Execution Layer
+
+The execution model applies:
+
+- next-open fills
+- commissions
+- spread and randomized slippage
+- finite capital
+- integer share sizing
+- liquidity caps based on recent average volume
+
+### 3. Bar-Curve Performance Measurement
+
+Performance is evaluated from bar-based equity curves rather than only from a list of isolated trade returns. The comparison layer reports:
+
+- cumulative return
+- annualized return
+- annualized Sharpe ratio from bar returns
+- max drawdown
+- trade-level return ratio
+
+### 4. Monte Carlo Null Model
+
+The null model is a matched random-timing benchmark. It preserves each strategy's realized trade count, ordered holding durations, position sizing, and non-overlap structure, then randomizes when those trades occur on the observed market path. The current implementation applies the same style of adverse execution costs used by the live backtests, with optional context-matching controls for advanced experiments.
+
+### 5. Skill Metrics
+
+The framework reports:
+
+- `RCSI = actual cumulative return - mean simulated return`
+- `RCSI_z` for scale-free comparison
+- one-sided empirical p-values with small-sample smoothing
+- Benjamini-Hochberg adjusted p-values across the active strategy set for the ticker
+- percentile rank inside the null distribution
+- p-value prominence `-log10(p)`
+
+### 6. Robustness
+
+Each strategy is re-evaluated across repeated Monte Carlo seeds. Those repeated runs are reported as Monte Carlo seed-stability diagnostics for the fixed realized trade log. The headline verdict remains tied to the current run's inferential metrics, with robustness used as supporting context rather than a hidden override.
+
+### 7. Single-Ticker Workflow
+
+The active workflow runs one ticker at a time. That keeps the research loop simpler and makes each output bundle directly attributable to the ticker you selected for the run.
+
+## Why This Matters
+
+A profitable backtest is not proof of skill.
+
+A strategy can:
+
+- make money
+- look smooth
+- outperform on one ticker
+- appear repeatable in-sample
+
+and still be consistent with randomness once tested against an appropriate null.
+
+This project treats backtesting as a statistical validation problem rather than a performance-reporting exercise.
+
+## Outputs
+
+The pipeline produces:
+
+- per-strategy trade logs
+- metrics tables
+- Monte Carlo summary files
+- repeated-run robustness summaries
+- RCSI and `RCSI_z` outputs
+- regime analysis tables
+- strategy verdict summaries
+- optional chart outputs when `SAVE_OUTPUTS=1`
+
+## Sparse-Activity and No-Trade Cases
+
+Some tickers can legitimately produce no completed trades under the live strategy rules and execution constraints. In those cases, the framework does not force a statistical judgment.
+
+Instead, the pipeline now:
+
+- labels the strategy as `No Trades`
+- suppresses inferential fields such as p-value, percentile, and `RCSI_z` in the active comparison table
+- records that skill-versus-luck inference is not applicable
+- generates placeholder charts rather than crashing or plotting misleading bars
+
+This matters for instruments whose market structure differs from the main research universe, including cases where external data sources provide limited liquidity information. A no-trade result is treated as non-evidence, not as evidence of either skill or luck.
+
+## Project Structure
+
+`Code/`  
+Core scripts, strategy logic, Monte Carlo engine, charts, and pipeline entrypoints.
+
+`Data_Raw/`  
+Downloaded raw historical data.
+
+`Data_Clean/`  
+Feature files, trade logs, Monte Carlo outputs, comparison tables, and benchmark outputs.
+
+`Charts/`  
+Optional saved figures when `SAVE_OUTPUTS=1`.
+
+`Notes/`  
+Research documentation, paper drafts, audit notes, math appendix, and methodology notes.
+
+## How to Run
+
+### Terminal Workflows
+
+```bash
+./.venv/bin/python main.py
+```
+
+The CLI entrypoint is designed for the single-ticker research pipeline.
+
+The multi-asset walk-forward workflow now runs from readable source code and writes the same three research tables to `Data_Clean/`:
+
+- `multi_asset_walk_forward_runs.csv`
+- `multi_asset_walk_forward_panel_summary.csv`
+- `multi_asset_walk_forward_agent_summary.csv`
+
+### Single-Ticker Direct Run
+
+```bash
+export TICKER=SPY
+./.venv/bin/python main.py
+```
+
+## Interpretation Rules
+
+The framework does not treat profitability as evidence.
+
+A result is only treated as credible evidence of skill when it is:
+
+- statistically rare under the null
+- positive on scale-free evidence metrics
+- still significant after per-ticker multiple-testing adjustment
+- generated from research-grade Monte Carlo depth
+
+Ticker-specific positive results should be interpreted one ticker at a time.
+
+## Main Limitations
+
+- The system uses bar data (daily by default) rather than tick or order-book data.
+- The null model randomizes trade timing on the observed market path rather than simulating entirely new market paths.
+- Regime analysis is descriptive unless sufficient trade counts exist.
+- Some strategy effects may be asset-specific even when they appear strong in one ticker.
+- Some sparse-activity tickers may generate no completed trades under the current long-only implementation and execution constraints, which limits inference rather than contradicting it.
+
+## Bottom Line
+
+This repository is designed to answer a stricter question than a normal backtest:
+
+> Was the observed performance meaningfully better than luck under realistic and repeated testing?
+
+That standard is the basis for every strategy verdict in the project.
+# VF-RCSI

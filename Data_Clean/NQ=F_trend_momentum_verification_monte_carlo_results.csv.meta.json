@@ -6,33 +6,33 @@
     "simulation_id",
     "simulated_cumulative_return"
   ],
-  "created_at_utc": "2026-04-03T12:02:42Z",
+  "created_at_utc": "2026-04-03T21:40:01Z",
   "dependencies": [
     {
       "exists": true,
-      "modified_time_ns": 1775217746945619910,
+      "modified_time_ns": 1775252379499907238,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/NQ=F_trend_momentum_verification_trades.csv",
-      "sha256": "1df4ad97d132afa939b9a92bc9a00996be90d75c4d76c668ab57048bb2eb0943",
-      "size_bytes": 44690
+      "sha256": "c58051376e02f94e0acc369d684031161ea93258bf44b4bb1025bc0b6ceaff78",
+      "size_bytes": 44686
     },
     {
       "exists": true,
-      "modified_time_ns": 1775217742314996330,
+      "modified_time_ns": 1775252373052797353,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/NQ=F_regimes.csv",
-      "sha256": "564ebf80d5822b3ed16183faa721ceed436bf4e0d7dcb42727e77c6a9aa5fd1e",
-      "size_bytes": 5413719
+      "sha256": "ad9af6b518585214dc9ee37d116bbdf61d705318cd56f0046be839cb43b68c71",
+      "size_bytes": 5518569
     }
   ],
   "parameters": {
     "agent_name": "trend_momentum_verification",
     "null_model_type": "timing_null_results",
-    "simulation_count": 2000
+    "simulation_count": 5000
   },
   "pipeline_profile": "standard",
   "producer": "monte_carlo.save_simulation_results",
-  "research_grade": false,
-  "row_count": 2000,
-  "run_id": "run_20260403T120216Z_pid73820",
+  "research_grade": true,
+  "row_count": 5000,
+  "run_id": "run_20260403T213929Z_pid21915",
   "ticker": "NQ=F",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/NQ=F_trend_momentum_verification_monte_carlo_results__run_20260403T120216Z_pid73820.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/NQ=F_trend_momentum_verification_monte_carlo_results__run_20260403T213929Z_pid21915.csv"
 }

@@ -19,14 +19,14 @@
     "stop_loss_exit_rate",
     "take_profit_exit_rate"
   ],
-  "created_at_utc": "2026-04-02T22:09:32Z",
+  "created_at_utc": "2026-05-01T17:39:52Z",
   "dependencies": [
     {
       "exists": true,
-      "modified_time_ns": 1775167766929124084,
+      "modified_time_ns": 1777657185787768984,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_random_trades.csv",
-      "sha256": "8aa1b50922541be7822deeed77a57a8817efc264483b55207fb9bcc03f21456f",
-      "size_bytes": 111059
+      "sha256": "deab84c7ed28c5792491eb307387083a069f00f64bdf79ef7fab35660e14024d",
+      "size_bytes": 110256
     }
   ],
   "parameters": {
@@ -36,7 +36,7 @@
   "producer": "create_and_save_metrics",
   "research_grade": true,
   "row_count": 1,
-  "run_id": "run_20260402T220731Z_pid31473",
+  "run_id": "run_20260501T173928Z_pid57449",
   "ticker": "EURUSD=X",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_random_metrics__run_20260402T220731Z_pid31473.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_random_metrics__run_20260501T173928Z_pid57449.csv"
 }

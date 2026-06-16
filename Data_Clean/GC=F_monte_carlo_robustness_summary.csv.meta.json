@@ -116,26 +116,26 @@
     "verdict_label",
     "final_classification"
   ],
-  "created_at_utc": "2026-04-02T23:26:29Z",
+  "created_at_utc": "2026-04-04T12:45:27Z",
   "dependencies": [
     {
       "exists": true,
-      "modified_time_ns": 1775172389031184775,
+      "modified_time_ns": 1775306727403668938,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GC=F_monte_carlo_robustness_runs.csv",
-      "sha256": "b40be38a1461d6f70cafcffca9eab1434bae3f75168363a4d500b58093c94121",
-      "size_bytes": 46317
+      "sha256": "7ed3e3228abc64c3b824586785aeb4f2a28a5469a4de3c28d762caccc6d34d51",
+      "size_bytes": 460161
     }
   ],
   "parameters": {
-    "outer_runs": 10,
+    "outer_runs": 100,
     "robustness_scope": "monte_carlo_seed_stability_only",
-    "simulations_per_run": 500
+    "simulations_per_run": 5000
   },
   "pipeline_profile": "standard",
   "producer": "monte_carlo_robustness.main",
-  "research_grade": false,
+  "research_grade": true,
   "row_count": 11,
-  "run_id": "run_20260402T232555Z_pid63687",
+  "run_id": "run_20260404T124355Z_pid61269",
   "ticker": "GC=F",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GC=F_monte_carlo_robustness_summary__run_20260402T232555Z_pid63687.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GC=F_monte_carlo_robustness_summary__run_20260404T124355Z_pid61269.csv"
 }

@@ -19,11 +19,11 @@
     "stop_loss_exit_rate",
     "take_profit_exit_rate"
   ],
-  "created_at_utc": "2026-04-02T23:26:13Z",
+  "created_at_utc": "2026-04-04T12:44:11Z",
   "dependencies": [
     {
       "exists": true,
-      "modified_time_ns": 1775172362484361154,
+      "modified_time_ns": 1775306641852612576,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GC=F_mean_reversion_vol_filter_trades.csv",
       "sha256": "ed35395211b45a375805c8b581f7990c4e92e59d7550d5163a861f4222d78692",
       "size_bytes": 7402
@@ -36,7 +36,7 @@
   "producer": "create_and_save_metrics",
   "research_grade": true,
   "row_count": 1,
-  "run_id": "run_20260402T232555Z_pid63687",
+  "run_id": "run_20260404T124355Z_pid61269",
   "ticker": "GC=F",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GC=F_mean_reversion_vol_filter_metrics__run_20260402T232555Z_pid63687.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GC=F_mean_reversion_vol_filter_metrics__run_20260404T124355Z_pid61269.csv"
 }

@@ -1,5 +1,5 @@
 {
-  "artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GC=F_breakout_volume_momentum_trades.csv",
+  "artifact_path": "/Users/aryanpatel/Desktop/Fortuna/Data_Clean/GC=F_breakout_volume_momentum_trades.csv",
   "canonical_policy": "always",
   "canonical_updated": true,
   "column_names": [
@@ -41,7 +41,7 @@
     "timeframe_label",
     "data_interval"
   ],
-  "created_at_utc": "2026-04-02T23:26:01Z",
+  "created_at_utc": "2026-06-14T23:05:22Z",
   "dependencies": [],
   "parameters": {
     "agent_name": "breakout_volume_momentum",
@@ -51,7 +51,7 @@
   "producer": "save_trade_outputs",
   "research_grade": true,
   "row_count": 46,
-  "run_id": "run_20260402T232555Z_pid63687",
+  "run_id": "run_20260614T230522Z_pid30201",
   "ticker": "GC=F",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GC=F_breakout_volume_momentum_trades__run_20260402T232555Z_pid63687.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Desktop/Fortuna/Data_Clean/GC=F_breakout_volume_momentum_trades__run_20260614T230522Z_pid30201.csv"
 }

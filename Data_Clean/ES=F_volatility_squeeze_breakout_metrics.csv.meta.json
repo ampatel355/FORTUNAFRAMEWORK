@@ -19,11 +19,11 @@
     "stop_loss_exit_rate",
     "take_profit_exit_rate"
   ],
-  "created_at_utc": "2026-04-02T22:23:45Z",
+  "created_at_utc": "2026-04-03T20:22:49Z",
   "dependencies": [
     {
       "exists": true,
-      "modified_time_ns": 1775168615099333798,
+      "modified_time_ns": 1775247761708488749,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/ES=F_volatility_squeeze_breakout_trades.csv",
       "sha256": "5007babc353c8c3038cffbf9ccdd603029356cdaaa17a536a0be67a23aeaf063",
       "size_bytes": 12731
@@ -36,7 +36,7 @@
   "producer": "create_and_save_metrics",
   "research_grade": true,
   "row_count": 1,
-  "run_id": "run_20260402T222318Z_pid35202",
+  "run_id": "run_20260403T202229Z_pid4725",
   "ticker": "ES=F",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/ES=F_volatility_squeeze_breakout_metrics__run_20260402T222318Z_pid35202.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/ES=F_volatility_squeeze_breakout_metrics__run_20260403T202229Z_pid4725.csv"
 }

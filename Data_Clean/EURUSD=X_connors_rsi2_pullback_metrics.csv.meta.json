@@ -19,14 +19,14 @@
     "stop_loss_exit_rate",
     "take_profit_exit_rate"
   ],
-  "created_at_utc": "2026-04-02T22:09:31Z",
+  "created_at_utc": "2026-05-01T17:39:50Z",
   "dependencies": [
     {
       "exists": true,
-      "modified_time_ns": 1775167765853940032,
+      "modified_time_ns": 1777657183010953074,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_connors_rsi2_pullback_trades.csv",
-      "sha256": "c29c8e05556fe057a9603d13bf8cd45a81c2a1d76bbe2ec3b74769f66e940682",
-      "size_bytes": 26740
+      "sha256": "6c2b473b840ba0575d8ff0064d45e4dfbd6f8a883ed6ba022ae001f5f6e38935",
+      "size_bytes": 26175
     }
   ],
   "parameters": {
@@ -36,7 +36,7 @@
   "producer": "create_and_save_metrics",
   "research_grade": true,
   "row_count": 1,
-  "run_id": "run_20260402T220731Z_pid31473",
+  "run_id": "run_20260501T173928Z_pid57449",
   "ticker": "EURUSD=X",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_connors_rsi2_pullback_metrics__run_20260402T220731Z_pid31473.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_connors_rsi2_pullback_metrics__run_20260501T173928Z_pid57449.csv"
 }

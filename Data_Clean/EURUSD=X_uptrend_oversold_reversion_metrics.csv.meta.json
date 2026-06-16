@@ -19,14 +19,14 @@
     "stop_loss_exit_rate",
     "take_profit_exit_rate"
   ],
-  "created_at_utc": "2026-04-02T22:09:30Z",
+  "created_at_utc": "2026-05-01T17:39:49Z",
   "dependencies": [
     {
       "exists": true,
-      "modified_time_ns": 1775167763104469295,
+      "modified_time_ns": 1777657180722318792,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_uptrend_oversold_reversion_trades.csv",
-      "sha256": "7cd79fcad3628ac52354e2d8381b6ddaf3316d28a79f6f9c8afc9caa21ea7890",
-      "size_bytes": 22815
+      "sha256": "67712496e2a0d5456b5c68cee74350976598bf16ae6cd55e5a9a18752656a147",
+      "size_bytes": 22235
     }
   ],
   "parameters": {
@@ -36,7 +36,7 @@
   "producer": "create_and_save_metrics",
   "research_grade": true,
   "row_count": 1,
-  "run_id": "run_20260402T220731Z_pid31473",
+  "run_id": "run_20260501T173928Z_pid57449",
   "ticker": "EURUSD=X",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_uptrend_oversold_reversion_metrics__run_20260402T220731Z_pid31473.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_uptrend_oversold_reversion_metrics__run_20260501T173928Z_pid57449.csv"
 }

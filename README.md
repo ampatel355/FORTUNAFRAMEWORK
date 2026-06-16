@@ -1,193 +1,155 @@
-# Distinguishing Skill from Luck in Trading Strategies
+# Fortuna — Structure-Preserving Randomization Inference for Decision Timing
+
+Replication code and derived data for:
+
+> Aryan Patel. *Structure-Preserving Randomization Inference for Decision Timing.*
+> Submitted to **Risks** (MDPI).
+> Archived: https://github.com/ampatel355/FORTUNAFRAMEWORK · DOI: https://doi.org/10.5281/zenodo.20695539
 
 ## Overview
 
-This project tests whether rule-based trading strategies outperform a defensible randomness baseline under realistic execution assumptions.
+This repository reproduces every table and figure in the paper and its Online
+Supplement. The method is **structure-preserving randomization inference**: a
+conditional randomization test that holds the realized trade structure and the
+exogenous price path fixed and re-randomizes only the *placement* of trades on
+the calendar, from a known conditional law. Validity is finite-sample exact under
+exchangeability of placements. The leading application is entry timing on gold
+futures (`GC=F`); the headline is a null — no robust, measure-invariant
+entry-placement skill — confirmed on an 11-strategy `GC=F` panel, a 322-test
+cross-asset panel under multiplicity control, a measure-family sensitivity range
+with an intersection–union reading, and a head-to-head against White's Reality
+Check and Hansen's SPA.
 
-The central question is not whether a strategy made money on one historical path. It is whether the realized outcome is statistically unusual relative to randomized alternatives that preserve key structural features of the strategy, including trade count, holding durations, transaction costs, and capital constraints.
+The structure-preserving null is implemented in `Code/monte_carlo.py`; the eleven
+strategy rules and the verdict classifier are documented in the Supplement
+(Section S1).
 
-## Research Objective
+## Repository layout
 
-The framework is built to answer one question:
+| Path | Contents |
+|------|----------|
+| `Code/` | SPR null, strategy agents/metrics, data loader, validation & figure scripts |
+| `Data_Clean/` | Derived data: regime-labeled OHLCV, realized trade logs, per-asset result CSVs (`1d/`, `1h/`, `4h/`) |
+| `Charts/` | Figures emitted by the analysis scripts |
+| `ProvidedFigures/` | Final numbered manuscript figures |
+| `paper.tex`, `supplement.tex` | LaTeX sources (assembled by `Code/build_main.py` / `Code/build_supplement.py`) |
+| `paper.pdf`, `supplement.pdf` | Compiled PDFs |
 
-> Does a strategy exhibit reproducible edge, or can its observed performance be explained by chance?
+## Installation
 
-To answer that question, the project combines:
-
-- deterministic backtests
-- matched random-timing Monte Carlo baselines
-- repeated-run robustness testing across seeds
-- regime-conditioned analysis
-
-## Strategies Included
-
-The active pipeline evaluates six live strategies plus a passive benchmark:
-
-- `trend_pullback`
-- `breakout_volume_momentum`
-- `mean_reversion_vol_filter`
-- `momentum_relative_strength`
-- `trend_momentum_verification`
-- `random`
-- `buy_and_hold` benchmark
-
-## Core Methodology
-
-### 1. Strategy Execution
-
-Strategies are generated from the configured research interval (daily by default) using past-only signals. Orders are executed on the next bar, not on the signal bar.
-
-### 2. Realistic Execution Layer
-
-The execution model applies:
-
-- next-open fills
-- commissions
-- spread and randomized slippage
-- finite capital
-- integer share sizing
-- liquidity caps based on recent average volume
-
-### 3. Bar-Curve Performance Measurement
-
-Performance is evaluated from bar-based equity curves rather than only from a list of isolated trade returns. The comparison layer reports:
-
-- cumulative return
-- annualized return
-- annualized Sharpe ratio from bar returns
-- max drawdown
-- trade-level return ratio
-
-### 4. Monte Carlo Null Model
-
-The null model is a matched random-timing benchmark. It preserves each strategy's realized trade count, ordered holding durations, position sizing, and non-overlap structure, then randomizes when those trades occur on the observed market path. The current implementation applies the same style of adverse execution costs used by the live backtests, with optional context-matching controls for advanced experiments.
-
-### 5. Skill Metrics
-
-The framework reports:
-
-- `RCSI = actual cumulative return - mean simulated return`
-- `RCSI_z` for scale-free comparison
-- one-sided empirical p-values with small-sample smoothing
-- Benjamini-Hochberg adjusted p-values across the active strategy set for the ticker
-- percentile rank inside the null distribution
-- p-value prominence `-log10(p)`
-
-### 6. Robustness
-
-Each strategy is re-evaluated across repeated Monte Carlo seeds. Those repeated runs are reported as Monte Carlo seed-stability diagnostics for the fixed realized trade log. The headline verdict remains tied to the current run's inferential metrics, with robustness used as supporting context rather than a hidden override.
-
-### 7. Single-Ticker Workflow
-
-The active workflow runs one ticker at a time. That keeps the research loop simpler and makes each output bundle directly attributable to the ticker you selected for the run.
-
-## Why This Matters
-
-A profitable backtest is not proof of skill.
-
-A strategy can:
-
-- make money
-- look smooth
-- outperform on one ticker
-- appear repeatable in-sample
-
-and still be consistent with randomness once tested against an appropriate null.
-
-This project treats backtesting as a statistical validation problem rather than a performance-reporting exercise.
-
-## Outputs
-
-The pipeline produces:
-
-- per-strategy trade logs
-- metrics tables
-- Monte Carlo summary files
-- repeated-run robustness summaries
-- RCSI and `RCSI_z` outputs
-- regime analysis tables
-- strategy verdict summaries
-- optional chart outputs when `SAVE_OUTPUTS=1`
-
-## Sparse-Activity and No-Trade Cases
-
-Some tickers can legitimately produce no completed trades under the live strategy rules and execution constraints. In those cases, the framework does not force a statistical judgment.
-
-Instead, the pipeline now:
-
-- labels the strategy as `No Trades`
-- suppresses inferential fields such as p-value, percentile, and `RCSI_z` in the active comparison table
-- records that skill-versus-luck inference is not applicable
-- generates placeholder charts rather than crashing or plotting misleading bars
-
-This matters for instruments whose market structure differs from the main research universe, including cases where external data sources provide limited liquidity information. A no-trade result is treated as non-evidence, not as evidence of either skill or luck.
-
-## Project Structure
-
-`Code/`  
-Core scripts, strategy logic, Monte Carlo engine, charts, and pipeline entrypoints.
-
-`Data_Raw/`  
-Downloaded raw historical data.
-
-`Data_Clean/`  
-Feature files, trade logs, Monte Carlo outputs, comparison tables, and benchmark outputs.
-
-`Charts/`  
-Optional saved figures when `SAVE_OUTPUTS=1`.
-
-`Notes/`  
-Research documentation, paper drafts, audit notes, math appendix, and methodology notes.
-
-## How to Run
-
-### Terminal Workflows
+Requires **Python 3.11+** (developed and run under 3.14). No compiler or GPU
+needed; all dependencies are pure-Python wheels.
 
 ```bash
-./.venv/bin/python main.py
+git clone https://github.com/ampatel355/FORTUNAFRAMEWORK.git
+cd Fortuna
+python3 -m venv .venv
+./.venv/bin/python -m pip install --upgrade pip
+./.venv/bin/python -m pip install -r requirements.txt
 ```
 
-The CLI entrypoint is designed for the single-ticker research pipeline.
+All reproduction commands below assume the virtual environment lives at `.venv/`
+and are run from the repository root. They write outputs into `Data_Clean/` and
+`Charts/`; the derived inputs they consume are already committed, so **no network
+access is required** to reproduce the published numbers.
 
-The multi-asset walk-forward workflow now runs from readable source code and writes the same three research tables to `Data_Clean/`:
+## Seed protocol
 
-- `multi_asset_walk_forward_runs.csv`
-- `multi_asset_walk_forward_panel_summary.csv`
-- `multi_asset_walk_forward_agent_summary.csv`
+Every Monte Carlo run is deterministic under a documented seed protocol.
 
-### Single-Ticker Direct Run
+- **Single-ticker `GC=F` panel.** Fixed initial seed **42**; independent
+  strategy-specific pseudo-random streams are spawned from it. For deterministic
+  strategies the realized trade log is fixed across runs and only the null
+  simulations vary. The Random baseline regenerates its realized trade sequence
+  under each seed (so realized outcome *and* null vary).
+- **Seed-robustness (Supplement S5).** 100 outer runs with outer-run seed
+  `seed_r = 100 + r`, `r = 1..100`, 5,000 simulations per run.
+- **Synthetic worlds.** Base seed **9100**.
+- **Competitor comparison.** Fixed world-offset seeds with `PYTHONHASHSEED=0`.
+- **Positive control / signals.** One spawned stream per seed; `PC_SEEDS` controls
+  the count.
+
+Several scripts re-verify their regenerated statistics against the published
+values and **abort on any material mismatch**, so figures and text cannot silently
+diverge.
+
+## Reproducing each result
+
+Run from the repository root. Environment variables set the documented run sizes;
+smaller values reproduce the same point estimates within Monte Carlo error and run
+faster.
+
+### Main paper
+
+| Result | Script | Command (env vars as published) | Output |
+|--------|--------|----------------------------------|--------|
+| **GC=F 11-strategy panel** (`tab:main`); equity curves, MC panel, RCSI/percentile, regime ratios | `Code/regenerate_gallery.py` | `MONTE_CARLO_REPRODUCIBLE=1 ./.venv/bin/python Code/regenerate_gallery.py` | figures in `Charts/`; verified against published values |
+| **Competitor comparison** vs Reality Check & SPA, 5 known-truth worlds (`tab:competitor`, `fig:competitor`) | `Code/competitor_comparison.py` | `CC_REPLICATIONS=400 CC_BOOT=999 CC_SIMULATIONS=2000 PYTHONHASHSEED=0 ./.venv/bin/python Code/competitor_comparison.py` | `Data_Clean/competitor_comparison.csv`, `Charts/competitor_comparison.png` |
+| **Schedule-measure sensitivity**, 3 measures (`tab:schedule_sensitivity`) | `Code/schedule_measure_sensitivity.py` | run once per measure (below) | `Data_Clean/GC=F_sensitivity_*.csv` |
+
+Schedule-measure sensitivity — one invocation per column:
 
 ```bash
-export TICKER=SPY
-./.venv/bin/python main.py
+MEASURE_LABEL=baseline \
+  ./.venv/bin/python Code/schedule_measure_sensitivity.py
+MONTE_CARLO_MIN_LEADING_INDEX=200 MEASURE_LABEL=leading_gap_200 \
+  ./.venv/bin/python Code/schedule_measure_sensitivity.py
+MONTE_CARLO_CONTEXT_MATCHING=1 MEASURE_LABEL=context_matched \
+  ./.venv/bin/python Code/schedule_measure_sensitivity.py
 ```
 
-## Interpretation Rules
+The `baseline` column reproduces the main panel exactly, confirming the
+sensitivity harness matches the canonical pipeline.
 
-The framework does not treat profitability as evidence.
+### Online Supplement
 
-A result is only treated as credible evidence of skill when it is:
+| Result | Script | Command | Output |
+|--------|--------|---------|--------|
+| **S2** synthetic validation (size, power, KS uniformity) | `Code/synthetic_timing_experiments.py` | `SYNTHETIC_REPLICATIONS=1500 SYNTHETIC_POWER_REPLICATIONS=400 SYNTHETIC_SIMULATIONS=2000 ./.venv/bin/python Code/synthetic_timing_experiments.py` | `Data_Clean/synthetic_null_validation_summary.csv`, `Charts/synthetic_type1_calibration.png`, `Charts/synthetic_power_curve.png` |
+| **S2** real-path positive control (injected skill α) | `Code/positive_control_power.py` | `PC_SEEDS=100 ./.venv/bin/python Code/positive_control_power.py` | `Data_Clean/GC=F_positive_control_power_summary.csv`, `Charts/positive_control_skill_curve.png` |
+| same, stochastic execution costs (robustness) | `Code/positive_control_power.py` | `MONTE_CARLO_SIMULATE_EXECUTION_COSTS=1 PC_SEEDS=20 ./.venv/bin/python Code/positive_control_power.py` | `Data_Clean/GC=F_positive_control_power_costson_summary.csv` |
+| **S2** realistic-signal detection | `Code/positive_control_signals.py` | `./.venv/bin/python Code/positive_control_signals.py` | `Charts/positive_control_signal_curve.png` |
+| **S3** cross-asset panel, 322 tests, BH & Bonferroni | `Code/cross_asset_multiplicity.py` | `./.venv/bin/python Code/cross_asset_multiplicity.py` | `Data_Clean/cross_asset_panel_summary.csv`, `Charts/cross_asset_multiplicity.png` |
+| **S3** alternative-null benchmark (shuffled / stationary-bootstrap returns) | `Code/null_benchmark_comparison.py` | `./.venv/bin/python Code/null_benchmark_comparison.py` | `Charts/null_method_comparison.png` |
+| **S3** multi-asset walk-forward panel | `Code/multi_asset_walk_forward.py` | `./.venv/bin/python Code/multi_asset_walk_forward.py` | walk-forward CSVs, `Charts/multi_asset_walk_forward_inference.png` |
+| **S3** bounded frequency-robustness (daily / 4h / hourly) | `Code/frequency_robustness_summary.py` | `./.venv/bin/python Code/frequency_robustness_summary.py` | `Charts/frequency_robustness_pvalue_percentile.png` |
+| **S4–S6** per-strategy MC summaries, regime heatmap, seed-robustness, figure gallery | `Code/regenerate_gallery.py` | `MONTE_CARLO_REPRODUCIBLE=1 ./.venv/bin/python Code/regenerate_gallery.py` | gallery PNGs in `Charts/`; verified before any figure is written |
 
-- statistically rare under the null
-- positive on scale-free evidence metrics
-- still significant after per-ticker multiple-testing adjustment
-- generated from research-grade Monte Carlo depth
+Manuscript PDFs are assembled and compiled with a standard `latexmk`/`elsarticle`
+toolchain (compile `paper.tex` first, then `supplement.tex`, which references the
+main paper via `xr-hyper`):
 
-Ticker-specific positive results should be interpreted one ticker at a time.
+```bash
+./.venv/bin/python Code/build_main.py        # writes paper.tex
+./.venv/bin/python Code/build_supplement.py  # writes supplement.tex
+latexmk -pdf paper.tex && latexmk -pdf supplement.tex
+```
 
-## Main Limitations
+## Data provenance and terms
 
-- The system uses bar data (daily by default) rather than tick or order-book data.
-- The null model randomizes trade timing on the observed market path rather than simulating entirely new market paths.
-- Regime analysis is descriptive unless sufficient trade counts exist.
-- Some strategy effects may be asset-specific even when they appear strong in one ticker.
-- Some sparse-activity tickers may generate no completed trades under the current long-only implementation and execution constraints, which limits inference rather than contradicting it.
+The underlying price series — gold futures (`GC=F`) and the cross-asset universe
+of 47 instruments — were obtained from **Yahoo Finance** through the
+[`yfinance`](https://github.com/ranaroussi/yfinance) package. They are
+redistributed here **only in derived form** — regime-labeled OHLCV series,
+realized trade logs, and per-asset result tables in `Data_Clean/` — which is what
+the reproduction commands consume.
 
-## Bottom Line
+Raw vendor feeds are **not** redistributed: they remain subject to Yahoo
+Finance's terms of use and to `yfinance`'s usage terms. To re-download raw data,
+set the ticker via the `TICKER` environment variable and use the included loader:
 
-This repository is designed to answer a stricter question than a normal backtest:
+```bash
+TICKER="GC=F" ./.venv/bin/python Code/data_loader.py
+```
 
-> Was the observed performance meaningfully better than luck under realistic and repeated testing?
+## License
 
-That standard is the basis for every strategy verdict in the project.
-# VF-RCSI
+Code in this repository is released under the **MIT License** (see `LICENSE`).
+The derived data in `Data_Clean/` is provided for the sole purpose of reproducing
+the paper's results; redistribution of the underlying market data remains governed
+by Yahoo Finance's terms of use.
+
+## Citation
+
+See `CITATION.cff`, or cite the archived release at
+https://doi.org/10.5281/zenodo.20695539.

@@ -50,6 +50,7 @@ try:
     )
     from regimes import build_regime_dataframe_for_ticker
     from strategy_simulator import run_strategy as run_existing_strategy
+    from timeframe_config import scale_daily_bars, timeframe_output_suffix
     from strategy_verdicts import (
         apply_multiple_testing_guard,
         classify_metrics,
@@ -81,6 +82,7 @@ except ModuleNotFoundError:
     )
     from Code.regimes import build_regime_dataframe_for_ticker
     from Code.strategy_simulator import run_strategy as run_existing_strategy
+    from Code.timeframe_config import scale_daily_bars, timeframe_output_suffix
     from Code.strategy_verdicts import (
         apply_multiple_testing_guard,
         classify_metrics,
@@ -110,7 +112,24 @@ MIN_TRADES_FOR_INFERENCE = int(os.environ.get("DISCOVERY_MIN_TRADES_FOR_INFERENC
 TRAIN_FRACTION = float(os.environ.get("DISCOVERY_TRAIN_FRACTION", "0.60"))
 VALIDATION_FRACTION = float(os.environ.get("DISCOVERY_VALIDATION_FRACTION", "0.20"))
 
-DATA_CLEAN_DIR = Path(__file__).resolve().parents[1] / "Data_Clean"
+
+def resolve_data_clean_dir() -> Path:
+    """Return the clean-data folder for the active timeframe."""
+    suffix = timeframe_output_suffix()
+    project_root = Path(__file__).resolve().parents[1]
+    lowercase_dir = project_root / f"data_clean{suffix}"
+    uppercase_dir = project_root / f"Data_Clean{suffix}"
+
+    if uppercase_dir.exists():
+        return uppercase_dir
+    if lowercase_dir.exists():
+        return lowercase_dir
+
+    uppercase_dir.mkdir(parents=True, exist_ok=True)
+    return uppercase_dir
+
+
+DATA_CLEAN_DIR = resolve_data_clean_dir()
 OUTPUT_CANDIDATE_RESULTS_PATH = DATA_CLEAN_DIR / "strategy_discovery_candidate_results.csv"
 OUTPUT_SELECTION_PATH = DATA_CLEAN_DIR / "strategy_discovery_selection_summary.csv"
 OUTPUT_HOLDOUT_PATH = DATA_CLEAN_DIR / "strategy_discovery_holdout_deep_results.csv"
@@ -212,7 +231,7 @@ def _has_room_for_entry_and_exit(current_index: int, market_length: int) -> bool
     return (current_index + 1) < (market_length - 1)
 
 
-def _first_daily_exit_reason(
+def _first_bar_exit_reason(
     row: pd.Series,
     stop_loss_used: float | None,
     take_profit_used: float | None,
@@ -235,6 +254,16 @@ def _first_daily_exit_reason(
     if target_hit:
         return "take_profit"
     return None
+
+
+def _scaled_time_stop_hit(current_index: int, position: OpenPosition, daily_bars: int) -> bool:
+    """Return whether a daily-calibrated time stop has been reached."""
+    return (current_index - int(position.entry_index)) >= scale_daily_bars(daily_bars)
+
+
+def _scaled_time_stop_reason(daily_bars: int) -> str:
+    """Return a time-stop label that reflects the active bar count."""
+    return f"time_stop_{scale_daily_bars(daily_bars)}"
 
 
 @dataclass(frozen=True)
@@ -313,7 +342,7 @@ def run_custom_strategy(
 
         if state_update_rule is not None:
             state_update_rule(row, previous_row, current_index, df, position_state)
-        exit_reason = _first_daily_exit_reason(
+        exit_reason = _first_bar_exit_reason(
             row=row,
             stop_loss_used=open_position.stop_loss_used,
             take_profit_used=open_position.take_profit_used,
@@ -365,15 +394,14 @@ def augment_candidate_features(market_df: pd.DataFrame) -> pd.DataFrame:
     """Add extra rolling features used by discovery candidates."""
     df = market_df.copy()
     df = df.sort_values("Date").drop_duplicates(subset=["Date"], keep="last").reset_index(drop=True)
-    df["trailing_return_21"] = (df["Close"] / df["Close"].shift(21)) - 1.0
-    df["trailing_return_63"] = (df["Close"] / df["Close"].shift(63)) - 1.0
-    df["trailing_return_126"] = (df["Close"] / df["Close"].shift(126)) - 1.0
-    df["trailing_return_252"] = (df["Close"] / df["Close"].shift(252)) - 1.0
-    df["rolling_high_20_prev"] = df["High"].rolling(window=20).max().shift(1)
-    df["rolling_low_20_prev"] = df["Low"].rolling(window=20).min().shift(1)
-    df["rolling_high_55_prev"] = df["High"].rolling(window=55).max().shift(1)
-    df["rolling_low_10_prev"] = df["Low"].rolling(window=10).min().shift(1)
-    df["rolling_low_5_prev"] = df["Low"].rolling(window=5).min().shift(1)
+    for daily_bars in (21, 63, 126, 252):
+        scaled_bars = scale_daily_bars(daily_bars)
+        df[f"trailing_return_{daily_bars}"] = (df["Close"] / df["Close"].shift(scaled_bars)) - 1.0
+    df["rolling_high_20_prev"] = df["High"].rolling(window=scale_daily_bars(20)).max().shift(1)
+    df["rolling_low_20_prev"] = df["Low"].rolling(window=scale_daily_bars(20)).min().shift(1)
+    df["rolling_high_55_prev"] = df["High"].rolling(window=scale_daily_bars(55)).max().shift(1)
+    df["rolling_low_10_prev"] = df["Low"].rolling(window=scale_daily_bars(10)).min().shift(1)
+    df["rolling_low_5_prev"] = df["Low"].rolling(window=scale_daily_bars(5)).min().shift(1)
     return df
 
 
@@ -471,8 +499,8 @@ def _build_candidates() -> list[CandidateSpec]:
                 return "trailing_stop"
             if row.trailing_return_21 < 0 or row.Close < row.sma_200:
                 return "momentum_or_trend_lost"
-            if (current_index - int(position.entry_index)) >= 126:
-                return "time_stop_126"
+            if _scaled_time_stop_hit(current_index, position, 126):
+                return _scaled_time_stop_reason(126)
             return None
 
         return run_custom_strategy(
@@ -507,8 +535,8 @@ def _build_candidates() -> list[CandidateSpec]:
             crossed_down = row.sma_50 < row.sma_200 and previous_row.sma_50 >= previous_row.sma_200
             if crossed_down or row.Close < row.sma_200:
                 return "death_cross_or_trend_break"
-            if (current_index - int(position.entry_index)) >= 126:
-                return "time_stop_126"
+            if _scaled_time_stop_hit(current_index, position, 126):
+                return _scaled_time_stop_reason(126)
             return None
 
         return run_custom_strategy(
@@ -547,8 +575,8 @@ def _build_candidates() -> list[CandidateSpec]:
                 return "ema20_break"
             if row.macd_line < row.macd_signal and row.Close < row.sma_50:
                 return "momentum_fade"
-            if (current_index - int(position.entry_index)) >= 80:
-                return "time_stop_80"
+            if _scaled_time_stop_hit(current_index, position, 80):
+                return _scaled_time_stop_reason(80)
             return None
 
         return run_custom_strategy(
@@ -585,8 +613,8 @@ def _build_candidates() -> list[CandidateSpec]:
         ) -> str | None:
             if row.Close < row.ema_20:
                 return "ema20_break"
-            if (current_index - int(position.entry_index)) >= 40:
-                return "time_stop_40"
+            if _scaled_time_stop_hit(current_index, position, 40):
+                return _scaled_time_stop_reason(40)
             return None
 
         return run_custom_strategy(
@@ -627,8 +655,8 @@ def _build_candidates() -> list[CandidateSpec]:
                 return "trend_filter_fail"
             if row.rsi_14 >= 75:
                 return "rsi_exhaustion"
-            if (current_index - int(position.entry_index)) >= 45:
-                return "time_stop_45"
+            if _scaled_time_stop_hit(current_index, position, 45):
+                return _scaled_time_stop_reason(45)
             return None
 
         return run_custom_strategy(
@@ -669,8 +697,8 @@ def _build_candidates() -> list[CandidateSpec]:
                 return "trend_break"
             if row.macd_line < row.macd_signal and row.rsi_14 < 45:
                 return "momentum_loss"
-            if (current_index - int(position.entry_index)) >= 60:
-                return "time_stop_60"
+            if _scaled_time_stop_hit(current_index, position, 60):
+                return _scaled_time_stop_reason(60)
             return None
 
         return run_custom_strategy(
@@ -708,8 +736,8 @@ def _build_candidates() -> list[CandidateSpec]:
         ) -> str | None:
             if row.Close >= row.bollinger_mid or row.rsi_14 >= 55:
                 return "mean_reversion_complete"
-            if (current_index - int(position.entry_index)) >= 15:
-                return "time_stop_15"
+            if _scaled_time_stop_hit(current_index, position, 15):
+                return _scaled_time_stop_reason(15)
             return None
 
         return run_custom_strategy(
@@ -746,8 +774,8 @@ def _build_candidates() -> list[CandidateSpec]:
         ) -> str | None:
             if row.zscore_20 >= -0.10 or row.Close >= row.ema_20:
                 return "zscore_reverted"
-            if (current_index - int(position.entry_index)) >= 12:
-                return "time_stop_12"
+            if _scaled_time_stop_hit(current_index, position, 12):
+                return _scaled_time_stop_reason(12)
             return None
 
         return run_custom_strategy(
@@ -784,8 +812,8 @@ def _build_candidates() -> list[CandidateSpec]:
         ) -> str | None:
             if row.trailing_return_21 < 0 or row.Close < row.sma_200:
                 return "absolute_momentum_lost"
-            if (current_index - int(position.entry_index)) >= 90:
-                return "time_stop_90"
+            if _scaled_time_stop_hit(current_index, position, 90):
+                return _scaled_time_stop_reason(90)
             return None
 
         return run_custom_strategy(
@@ -837,8 +865,8 @@ def _build_candidates() -> list[CandidateSpec]:
                 return "trailing_stop"
             if row.trailing_return_21 < 0:
                 return "short_momentum_flip"
-            if (current_index - int(position.entry_index)) >= 90:
-                return "time_stop_90"
+            if _scaled_time_stop_hit(current_index, position, 90):
+                return _scaled_time_stop_reason(90)
             return None
 
         return run_custom_strategy(
@@ -878,8 +906,8 @@ def _build_candidates() -> list[CandidateSpec]:
                 return "trend_support_lost"
             if row.macd_line < row.macd_signal and row.rsi_14 < 45:
                 return "momentum_filter_fail"
-            if (current_index - int(position.entry_index)) >= 70:
-                return "time_stop_70"
+            if _scaled_time_stop_hit(current_index, position, 70):
+                return _scaled_time_stop_reason(70)
             return None
 
         return run_custom_strategy(
@@ -918,8 +946,8 @@ def _build_candidates() -> list[CandidateSpec]:
                 return "regime_stress_exit"
             if row.Close < row.sma_100 or row.trailing_return_21 < 0:
                 return "momentum_lost"
-            if (current_index - int(position.entry_index)) >= 60:
-                return "time_stop_60"
+            if _scaled_time_stop_hit(current_index, position, 60):
+                return _scaled_time_stop_reason(60)
             return None
 
         return run_custom_strategy(
@@ -979,9 +1007,11 @@ def _build_candidates() -> list[CandidateSpec]:
         if primary_lookback < 20:
             raise ValueError("primary_lookback must be at least 20 bars.")
 
+        primary_bars = scale_daily_bars(primary_lookback)
+        secondary_bars = scale_daily_bars(secondary_lookback) if secondary_lookback is not None else None
         max_lookback = max(
-            primary_lookback,
-            secondary_lookback if secondary_lookback is not None else primary_lookback,
+            primary_bars,
+            secondary_bars if secondary_bars is not None else primary_bars,
         )
 
         def runner(market_df: pd.DataFrame, ticker: str) -> pd.DataFrame:
@@ -1000,11 +1030,11 @@ def _build_candidates() -> list[CandidateSpec]:
                 if len(filtered_df) != len(filtered_common_dates):
                     continue
                 filtered_df["mom_primary"] = (
-                    filtered_df["Close"] / filtered_df["Close"].shift(primary_lookback)
+                    filtered_df["Close"] / filtered_df["Close"].shift(primary_bars)
                 ) - 1.0
-                if secondary_lookback is not None:
+                if secondary_bars is not None:
                     filtered_df["mom_secondary"] = (
-                        filtered_df["Close"] / filtered_df["Close"].shift(secondary_lookback)
+                        filtered_df["Close"] / filtered_df["Close"].shift(secondary_bars)
                     ) - 1.0
                 else:
                     filtered_df["mom_secondary"] = np.nan
@@ -1071,7 +1101,7 @@ def _build_candidates() -> list[CandidateSpec]:
                                 float(open_position.stop_loss_used),
                                 float(trailing_stop),
                             )
-                    exit_reason = _first_daily_exit_reason(
+                    exit_reason = _first_bar_exit_reason(
                         row,
                         open_position.stop_loss_used,
                         open_position.take_profit_used,
@@ -1226,8 +1256,8 @@ def _build_candidates() -> list[CandidateSpec]:
         ) -> str | None:
             if row.trailing_return_21 < 0 or row.Close < row.sma_50:
                 return "momentum_or_trend_lost"
-            if (current_index - int(position.entry_index)) >= 40:
-                return "time_stop_40"
+            if _scaled_time_stop_hit(current_index, position, 40):
+                return _scaled_time_stop_reason(40)
             return None
 
         return run_custom_strategy(
@@ -1261,8 +1291,8 @@ def _build_candidates() -> list[CandidateSpec]:
         ) -> str | None:
             if row.Close < row.ema_20:
                 return "ema20_break"
-            if (current_index - int(position.entry_index)) >= 35:
-                return "time_stop_35"
+            if _scaled_time_stop_hit(current_index, position, 35):
+                return _scaled_time_stop_reason(35)
             return None
 
         return run_custom_strategy(
@@ -1299,8 +1329,8 @@ def _build_candidates() -> list[CandidateSpec]:
         ) -> str | None:
             if row.sma_20 < row.sma_100 or row.rsi_14 < 45:
                 return "trend_horizon_break"
-            if (current_index - int(position.entry_index)) >= 55:
-                return "time_stop_55"
+            if _scaled_time_stop_hit(current_index, position, 55):
+                return _scaled_time_stop_reason(55)
             return None
 
         return run_custom_strategy(
@@ -1585,18 +1615,23 @@ def split_market_dataframe(market_df: pd.DataFrame) -> dict[str, pd.DataFrame]:
     """Build non-overlapping train/validation/holdout slices."""
     ordered = market_df.sort_values("Date").reset_index(drop=True)
     row_count = len(ordered)
-    if row_count < 800:
+    minimum_rows = 800
+    if row_count < minimum_rows:
         raise ValueError(
-            f"Need at least 800 rows for honest three-way splitting; only found {row_count}."
+            "Need at least "
+            f"{minimum_rows} rows for honest three-way splitting; "
+            f"only found {row_count}."
         )
     train_end = int(math.floor(row_count * TRAIN_FRACTION))
     validation_end = int(math.floor(row_count * (TRAIN_FRACTION + VALIDATION_FRACTION)))
     train_df = ordered.iloc[:train_end].reset_index(drop=True)
     validation_df = ordered.iloc[train_end:validation_end].reset_index(drop=True)
     holdout_df = ordered.iloc[validation_end:].reset_index(drop=True)
-    if min(len(train_df), len(validation_df), len(holdout_df)) < 200:
+    minimum_split_rows = 200
+    if min(len(train_df), len(validation_df), len(holdout_df)) < minimum_split_rows:
         raise ValueError(
             "One or more split windows are too small for stable inference. "
+            f"Need at least {minimum_split_rows} rows per split. "
             f"Rows: train={len(train_df)}, validation={len(validation_df)}, holdout={len(holdout_df)}."
         )
     return {

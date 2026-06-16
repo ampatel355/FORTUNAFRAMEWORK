@@ -6,6 +6,15 @@ stay readable:
 - annualization uses observed bar density instead of one hard-coded constant
 - parameter scaling converts daily-calibrated values to bar-equivalent counts
 - charts and UI text can display the active timeframe consistently
+
+**Timeframe aliases**: the pipeline accepts ``"daily"``, ``"1d"``, ``"hourly"``,
+``"1h"``, ``"4h"``, ``"4hour"`` etc. — all normalized to a canonical interval
+(``"1d"``, ``"1h"``, ``"4h"``).
+
+**4-hour data**: Yahoo Finance does not support a native ``"4h"`` interval.
+The data loader must download ``"1h"`` bars and resample to 4-hour OHLCV.
+The helpers ``yahoo_download_interval()`` and ``yahoo_download_period()``
+provide the correct download parameters for any configured interval.
 """
 
 from __future__ import annotations
@@ -25,11 +34,50 @@ def _env_float(name: str, default: float) -> float:
     return float(os.environ.get(name, str(default)))
 
 
-RESEARCH_INTERVAL = _env_text("RESEARCH_INTERVAL", "1d").lower()
+# ---------------------------------------------------------------------------
+# Alias normalization — accept friendly names and resolve to canonical forms
+# ---------------------------------------------------------------------------
+_INTERVAL_ALIASES: dict[str, str] = {
+    "daily": "1d",
+    "1d": "1d",
+    "d": "1d",
+    "day": "1d",
+    "hourly": "1h",
+    "1h": "1h",
+    "1hour": "1h",
+    "60m": "1h",
+    "60min": "1h",
+    "4h": "4h",
+    "4hour": "4h",
+    "4hr": "4h",
+    "4-hour": "4h",
+    "4-hr": "4h",
+}
+
+
+def normalize_interval(raw: str) -> str:
+    """Resolve a user-facing interval alias to its canonical form.
+
+    Accepts ``"daily"``, ``"1d"``, ``"hourly"``, ``"1h"``, ``"4h"``, ``"4hour"``,
+    etc. and returns one of ``"1d"``, ``"1h"``, ``"4h"``, or the original string
+    lowered if it is not in the alias table.
+    """
+    return _INTERVAL_ALIASES.get(raw.strip().lower(), raw.strip().lower())
+
+
+_raw_interval = _env_text("RESEARCH_INTERVAL", "1d")
+RESEARCH_INTERVAL: str = normalize_interval(_raw_interval)
 RESEARCH_TIMEFRAME_LABEL = _env_text("RESEARCH_TIMEFRAME_LABEL", "Daily")
 
+# ---------------------------------------------------------------------------
+# Yahoo Finance download parameters
+# ---------------------------------------------------------------------------
 # Yahoo Finance limits most intraday intervals, while daily/weekly/monthly bars
 # can usually request full history.
+#
+# IMPORTANT: Yahoo does NOT support "4h" directly. For 4h the pipeline must
+# download "1h" data and resample. The mapping below is only for intervals
+# Yahoo actually accepts.
 YAHOO_MAX_PERIOD_BY_INTERVAL = {
     "1m": "7d",
     "2m": "60d",
@@ -39,7 +87,6 @@ YAHOO_MAX_PERIOD_BY_INTERVAL = {
     "60m": "730d",
     "90m": "60d",
     "1h": "730d",
-    "4h": "730d",
     "1d": "max",
     "5d": "max",
     "1wk": "max",
@@ -47,7 +94,37 @@ YAHOO_MAX_PERIOD_BY_INTERVAL = {
     "3mo": "max",
 }
 
-DEFAULT_YAHOO_PERIOD = YAHOO_MAX_PERIOD_BY_INTERVAL.get(RESEARCH_INTERVAL, "730d")
+# Map a research interval to the interval Yahoo Finance should actually
+# download.  Most intervals are downloaded as-is; "4h" must be sourced from
+# "1h" and resampled downstream.
+_YAHOO_DOWNLOAD_INTERVAL_MAP: dict[str, str] = {
+    "4h": "1h",
+}
+
+
+def yahoo_download_interval(interval: str | None = None) -> str:
+    """Return the yfinance-compatible interval to actually download.
+
+    For most intervals this is the interval itself.  For ``"4h"`` it returns
+    ``"1h"`` because Yahoo does not offer a 4-hour bar natively.
+    """
+    canonical = normalize_interval(interval) if interval else RESEARCH_INTERVAL
+    return _YAHOO_DOWNLOAD_INTERVAL_MAP.get(canonical, canonical)
+
+
+def yahoo_download_period(interval: str | None = None) -> str:
+    """Return the maximum Yahoo Finance period for the download interval."""
+    dl_interval = yahoo_download_interval(interval)
+    return YAHOO_MAX_PERIOD_BY_INTERVAL.get(dl_interval, "730d")
+
+
+def requires_resampling(interval: str | None = None) -> bool:
+    """Return whether the configured interval requires post-download resampling."""
+    canonical = normalize_interval(interval) if interval else RESEARCH_INTERVAL
+    return canonical in _YAHOO_DOWNLOAD_INTERVAL_MAP
+
+
+DEFAULT_YAHOO_PERIOD = yahoo_download_period()
 
 # ---------------------------------------------------------------------------
 # Timeframe scaling
@@ -111,9 +188,55 @@ def scale_daily_bars(daily_count: int) -> int:
     the equivalent on hourly data is 20 * 7 = 140 bars — still covering
     ~20 trading days of price history.
 
+    Use this for **structural** parameters: long trend filters (MA_100,
+    MA_200), holding periods, time stops, and regime history requirements
+    where the intent is to cover the same calendar duration.
+
     The function respects a minimum of 1 bar so indicators never degenerate.
     """
     return max(1, round(daily_count * BARS_PER_TRADING_DAY))
+
+
+# ---------------------------------------------------------------------------
+# Signal-indicator scaling
+# ---------------------------------------------------------------------------
+# For signal-generating indicators (RSI, ADX, ATR, Bollinger, MACD) a full
+# BARS_PER_TRADING_DAY multiplier makes the indicator too smooth on intraday
+# data and kills trade generation.  Using sqrt(BARS_PER_TRADING_DAY) is a
+# standard quant-finance compromise: it moderately extends the lookback so
+# the indicator captures multi-bar patterns while staying responsive enough
+# to produce actionable signals.
+#
+# Justification:
+#   - sqrt preserves the rough *information content* per window (since
+#     variance scales with N, standard deviation with sqrt(N))
+#   - On 1h (7 bars/day): sqrt(7)≈2.65 → 14-day RSI becomes ~37 bars
+#     (~5.3 trading days) — still much longer than the daily 14-bar window
+#     but responsive enough to generate entries
+#   - On 4h (2 bars/day): sqrt(2)≈1.41 → 14-day RSI becomes ~20 bars
+#     (~10 trading days) — close to daily but slightly adapted
+#   - On 1d (1 bar/day): sqrt(1)=1.0 → no change from daily
+import math as _math
+
+SIGNAL_SCALING_FACTOR: float = _env_float(
+    "SIGNAL_SCALING_FACTOR",
+    _math.sqrt(BARS_PER_TRADING_DAY) if BARS_PER_TRADING_DAY > 1 else 1.0,
+)
+
+
+def scale_daily_signal_bars(daily_count: int) -> int:
+    """Scale signal-indicator windows for intraday data using sqrt scaling.
+
+    Signal-generating indicators (RSI, ADX, ATR, Bollinger, MACD) need to
+    remain responsive on faster timeframes.  Instead of the full calendar-
+    equivalent multiplier, this function uses ``sqrt(BARS_PER_TRADING_DAY)``
+    so the indicators stay actionable while still being longer than their
+    daily bar-count equivalents.
+
+    Use ``scale_daily_bars()`` for structural parameters (long MAs, holding
+    periods, time stops) that need full calendar-duration coverage.
+    """
+    return max(1, round(daily_count * SIGNAL_SCALING_FACTOR))
 
 
 def scale_daily_float(daily_value: float) -> float:

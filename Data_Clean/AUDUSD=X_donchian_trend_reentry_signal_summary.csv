@@ -1,0 +1,2 @@
+ticker,agent,timeframe_label,data_interval,signal_count,executed_trade_count,rejected_signal_count,months_covered
+AUDUSD=X,donchian_trend_reentry,Daily,1d,20,20,0,215.0965092402464

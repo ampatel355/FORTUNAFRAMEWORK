@@ -32,7 +32,7 @@ try:
     from strategy_simulator import (
         _entry_is_still_valid,
         _finalize_trades,
-        _first_daily_exit_reason,
+        _first_bar_exit_reason,
         _is_rebalance_bar,
     )
     from timeframe_config import RESEARCH_INTERVAL, RESEARCH_TIMEFRAME_LABEL, timeframe_output_suffix
@@ -60,7 +60,7 @@ except ModuleNotFoundError:
     from Code.strategy_simulator import (
         _entry_is_still_valid,
         _finalize_trades,
-        _first_daily_exit_reason,
+        _first_bar_exit_reason,
         _is_rebalance_bar,
     )
     from Code.timeframe_config import RESEARCH_INTERVAL, RESEARCH_TIMEFRAME_LABEL, timeframe_output_suffix
@@ -377,7 +377,7 @@ def run_relative_strength_on_aligned_universe(
             else:
                 open_position.stop_loss_used = max(float(open_position.stop_loss_used), float(trailing_stop))
 
-            exit_reason = _first_daily_exit_reason(
+            exit_reason = _first_bar_exit_reason(
                 row,
                 open_position.stop_loss_used,
                 open_position.take_profit_used,

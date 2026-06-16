@@ -1,0 +1,132 @@
+{
+  "artifact_path": "/Users/aryanpatel/Desktop/Fortuna/Data_Clean/null_benchmark_comparison.csv",
+  "canonical_policy": "auto",
+  "column_names": [
+    "ticker",
+    "agent",
+    "strategy_label",
+    "method",
+    "method_label",
+    "preserves_price_path",
+    "preserves_trade_geometry",
+    "controls_data_snooping",
+    "tests_entry_placement",
+    "actual_cumulative_return",
+    "mean_null_return",
+    "median_null_return",
+    "lower_5pct",
+    "upper_95pct",
+    "p_value",
+    "actual_percentile",
+    "p_value_prominence",
+    "evidence_label",
+    "reject_0_05",
+    "number_of_trades",
+    "simulation_count",
+    "transaction_cost",
+    "stationary_mean_block_bars",
+    "method_description",
+    "bh_adjusted_p_value"
+  ],
+  "created_at_utc": "2026-05-26T23:11:32Z",
+  "dependencies": [
+    {
+      "exists": true,
+      "modified_time_ns": 1775306638338969709,
+      "path": "/Users/aryanpatel/Desktop/Fortuna/Data_Clean/GC=F_regimes.csv",
+      "sha256": "a194be21b6ed25dcf5af569e6e4abe2de692c206aa1ff25b3425e1e04a055957",
+      "size_bytes": 6094439
+    },
+    {
+      "exists": true,
+      "modified_time_ns": 1775306639515936826,
+      "path": "/Users/aryanpatel/Desktop/Fortuna/Data_Clean/GC=F_trend_pullback_trades.csv",
+      "sha256": "6fa2ad7a82165bb415223b03ce4ded28c0ef963815389635b063f1d871c8d6d2",
+      "size_bytes": 39749
+    },
+    {
+      "exists": true,
+      "modified_time_ns": 1775306640686424058,
+      "path": "/Users/aryanpatel/Desktop/Fortuna/Data_Clean/GC=F_breakout_volume_momentum_trades.csv",
+      "sha256": "fe5c3e55c9893e99a60cd84a396c991b8ed78f4fac392143d0f0412ed3de050f",
+      "size_bytes": 24750
+    },
+    {
+      "exists": true,
+      "modified_time_ns": 1775306641852612576,
+      "path": "/Users/aryanpatel/Desktop/Fortuna/Data_Clean/GC=F_mean_reversion_vol_filter_trades.csv",
+      "sha256": "ed35395211b45a375805c8b581f7990c4e92e59d7550d5163a861f4222d78692",
+      "size_bytes": 7402
+    },
+    {
+      "exists": true,
+      "modified_time_ns": 1775306642944445944,
+      "path": "/Users/aryanpatel/Desktop/Fortuna/Data_Clean/GC=F_trend_momentum_verification_trades.csv",
+      "sha256": "77a4d85dc89b8300e5974d92d5260e315331a03dd42a4a39c48d3be1a8fac710",
+      "size_bytes": 19174
+    },
+    {
+      "exists": true,
+      "modified_time_ns": 1775306644001576138,
+      "path": "/Users/aryanpatel/Desktop/Fortuna/Data_Clean/GC=F_adx_trend_following_trades.csv",
+      "sha256": "2ed190060a8b21d00ad06373a3f044811f19f61c976bda71396a92d924974777",
+      "size_bytes": 56845
+    },
+    {
+      "exists": true,
+      "modified_time_ns": 1775306645052417448,
+      "path": "/Users/aryanpatel/Desktop/Fortuna/Data_Clean/GC=F_uptrend_oversold_reversion_trades.csv",
+      "sha256": "3061155f937008a4df3348cec9f609c356d33094c4bda559bc01ccfd32e244dd",
+      "size_bytes": 16557
+    },
+    {
+      "exists": true,
+      "modified_time_ns": 1775306646142756064,
+      "path": "/Users/aryanpatel/Desktop/Fortuna/Data_Clean/GC=F_volatility_squeeze_breakout_trades.csv",
+      "sha256": "3479bf88733397fcb599c08d2f71f80c8a090a335c66f05a60ca307ecb56faac",
+      "size_bytes": 2628
+    },
+    {
+      "exists": true,
+      "modified_time_ns": 1775306647196027586,
+      "path": "/Users/aryanpatel/Desktop/Fortuna/Data_Clean/GC=F_connors_rsi2_pullback_trades.csv",
+      "sha256": "3d27ebe5718db5616626d693f462cf1184b5000dddccfbd4d2f8efe9f5c841a0",
+      "size_bytes": 21096
+    },
+    {
+      "exists": true,
+      "modified_time_ns": 1775306648234727669,
+      "path": "/Users/aryanpatel/Desktop/Fortuna/Data_Clean/GC=F_donchian_trend_reentry_trades.csv",
+      "sha256": "24a5d541dfe13906ebd9c30c316dd8794198916618388800d31b5c7df8d8feaa",
+      "size_bytes": 31343
+    },
+    {
+      "exists": true,
+      "modified_time_ns": 1775306649086538108,
+      "path": "/Users/aryanpatel/Desktop/Fortuna/Data_Clean/GC=F_turn_of_month_seasonality_trades.csv",
+      "sha256": "8f3c57ae60d6e5eeb2a0aa80dd9502e366c4b817cb22d99a2f0c17d9da29fbcb",
+      "size_bytes": 72362
+    },
+    {
+      "exists": true,
+      "modified_time_ns": 1775306649933180497,
+      "path": "/Users/aryanpatel/Desktop/Fortuna/Data_Clean/GC=F_random_trades.csv",
+      "sha256": "62d276fcddc11c26129c157cce5cc50fbd18ebcd54f60bc326ae327f3cd0cff3",
+      "size_bytes": 101845
+    }
+  ],
+  "parameters": {
+    "batch_size": 256,
+    "seed": 20260526,
+    "simulations": 5000,
+    "stationary_mean_block_bars": 20,
+    "ticker": "GC=F"
+  },
+  "pipeline_profile": "standard",
+  "producer": "null_benchmark_comparison.main",
+  "research_grade": true,
+  "row_count": 33,
+  "run_id": "run_20260526T231132Z_pid35551",
+  "ticker": "GC=F",
+  "versioned_artifact_path": "/Users/aryanpatel/Desktop/Fortuna/Data_Clean/null_benchmark_comparison__run_20260526T231132Z_pid35551.csv"
+}

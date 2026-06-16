@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.venv/
+*.aux
+*.log
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+.rendered*/
+Data_Clean/**/*__run_*Z_pid*.csv

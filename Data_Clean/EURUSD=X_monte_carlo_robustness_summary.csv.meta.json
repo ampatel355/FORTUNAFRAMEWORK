@@ -116,14 +116,14 @@
     "verdict_label",
     "final_classification"
   ],
-  "created_at_utc": "2026-04-02T20:12:27Z",
+  "created_at_utc": "2026-05-01T17:40:02Z",
   "dependencies": [
     {
       "exists": true,
-      "modified_time_ns": 1775160747933267531,
+      "modified_time_ns": 1777657202779571901,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_monte_carlo_robustness_runs.csv",
-      "sha256": "474f7972f550b6c73a0fc2924c942af703b4753dd16cb1a5d978fd298650a9e3",
-      "size_bytes": 38831
+      "sha256": "ce6121ef2bad1bfa7ac6b5fbefe2745b3c291725593905442cfe7bfa133fadc8",
+      "size_bytes": 47362
     }
   ],
   "parameters": {
@@ -134,8 +134,8 @@
   "pipeline_profile": "standard",
   "producer": "monte_carlo_robustness.main",
   "research_grade": false,
-  "row_count": 9,
-  "run_id": "run_20260402T201146Z_pid2966",
+  "row_count": 11,
+  "run_id": "run_20260501T173928Z_pid57449",
   "ticker": "EURUSD=X",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_monte_carlo_robustness_summary__run_20260402T201146Z_pid2966.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_monte_carlo_robustness_summary__run_20260501T173928Z_pid57449.csv"
 }

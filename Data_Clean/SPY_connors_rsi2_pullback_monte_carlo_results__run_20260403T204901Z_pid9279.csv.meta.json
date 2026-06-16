@@ -1,0 +1,37 @@
+{
+  "artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/SPY_connors_rsi2_pullback_monte_carlo_results.csv",
+  "canonical_policy": "always",
+  "column_names": [
+    "simulation_id",
+    "simulated_cumulative_return"
+  ],
+  "created_at_utc": "2026-04-03T20:49:27Z",
+  "dependencies": [
+    {
+      "exists": true,
+      "modified_time_ns": 1775249355493316350,
+      "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/SPY_connors_rsi2_pullback_trades.csv",
+      "sha256": "6811db35403307413e19478fa8fce4e95690055de43e5572e6d5397b902de0ea",
+      "size_bytes": 53771
+    },
+    {
+      "exists": true,
+      "modified_time_ns": 1775249343890845271,
+      "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/SPY_regimes.csv",
+      "sha256": "2185f300a59f1095a475391e0a64d743f76254be45ef8332356adabbceda824d",
+      "size_bytes": 8389741
+    }
+  ],
+  "parameters": {
+    "agent_name": "connors_rsi2_pullback",
+    "null_model_type": "timing_null_results",
+    "simulation_count": 2000
+  },
+  "pipeline_profile": "standard",
+  "producer": "monte_carlo.save_simulation_results",
+  "research_grade": false,
+  "row_count": 2000,
+  "run_id": "run_20260403T204901Z_pid9279",
+  "ticker": "SPY",
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/SPY_connors_rsi2_pullback_monte_carlo_results__run_20260403T204901Z_pid9279.csv"
+}

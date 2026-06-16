@@ -116,26 +116,26 @@
     "verdict_label",
     "final_classification"
   ],
-  "created_at_utc": "2026-04-02T01:59:24Z",
+  "created_at_utc": "2026-04-03T22:00:57Z",
   "dependencies": [
     {
       "exists": true,
-      "modified_time_ns": 1775095164739799692,
+      "modified_time_ns": 1775253657355460866,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GBPUSD=X_monte_carlo_robustness_runs.csv",
-      "sha256": "eaa7cb296e9388359dd8abf1f47be6ad0837f62c309f226620e994937809f7a9",
-      "size_bytes": 17112
+      "sha256": "b227225c892515f9141bc45f8880bf0e2722d10ea4ab19fd04766364fd3312c7",
+      "size_bytes": 47122
     }
   ],
   "parameters": {
-    "outer_runs": 8,
+    "outer_runs": 10,
     "robustness_scope": "monte_carlo_seed_stability_only",
-    "simulations_per_run": 250
+    "simulations_per_run": 500
   },
   "pipeline_profile": "standard",
   "producer": "monte_carlo_robustness.main",
   "research_grade": false,
-  "row_count": 5,
-  "run_id": "run_20260402T015823Z_pid14331",
+  "row_count": 11,
+  "run_id": "run_20260403T220013Z_pid25029",
   "ticker": "GBPUSD=X",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GBPUSD=X_monte_carlo_robustness_summary__run_20260402T015823Z_pid14331.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GBPUSD=X_monte_carlo_robustness_summary__run_20260403T220013Z_pid25029.csv"
 }

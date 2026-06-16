@@ -33,21 +33,21 @@
     "activity_status",
     "activity_warning"
   ],
-  "created_at_utc": "2026-04-02T22:09:37Z",
+  "created_at_utc": "2026-05-01T17:40:04Z",
   "dependencies": [
     {
       "exists": true,
-      "modified_time_ns": 1775167775888951420,
+      "modified_time_ns": 1777657195326807723,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_monte_carlo_summary.csv",
-      "sha256": "1dcffc973b86c0d410f8c48241d5ad738bef6ac58d27f3179a5616f34a13f573",
-      "size_bytes": 3481
+      "sha256": "5bb503f7c4dabecc0f677a75711ba73d726358051a695c391cbed18b2df49478",
+      "size_bytes": 4204
     },
     {
       "exists": true,
-      "modified_time_ns": 1775167776269948053,
+      "modified_time_ns": 1777657195753577538,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_rcsi.csv",
-      "sha256": "8ec78ffa29e318fab4bebcda691a17c50f7118712abf807ddcfdf00b3aebdd52",
-      "size_bytes": 1860
+      "sha256": "3dfee27161fa10a287988bc89765f2a716e85353f9dbe3affe66eb93192aba81",
+      "size_bytes": 2259
     }
   ],
   "parameters": {
@@ -55,9 +55,9 @@
   },
   "pipeline_profile": "standard",
   "producer": "compare_agents.main",
-  "research_grade": true,
-  "row_count": 10,
-  "run_id": "run_20260402T220731Z_pid31473",
+  "research_grade": false,
+  "row_count": 12,
+  "run_id": "run_20260501T173928Z_pid57449",
   "ticker": "EURUSD=X",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_full_comparison__run_20260402T220731Z_pid31473.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_full_comparison__run_20260501T173928Z_pid57449.csv"
 }

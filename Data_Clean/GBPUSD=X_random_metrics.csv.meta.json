@@ -19,14 +19,14 @@
     "stop_loss_exit_rate",
     "take_profit_exit_rate"
   ],
-  "created_at_utc": "2026-04-02T20:38:13Z",
+  "created_at_utc": "2026-04-03T22:00:42Z",
   "dependencies": [
     {
       "exists": true,
-      "modified_time_ns": 1775162286922171262,
+      "modified_time_ns": 1775253633170380787,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GBPUSD=X_random_trades.csv",
-      "sha256": "112644cecea98102a9e86d89f5132948d4bf63eaaf2fa7ead2cbac3a3366aa93",
-      "size_bytes": 112173
+      "sha256": "343e1233b01351fcdf02c6e32cd38f8830b339c6319bd102be5248b3dceec015",
+      "size_bytes": 110249
     }
   ],
   "parameters": {
@@ -36,7 +36,7 @@
   "producer": "create_and_save_metrics",
   "research_grade": true,
   "row_count": 1,
-  "run_id": "run_20260402T203745Z_pid8548",
+  "run_id": "run_20260403T220013Z_pid25029",
   "ticker": "GBPUSD=X",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GBPUSD=X_random_metrics__run_20260402T203745Z_pid8548.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GBPUSD=X_random_metrics__run_20260403T220013Z_pid25029.csv"
 }

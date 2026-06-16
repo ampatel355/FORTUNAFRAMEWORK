@@ -31,6 +31,7 @@ try:
         augment_candidate_features,
         run_custom_strategy,
     )
+    from timeframe_config import scale_daily_bars, timeframe_output_suffix
 except ModuleNotFoundError:
     from Code.monte_carlo import (
         TRANSACTION_COST,
@@ -46,6 +47,7 @@ except ModuleNotFoundError:
         augment_candidate_features,
         run_custom_strategy,
     )
+    from Code.timeframe_config import scale_daily_bars, timeframe_output_suffix
 
 
 TICKERS = [
@@ -67,6 +69,7 @@ VALIDATION_FRACTION = float(os.environ.get("WINNER_HUNT_VALIDATION_FRACTION", "0
 SELECTION_FRACTION = float(os.environ.get("WINNER_HUNT_SELECTION_FRACTION", "0.15"))
 
 MIN_ROWS = int(os.environ.get("WINNER_HUNT_MIN_ROWS", "1000"))
+MIN_WINDOW_ROWS = int(os.environ.get("WINNER_HUNT_MIN_WINDOW_ROWS", "150"))
 MIN_TRAIN_TRADES = int(os.environ.get("WINNER_HUNT_MIN_TRAIN_TRADES", "20"))
 MIN_VALIDATION_TRADES = int(os.environ.get("WINNER_HUNT_MIN_VALIDATION_TRADES", "20"))
 MIN_SELECTION_TRADES = int(os.environ.get("WINNER_HUNT_MIN_SELECTION_TRADES", "10"))
@@ -76,7 +79,24 @@ WINNER_MIN_Z = float(os.environ.get("WINNER_HUNT_WINNER_MIN_Z", "1.0"))
 WINNER_MAX_P = float(os.environ.get("WINNER_HUNT_WINNER_MAX_P", "0.05"))
 WINNER_MIN_PERCENTILE = float(os.environ.get("WINNER_HUNT_WINNER_MIN_PERCENTILE", "95.0"))
 
-DATA_CLEAN_DIR = Path(__file__).resolve().parents[1] / "Data_Clean"
+
+def resolve_data_clean_dir() -> Path:
+    """Return the clean-data folder for the active timeframe."""
+    suffix = timeframe_output_suffix()
+    project_root = Path(__file__).resolve().parents[1]
+    lowercase_dir = project_root / f"data_clean{suffix}"
+    uppercase_dir = project_root / f"Data_Clean{suffix}"
+
+    if uppercase_dir.exists():
+        return uppercase_dir
+    if lowercase_dir.exists():
+        return lowercase_dir
+
+    uppercase_dir.mkdir(parents=True, exist_ok=True)
+    return uppercase_dir
+
+
+DATA_CLEAN_DIR = resolve_data_clean_dir()
 OUTPUT_SCAN_PATH = DATA_CLEAN_DIR / "winner_hunt_scan_results.csv"
 OUTPUT_LOCKBOX_PATH = DATA_CLEAN_DIR / "winner_hunt_lockbox_results.csv"
 
@@ -135,6 +155,17 @@ def _safe_stop(value: float | int | None) -> float | None:
     return float(value)
 
 
+def _sample_scaled_bar_count(
+    rng: np.random.Generator,
+    low_daily: int,
+    high_daily_exclusive: int,
+) -> int:
+    """Sample one time stop from a daily-calibrated range."""
+    low_bars = scale_daily_bars(low_daily)
+    high_bars = max(low_bars + 1, scale_daily_bars(high_daily_exclusive))
+    return int(rng.integers(low_bars, high_bars))
+
+
 def split_into_lockbox_windows(market_df: pd.DataFrame) -> dict[str, pd.DataFrame]:
     ordered = market_df.sort_values("Date").drop_duplicates(subset=["Date"], keep="last").reset_index(drop=True)
     row_count = len(ordered)
@@ -152,11 +183,12 @@ def split_into_lockbox_windows(market_df: pd.DataFrame) -> dict[str, pd.DataFram
     selection_df = ordered.iloc[validation_end:selection_end].reset_index(drop=True)
     lockbox_df = ordered.iloc[selection_end:].reset_index(drop=True)
 
-    if min(len(train_df), len(validation_df), len(selection_df), len(lockbox_df)) < 150:
+    if min(len(train_df), len(validation_df), len(selection_df), len(lockbox_df)) < MIN_WINDOW_ROWS:
         raise ValueError(
             "One or more lockbox windows are too small: "
             f"train={len(train_df)}, validation={len(validation_df)}, "
-            f"selection={len(selection_df)}, lockbox={len(lockbox_df)}."
+            f"selection={len(selection_df)}, lockbox={len(lockbox_df)}. "
+            f"Need at least {MIN_WINDOW_ROWS} rows per window."
         )
 
     return {
@@ -219,7 +251,7 @@ def sample_vol_mom_params(rng: np.random.Generator) -> dict[str, float | int]:
         "ret126_min": float(rng.choice([0.0, 0.02, 0.04])),
         "stop_mult": float(rng.uniform(2.0, 3.2)),
         "trail_mult": float(rng.uniform(2.6, 4.0)),
-        "time_stop": int(rng.integers(70, 141)),
+        "time_stop": _sample_scaled_bar_count(rng, 70, 141),
         "vol_cap": float(rng.uniform(1.0, 1.8)),
     }
 
@@ -233,7 +265,7 @@ def sample_pullback_params(rng: np.random.Generator) -> dict[str, float | int]:
         "adx_min": int(rng.integers(0, 21)),
         "stop_mult": float(rng.uniform(1.4, 2.4)),
         "tp_mult": float(rng.uniform(2.4, 4.8)),
-        "time_stop": int(rng.integers(25, 61)),
+        "time_stop": _sample_scaled_bar_count(rng, 25, 61),
     }
 
 
@@ -244,7 +276,7 @@ def sample_breakout_params(rng: np.random.Generator) -> dict[str, float | int]:
         "volume_min": float(rng.uniform(0.8, 1.4)),
         "stop_mult": float(rng.uniform(1.6, 2.8)),
         "tp_mult": float(rng.uniform(2.4, 5.0)),
-        "time_stop": int(rng.integers(25, 91)),
+        "time_stop": _sample_scaled_bar_count(rng, 25, 91),
     }
 
 
@@ -256,7 +288,7 @@ def sample_mean_reversion_params(rng: np.random.Generator) -> dict[str, float | 
         "atr_ratio_max": float(rng.uniform(1.0, 2.5)),
         "stop_mult": float(rng.uniform(0.8, 1.8)),
         "tp_mult": float(rng.uniform(0.8, 1.8)),
-        "time_stop": int(rng.integers(5, 36)),
+        "time_stop": _sample_scaled_bar_count(rng, 5, 36),
     }
 
 

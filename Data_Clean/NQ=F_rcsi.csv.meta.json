@@ -15,14 +15,14 @@
     "bh_adjusted_p_value",
     "research_grade"
   ],
-  "created_at_utc": "2026-04-03T12:02:42Z",
+  "created_at_utc": "2026-04-03T21:40:02Z",
   "dependencies": [
     {
       "exists": true,
-      "modified_time_ns": 1775217762551631075,
+      "modified_time_ns": 1775252402073539312,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/NQ=F_monte_carlo_summary.csv",
-      "sha256": "2ac92856b7d5fee2b96ea82e49974cca198db4c5ab9f627b5f10eea52238a888",
-      "size_bytes": 4126
+      "sha256": "80d6951ff4a921b440452f7c17b36a687bd05cf664f8fe9796d1a7a862d0ef6e",
+      "size_bytes": 4118
     }
   ],
   "parameters": {
@@ -30,9 +30,9 @@
   },
   "pipeline_profile": "standard",
   "producer": "rcsi.main",
-  "research_grade": false,
+  "research_grade": true,
   "row_count": 11,
-  "run_id": "run_20260403T120216Z_pid73820",
+  "run_id": "run_20260403T213929Z_pid21915",
   "ticker": "NQ=F",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/NQ=F_rcsi__run_20260403T120216Z_pid73820.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/NQ=F_rcsi__run_20260403T213929Z_pid21915.csv"
 }

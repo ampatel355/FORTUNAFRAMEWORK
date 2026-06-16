@@ -1,0 +1,127 @@
+{
+  "artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/AUDUSD=X_monte_carlo_summary.csv",
+  "canonical_policy": "always",
+  "canonical_updated": true,
+  "column_names": [
+    "agent",
+    "actual_cumulative_return",
+    "median_simulated_return",
+    "mean_simulated_return",
+    "std_simulated_return",
+    "actual_percentile",
+    "p_value",
+    "p_value_prominence",
+    "p_value_interpretation",
+    "lower_5pct",
+    "upper_95pct",
+    "number_of_trades",
+    "transaction_cost",
+    "execution_cost_model",
+    "simulation_count",
+    "research_grade",
+    "reproducible",
+    "seed_used",
+    "null_model",
+    "bh_adjusted_p_value"
+  ],
+  "created_at_utc": "2026-04-03T22:04:43Z",
+  "dependencies": [
+    {
+      "exists": true,
+      "modified_time_ns": 1775253856704398001,
+      "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/AUDUSD=X_regimes.csv",
+      "sha256": "0433cd358f8a2b252f33b38a96bb084a0b97197c56eeceaf2fd0e46a8d7c6fe9",
+      "size_bytes": 5008686
+    },
+    {
+      "exists": true,
+      "modified_time_ns": 1775253882891926318,
+      "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/AUDUSD=X_trend_pullback_monte_carlo_results.csv",
+      "sha256": "7c53a3f779feaf0bee4872f349b360b3e364f3fea8214fe062e37a84a06823a0",
+      "size_bytes": 50103
+    },
+    {
+      "exists": true,
+      "modified_time_ns": 1775253882954701023,
+      "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/AUDUSD=X_breakout_volume_momentum_monte_carlo_results.csv",
+      "sha256": "3c0bce73da9dae104d69ef26ee436382afc4b7d0d576acd18e9381bb40fd1a27",
+      "size_bytes": 50204
+    },
+    {
+      "exists": true,
+      "modified_time_ns": 1775253883022772124,
+      "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/AUDUSD=X_mean_reversion_vol_filter_monte_carlo_results.csv",
+      "sha256": "f3b70eedbde099dcfb1e664c807439cab27834d89d9d157f6b31773251d5b417",
+      "size_bytes": 50382
+    },
+    {
+      "exists": true,
+      "modified_time_ns": 1775253883084990077,
+      "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/AUDUSD=X_trend_momentum_verification_monte_carlo_results.csv",
+      "sha256": "e1e052ba7154e9a1e4d78994015bfa47d699f6e300d2a574d7553a5cc4c33e7f",
+      "size_bytes": 49808
+    },
+    {
+      "exists": true,
+      "modified_time_ns": 1775253883196212555,
+      "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/AUDUSD=X_adx_trend_following_monte_carlo_results.csv",
+      "sha256": "23a0e1a7a285397f235be38fc89ba40dcbfa51e9abb78336f643eb5fd56870e8",
+      "size_bytes": 49953
+    },
+    {
+      "exists": true,
+      "modified_time_ns": 1775253883258220966,
+      "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/AUDUSD=X_uptrend_oversold_reversion_monte_carlo_results.csv",
+      "sha256": "c2eb97eae8797fc979aade3a1a41890aa2787bdcd142f5ee861b3509d322537e",
+      "size_bytes": 50484
+    },
+    {
+      "exists": true,
+      "modified_time_ns": 1775253883387832058,
+      "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/AUDUSD=X_volatility_squeeze_breakout_monte_carlo_results.csv",
+      "sha256": "636ff5cfb02cd3fef4a4bb02aed83d60a30952d8309dfd115f2196c2e10f4160",
+      "size_bytes": 50854
+    },
+    {
+      "exists": true,
+      "modified_time_ns": 1775253883465015612,
+      "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/AUDUSD=X_connors_rsi2_pullback_monte_carlo_results.csv",
+      "sha256": "ba262ccd8dd5f2ea1fde7bbdb5f057bd8f125d43370acca3db1cf2b166e99ad4",
+      "size_bytes": 50622
+    },
+    {
+      "exists": true,
+      "modified_time_ns": 1775253883585420251,
+      "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/AUDUSD=X_donchian_trend_reentry_monte_carlo_results.csv",
+      "sha256": "a1a2e8b0727bd20b2c2cc5f2a447aa8de925c48bf93a962b1614dd01569bcc39",
+      "size_bytes": 50061
+    },
+    {
+      "exists": true,
+      "modified_time_ns": 1775253883742505868,
+      "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/AUDUSD=X_turn_of_month_seasonality_monte_carlo_results.csv",
+      "sha256": "a3d0a9dc1ee90ab0246f748d48c1af7e3a07f3d5d3e30780757849dfbc86ccd0",
+      "size_bytes": 50170
+    },
+    {
+      "exists": true,
+      "modified_time_ns": 1775253883870145285,
+      "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/AUDUSD=X_random_monte_carlo_results.csv",
+      "sha256": "4339a84778ebd6cd86a941694c2a5d3eb236f08b76d2a62aae59b922905a9bad",
+      "size_bytes": 49915
+    }
+  ],
+  "parameters": {
+    "context_bucket_count": 5,
+    "context_matching_enabled": false,
+    "simulate_execution_costs": true,
+    "simulation_count": 2000
+  },
+  "pipeline_profile": "standard",
+  "producer": "monte_carlo.main",
+  "research_grade": false,
+  "row_count": 11,
+  "run_id": "run_20260403T220413Z_pid25998",
+  "ticker": "AUDUSD=X",
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/AUDUSD=X_monte_carlo_summary__run_20260403T220413Z_pid25998.csv"
+}

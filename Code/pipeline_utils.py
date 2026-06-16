@@ -7,10 +7,10 @@ import sys
 
 try:
     from strategy_config import AGENT_ORDER
-    from timeframe_config import timeframe_output_suffix
+    from timeframe_config import RESEARCH_INTERVAL, normalize_interval, timeframe_output_suffix
 except ModuleNotFoundError:
     from Code.strategy_config import AGENT_ORDER
-    from Code.timeframe_config import timeframe_output_suffix
+    from Code.timeframe_config import RESEARCH_INTERVAL, normalize_interval, timeframe_output_suffix
 
 # Every script can read the active ticker from the same environment variable.
 ticker = os.environ.get("TICKER", "SPY")
@@ -52,12 +52,14 @@ def resolve_named_dir(lowercase_name: str, uppercase_name: str) -> Path:
 
 
 def data_raw_dir() -> Path:
-    """Return the raw-data folder.
-
-    Raw data is shared across timeframes (downloads are interval-stamped) so
-    no timeframe suffix is applied here.
-    """
+    """Return the raw-data root folder."""
     return resolve_named_dir("data_raw", "Data_Raw")
+
+
+def data_raw_interval_dir(interval: str | None = None) -> Path:
+    """Return the raw-data subfolder for one research interval."""
+    canonical_interval = normalize_interval(interval or RESEARCH_INTERVAL)
+    return data_raw_dir() / canonical_interval
 
 
 def data_clean_dir() -> Path:
@@ -78,7 +80,13 @@ def charts_dir() -> Path:
 
 
 def raw_prices_path(current_ticker: str | None = None) -> Path:
-    """Return the path to the raw price CSV for one ticker."""
+    """Return the preferred interval-specific raw price path for one ticker."""
+    current_ticker = current_ticker or ticker
+    return data_raw_interval_dir() / f"{current_ticker}.csv"
+
+
+def legacy_raw_prices_path(current_ticker: str | None = None) -> Path:
+    """Return the legacy flat raw-data path kept for backward compatibility."""
     current_ticker = current_ticker or ticker
     return data_raw_dir() / f"{current_ticker}.csv"
 

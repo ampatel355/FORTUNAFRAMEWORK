@@ -1,0 +1,2 @@
+agent,N,durations,internal_gaps,external_slack,realized_leading_gap,orbit_size,distinct_statistic_values,grid_resolution,exact_tail_probability_q,exact_tail_probability_plus1,det_cost_mc_p_20000,cost_model
+volatility_squeeze_breakout,4,"[1,2,4,6]","[834,4094,637]",470,349,2826,2826,0.000354,0.057325,0.057658,0.059747,deterministic_round_trip_0.00047

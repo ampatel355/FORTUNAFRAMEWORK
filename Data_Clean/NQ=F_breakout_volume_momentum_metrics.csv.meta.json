@@ -19,14 +19,14 @@
     "stop_loss_exit_rate",
     "take_profit_exit_rate"
   ],
-  "created_at_utc": "2026-04-03T12:02:34Z",
+  "created_at_utc": "2026-04-03T21:39:51Z",
   "dependencies": [
     {
       "exists": true,
-      "modified_time_ns": 1775217744610281816,
+      "modified_time_ns": 1775252376224889797,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/NQ=F_breakout_volume_momentum_trades.csv",
-      "sha256": "746aa5644abc9ddf02a953e24cf711d27bc30720294f672646a5901fff9eb0a6",
-      "size_bytes": 45298
+      "sha256": "63a99d4a9e4bf44cd99201a6f4a6610bb719c8501398d24ba887cdbc6889432a",
+      "size_bytes": 45297
     }
   ],
   "parameters": {
@@ -36,7 +36,7 @@
   "producer": "create_and_save_metrics",
   "research_grade": true,
   "row_count": 1,
-  "run_id": "run_20260403T120216Z_pid73820",
+  "run_id": "run_20260403T213929Z_pid21915",
   "ticker": "NQ=F",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/NQ=F_breakout_volume_momentum_metrics__run_20260403T120216Z_pid73820.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/NQ=F_breakout_volume_momentum_metrics__run_20260403T213929Z_pid21915.csv"
 }

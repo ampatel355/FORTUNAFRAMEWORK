@@ -1,0 +1,2 @@
+ticker,agent,timeframe_label,data_interval,signal_count,executed_trade_count,rejected_signal_count,months_covered
+CL=F,connors_rsi2_pullback,Daily,1d,57,57,0,264.11498973305953

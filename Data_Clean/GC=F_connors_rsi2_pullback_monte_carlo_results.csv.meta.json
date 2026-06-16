@@ -6,33 +6,33 @@
     "simulation_id",
     "simulated_cumulative_return"
   ],
-  "created_at_utc": "2026-04-02T23:26:20Z",
+  "created_at_utc": "2026-04-04T12:44:18Z",
   "dependencies": [
     {
       "exists": true,
-      "modified_time_ns": 1775172367923396181,
+      "modified_time_ns": 1775306647196027586,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GC=F_connors_rsi2_pullback_trades.csv",
-      "sha256": "2387fff983812077eb01ded46c0c9adc5de8ab8dc7bb1f311fd1e1d6c51c8f5d",
-      "size_bytes": 21099
+      "sha256": "3d27ebe5718db5616626d693f462cf1184b5000dddccfbd4d2f8efe9f5c841a0",
+      "size_bytes": 21096
     },
     {
       "exists": true,
-      "modified_time_ns": 1775172359019862633,
+      "modified_time_ns": 1775306638338969709,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GC=F_regimes.csv",
-      "sha256": "b9651498a132a15e8d58b0cfd2e4c385060f21720235d31ed740f418b3e244cd",
-      "size_bytes": 5994278
+      "sha256": "a194be21b6ed25dcf5af569e6e4abe2de692c206aa1ff25b3425e1e04a055957",
+      "size_bytes": 6094439
     }
   ],
   "parameters": {
     "agent_name": "connors_rsi2_pullback",
     "null_model_type": "timing_null_results",
-    "simulation_count": 2000
+    "simulation_count": 5000
   },
   "pipeline_profile": "standard",
   "producer": "monte_carlo.save_simulation_results",
-  "research_grade": false,
-  "row_count": 2000,
-  "run_id": "run_20260402T232555Z_pid63687",
+  "research_grade": true,
+  "row_count": 5000,
+  "run_id": "run_20260404T124355Z_pid61269",
   "ticker": "GC=F",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GC=F_connors_rsi2_pullback_monte_carlo_results__run_20260402T232555Z_pid63687.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GC=F_connors_rsi2_pullback_monte_carlo_results__run_20260404T124355Z_pid61269.csv"
 }

@@ -19,11 +19,11 @@
     "stop_loss_exit_rate",
     "take_profit_exit_rate"
   ],
-  "created_at_utc": "2026-04-02T22:23:43Z",
+  "created_at_utc": "2026-04-03T20:22:47Z",
   "dependencies": [
     {
       "exists": true,
-      "modified_time_ns": 1775168610302103462,
+      "modified_time_ns": 1775247758519031796,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/ES=F_trend_momentum_verification_trades.csv",
       "sha256": "d1e6032c28863de7e1eccd952a4d54484e44ecd4117dbd87b35c8962341c0034",
       "size_bytes": 39423
@@ -36,7 +36,7 @@
   "producer": "create_and_save_metrics",
   "research_grade": true,
   "row_count": 1,
-  "run_id": "run_20260402T222318Z_pid35202",
+  "run_id": "run_20260403T202229Z_pid4725",
   "ticker": "ES=F",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/ES=F_trend_momentum_verification_metrics__run_20260402T222318Z_pid35202.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/ES=F_trend_momentum_verification_metrics__run_20260403T202229Z_pid4725.csv"
 }

@@ -1,0 +1,155 @@
+\section{Introduction}
+
+A realized return does not identify skill. When a decision rule is run on one
+price path and turns a profit, the profit confounds at least three sources: the
+quality of the decisions, the structural exposure those decisions imply, and the
+drift of the path itself. Separating them requires a counterfactual---but not any
+counterfactual. The relevant comparison is an implementation that carries the
+\emph{same} structural burden on the \emph{same} path, differing only in the margin
+whose value is in question. Absent such a comparison, profitability and exposure are
+not separately identified, and a backtest, however carefully constructed, remains a
+description rather than a test.
+
+This paper develops a general apparatus for that comparison, which we call
+\emph{structure-preserving randomization inference}. The idea is a conditional
+randomization test in the sense of Fisher \cite{Fisher1935} and Cand\`es et al.\
+\cite{Candes2018}: fix the realized structure, and re-randomize only the object of
+interest from a known conditional law. Concretely, let a decision sequence be overlaid
+on an exogenous process; the realized data induce a \emph{structure}---the geometry of
+the sequence---and a placement of that geometry. Holding the structure and the process
+fixed while randomizing placement isolates the decisions' marginal contribution, and
+its validity rests on the exchangeability of placements under the conditioning law, not
+on any model for the process. The construction is indexed by a family of
+structure-preserving measures $\mathbb{Q}=\{\mathbb{Q}_\theta:\theta\in\Theta\}$, all
+fixing the structure and the path but differing in which additional features of the
+realized arrangement they hold fixed; each $\mathbb{Q}_\theta$ defines a sharp null
+$H_0^\theta$ and an estimand $q_\theta=\mathbb{Q}_\theta\big(T(S)\ge T(S_0)\big)$, where
+$T$ is the statistic and $S_0$ the realized placement. Which features count as
+``structure'' and which as ``the decision'' is precisely the analyst's modeling choice,
+and making that choice explicit is what turns an informal benchmark into an
+identification statement.
+
+The leading application, and the one we develop in full, is the entry-timing skill of a
+trading strategy. Here the structure is the realized trade geometry---the price path,
+trade count, holding-period multiset, inter-trade-gap multiset, capital weights, and
+direction sequence---and the object randomized is the placement of trades on the
+calendar. The test asks a narrow, falsifiable question: conditional on its realized
+structural burden, does a strategy's entry placement earn more than a structurally
+matched random implementation would earn on the same path? A strategy then exhibits
+entry-placement skill only when its realized timing beats that counterfactual, not
+merely when it is profitable. The empirical testbed is daily gold futures (GC=F) over
+2002-03-04 to 2026-04-02, an asset whose buy-and-hold cumulative return of $14.670$ over
+the window makes the confound between drift and timing especially stark.
+
+Three features make this a methods paper rather than a study of any one asset. First,
+the test is a finite-sample-exact conditional randomization test (Proposition
+\ref{prop:q-validity}): under $H_0^\theta$ the realized placement is exchangeable with
+its $\mathbb{Q}_\theta$-draws, so the Monte Carlo tail area is super-uniform at every
+level, with the standardized conditional excess $\mathrm{RCSI}_z$ retained only as a
+descriptive, approximately pivotal effect size. Second, the measure family supports a
+partial-identification theory of timing skill (Section~\ref{sec:theory}). Because the
+measures differ exactly in where they draw the line between structure and placement, a
+rejection under one but not another is confounded with the conditioning choice, which
+the data do not pin down; we therefore identify \emph{measure-invariant} entry-placement
+skill as rejection of $H_0^\theta$ for every $\theta$ in an admissible class, and we
+characterize the test's local power---one-sided Gaussian power
+$\beta(h)=\Phi(h-z_{1-\alpha})$ along the Pitman sequence $\zeta_N=h/\sqrt N$, with a
+minimum detectable edge that shrinks at the $N^{-1/2}$ rate---and its orthogonality:
+against a pure structural-exposure alternative the test carries noncentrality zero, by
+construction. Third, that orthogonality is shown head-to-head against return-based
+tests. On known-truth worlds (Section~\ref{sec:competitor}), White's Reality Check
+\cite{white2000} and Hansen's SPA \cite{hansen2005}---tests of profitability rather than
+placement---reject a profitable-but-untimed strategy about two-thirds of the time
+(rejection rates $0.660$ and $0.638$), while the structure-preserving null holds its
+nominal size ($0.050$). Return-based tests mistake structural exposure for skill; this
+test does not.
+
+The paper's \emph{primary contribution} is this framework: the conditional randomization
+test, its finite-sample validity, and the partial-identification theory of the measure
+family that turns the choice of null into an explicit identification assumption. The
+remaining results are \emph{secondary}, present to make the framework usable rather than
+to stand alone. A calibration-and-power study---five synthetic worlds with known ground
+truth and a positive control on the real GC=F path
+(Sections~\ref{sec:simulation-validation} and \ref{sec:positive-control})---shows the
+test is correctly sized and that its power rises smoothly with signal quality, so a
+non-rejection reflects the strategy rather than a powerless test; the head-to-head
+competitor comparison locates precisely where return-based inference fails; and a
+cross-asset panel of $322$ strategy-by-asset evaluations across $47$ instruments
+(Section~\ref{sec:cross-asset-multiplicity}) applies the test at breadth under joint
+multiplicity control. Applied to the GC=F panel, no strategy rejects at $p\le0.05$ before
+or after Benjamini--Hochberg adjustment, and the verdict is robust to a leading-gap
+feasibility restriction but sensitive to a context-matched measure
+(Section~\ref{sec:schedule-sensitivity})---which is exactly the partial-identification
+content of the measure family made empirical. The substantive reading is not that the
+strategies are bad, but that within the scope of the timing test, realized profitability
+is often not separately identifiable from structural exposure.
+
+\section{Related literature}
+
+\paragraph{Data snooping and backtest overfitting.} The literature on strategy
+evaluation is largely a literature on multiplicity. White's Reality Check
+\cite{white2000}, Hansen's SPA test \cite{hansen2005}, and the universe-search framing of
+Sullivan, Timmermann, and White \cite{sullivan1999} control the error of selecting the
+best rule \emph{across} a universe of candidates; the backtest-overfitting program
+\cite{bailey2017,baileylopez2014,lopezdeprado2018} and the factor-zoo critique of
+Harvey, Liu, and Zhu \cite{harveyliuzhu2016} extend the same warning to research degrees
+of freedom and the resulting inflation of discoveries. These procedures take each
+strategy's realized decision sequence as given and ask whether the \emph{best} of many is
+genuinely good. Our object is orthogonal and within-strategy: holding the realized trade
+geometry and price path fixed, we ask whether a single rule's entry \emph{placement}
+carries information. The two layers are complementary---the between-strategy correction
+bounds selection risk, the conditional test isolates timing---and we run the panel under
+both.
+
+\paragraph{Resampling of returns.} Bootstrap methods for dependent data---the stationary
+bootstrap of Politis and Romano \cite{politisromano1994} and the moving-block bootstrap of
+K\"unsch \cite{Kunsch1989}---preserve the statistical properties of the \emph{return
+series} and resample it to quantify uncertainty in profitability under a generic
+return-generating process. By construction they perturb the path. The structure-preserving
+test does the opposite: it holds the realized path fixed and randomizes only placement, so
+it inherits the market's autocorrelation, fat tails, volatility clustering, and regime
+dynamics without a return model, and answers a timing question that a path-perturbing
+resample cannot pose. The contrast is not rhetorical---Section~\ref{sec:competitor} shows
+return-based tests reject a profitable-but-untimed strategy where the placement test holds
+size.
+
+\paragraph{Conditional and Fisher randomization inference.} The procedure is a conditional
+randomization test. Its validity derives, in the tradition of Fisher \cite{Fisher1935}
+and the exact and group-invariant theory of Lehmann and Romano \cite{LehmannRomano2005},
+from a known re-randomization of the realized data rather than a postulated population
+model; Ernst \cite{Ernst2004} surveys this exactness and Pesarin and Salmaso
+\cite{PesarinSalmaso2010} treat permutation tests that preserve rich dependence rather
+than assuming i.i.d.\ data. The specific posture---condition on a structure, resample only
+the object of interest from a known conditional law---is the conditional randomization
+construction of Cand\`es et al.\ \cite{Candes2018}. What is new here is the conditioning
+set: the realized trade geometry of a strategy, which makes the relevant exchangeability
+an exchangeability of \emph{schedules} rather than of \emph{returns}, in the sense of
+Aldous \cite{Aldous1985}.
+
+\paragraph{Selective and post-selection inference.} By defining a test conditional on the
+structure a strategy actually produced, the method controls a \emph{selective} type-I
+error in the sense of Fithian, Sun, and Taylor \cite{FithianSunTaylor2014}: validity is
+recovered by characterizing the law of the statistic conditional on the realized selection
+event, the same posture as exact post-selection inference \cite{LeeSunSunTaylor2016}. This
+deliberately differs from the simultaneous-over-all-selections guarantee of Berk et al.\
+\cite{BerkBrownBujaZhangZhao2013}: we condition on the realized structure rather than
+protect against every structure that might have been chosen. The measure family makes the
+conditioning event itself the modeling object, so that what is held fixed---and therefore
+what skill is identified against---is stated explicitly rather than left implicit.
+
+\paragraph{Multiple-testing control.} Applied at breadth across a $322$-test panel,
+inference is corrected jointly. We report Benjamini--Hochberg \cite{benjaminihochberg1995}
+false-discovery-rate control and the $q$-value perspective of Storey \cite{Storey2002},
+the stepwise data-snooping procedure of Romano and Wolf \cite{romanowolf2005}, and the
+Benjamini--Yekutieli \cite{BenjaminiYekutieli2001} guarantee that holds under the positive
+and, conservatively, arbitrary dependence that correlated assets and overlapping strategy
+logic induce.
+
+\paragraph{Efficiency and adaptive markets.} The economic backdrop is the long debate over
+whether persistent abnormal performance is extractable from price data. Efficiency
+arguments emphasize its difficulty \cite{fama1970}; the adaptive-markets view allows for
+episodic, regime-dependent opportunity \cite{lo2004}; and evidence on time-series momentum
+documents directional effects in some asset classes while robust inference remains hard
+\cite{moskowitz2012}. We take no stance on this debate. The contribution is an
+identification tool: a way to ask, for any one strategy on any one path, whether its timing
+adds value beyond the exposure it carries.

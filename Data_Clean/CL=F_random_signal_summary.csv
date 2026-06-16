@@ -1,0 +1,2 @@
+ticker,agent,timeframe_label,data_interval,signal_count,executed_trade_count,rejected_signal_count,months_covered
+CL=F,random,Daily,1d,226,226,0,288.52566735112936

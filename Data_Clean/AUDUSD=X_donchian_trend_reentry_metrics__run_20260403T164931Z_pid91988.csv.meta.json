@@ -1,0 +1,41 @@
+{
+  "artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/AUDUSD=X_donchian_trend_reentry_metrics.csv",
+  "canonical_policy": "always",
+  "column_names": [
+    "total_trades",
+    "average_return",
+    "median_return",
+    "win_rate",
+    "std_return",
+    "trade_level_return_ratio",
+    "average_win",
+    "average_loss",
+    "expected_value",
+    "average_holding_period_days",
+    "average_holding_period_hours",
+    "average_holding_bars",
+    "trades_per_month",
+    "stop_loss_exit_rate",
+    "take_profit_exit_rate"
+  ],
+  "created_at_utc": "2026-04-03T16:49:57Z",
+  "dependencies": [
+    {
+      "exists": true,
+      "modified_time_ns": 1775234987255805021,
+      "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/AUDUSD=X_donchian_trend_reentry_trades.csv",
+      "sha256": "69980d6c651f5e8e71e26927f164f88f357599edf6039149e994680c04a51eba",
+      "size_bytes": 12695
+    }
+  ],
+  "parameters": {
+    "artifact_type": "strategy_metrics"
+  },
+  "pipeline_profile": "standard",
+  "producer": "create_and_save_metrics",
+  "research_grade": true,
+  "row_count": 1,
+  "run_id": "run_20260403T164931Z_pid91988",
+  "ticker": "AUDUSD=X",
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/AUDUSD=X_donchian_trend_reentry_metrics__run_20260403T164931Z_pid91988.csv"
+}

@@ -1,0 +1,2 @@
+ticker,agent,timeframe_label,data_interval,signal_count,executed_trade_count,rejected_signal_count,months_covered
+ES=F,donchian_trend_reentry,Hourly,1h,28,28,0,19.953456536618756

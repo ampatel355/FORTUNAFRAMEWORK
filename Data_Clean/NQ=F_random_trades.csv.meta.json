@@ -41,7 +41,7 @@
     "timeframe_label",
     "data_interval"
   ],
-  "created_at_utc": "2026-04-03T12:02:33Z",
+  "created_at_utc": "2026-04-03T21:39:49Z",
   "dependencies": [],
   "parameters": {
     "agent_name": "random",
@@ -50,8 +50,8 @@
   "pipeline_profile": "standard",
   "producer": "save_trade_outputs",
   "research_grade": true,
-  "row_count": 229,
-  "run_id": "run_20260403T120216Z_pid73820",
+  "row_count": 227,
+  "run_id": "run_20260403T213929Z_pid21915",
   "ticker": "NQ=F",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/NQ=F_random_trades__run_20260403T120216Z_pid73820.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/NQ=F_random_trades__run_20260403T213929Z_pid21915.csv"
 }

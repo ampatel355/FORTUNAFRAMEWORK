@@ -1,0 +1,37 @@
+{
+  "artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/AUDUSD=X_breakout_volume_momentum_monte_carlo_results.csv",
+  "canonical_policy": "always",
+  "column_names": [
+    "simulation_id",
+    "simulated_cumulative_return"
+  ],
+  "created_at_utc": "2026-04-03T22:04:42Z",
+  "dependencies": [
+    {
+      "exists": true,
+      "modified_time_ns": 1775253859485096547,
+      "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/AUDUSD=X_breakout_volume_momentum_trades.csv",
+      "sha256": "0d473e8ddde5416b1673129113d2be35ac237501df4b37eb7bd33bcb027cdb12",
+      "size_bytes": 17988
+    },
+    {
+      "exists": true,
+      "modified_time_ns": 1775253856704398001,
+      "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/AUDUSD=X_regimes.csv",
+      "sha256": "0433cd358f8a2b252f33b38a96bb084a0b97197c56eeceaf2fd0e46a8d7c6fe9",
+      "size_bytes": 5008686
+    }
+  ],
+  "parameters": {
+    "agent_name": "breakout_volume_momentum",
+    "null_model_type": "timing_null_results",
+    "simulation_count": 2000
+  },
+  "pipeline_profile": "standard",
+  "producer": "monte_carlo.save_simulation_results",
+  "research_grade": false,
+  "row_count": 2000,
+  "run_id": "run_20260403T220413Z_pid25998",
+  "ticker": "AUDUSD=X",
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/AUDUSD=X_breakout_volume_momentum_monte_carlo_results__run_20260403T220413Z_pid25998.csv"
+}

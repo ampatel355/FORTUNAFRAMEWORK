@@ -19,14 +19,14 @@
     "stop_loss_exit_rate",
     "take_profit_exit_rate"
   ],
-  "created_at_utc": "2026-04-02T20:38:08Z",
+  "created_at_utc": "2026-04-03T22:00:34Z",
   "dependencies": [
     {
       "exists": true,
-      "modified_time_ns": 1775162273870929832,
+      "modified_time_ns": 1775253619846362869,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GBPUSD=X_breakout_volume_momentum_trades.csv",
-      "sha256": "caf8447c93d7167afc30aa9ef00e134f47d4b2fd361e605fe1655d7074cb839b",
-      "size_bytes": 24284
+      "sha256": "7a0b7ce9e617d37b4122d31cd6ae8f5094e2ec84a7c59936575be14af463a46e",
+      "size_bytes": 23700
     }
   ],
   "parameters": {
@@ -36,7 +36,7 @@
   "producer": "create_and_save_metrics",
   "research_grade": true,
   "row_count": 1,
-  "run_id": "run_20260402T203745Z_pid8548",
+  "run_id": "run_20260403T220013Z_pid25029",
   "ticker": "GBPUSD=X",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GBPUSD=X_breakout_volume_momentum_metrics__run_20260402T203745Z_pid8548.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GBPUSD=X_breakout_volume_momentum_metrics__run_20260403T220013Z_pid25029.csv"
 }

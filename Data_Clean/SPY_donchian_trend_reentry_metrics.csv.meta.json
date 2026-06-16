@@ -19,14 +19,14 @@
     "stop_loss_exit_rate",
     "take_profit_exit_rate"
   ],
-  "created_at_utc": "2026-04-02T23:33:07Z",
+  "created_at_utc": "2026-04-03T20:49:23Z",
   "dependencies": [
     {
       "exists": true,
-      "modified_time_ns": 1775172780618573587,
+      "modified_time_ns": 1775249356799934176,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/SPY_donchian_trend_reentry_trades.csv",
-      "sha256": "9a718eaf86bac35af408a2fca4a5cc16f70a0014b25e0b3d159d07bf8b7c5450",
-      "size_bytes": 56993
+      "sha256": "c1b76e6b7c3201327273de0175d25e762e4d9c44c34959e8ad4f1ff297ba609d",
+      "size_bytes": 55906
     }
   ],
   "parameters": {
@@ -36,7 +36,7 @@
   "producer": "create_and_save_metrics",
   "research_grade": true,
   "row_count": 1,
-  "run_id": "run_20260402T233246Z_pid64730",
+  "run_id": "run_20260403T204901Z_pid9279",
   "ticker": "SPY",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/SPY_donchian_trend_reentry_metrics__run_20260402T233246Z_pid64730.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/SPY_donchian_trend_reentry_metrics__run_20260403T204901Z_pid9279.csv"
 }

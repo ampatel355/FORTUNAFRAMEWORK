@@ -1,0 +1,40 @@
+{
+  "artifact_path": "/Users/aryanpatel/Desktop/Fortuna/Data_Clean/frequency_robustness_agent_summary.csv",
+  "canonical_policy": "auto",
+  "column_names": [
+    "interval",
+    "timeframe_label",
+    "agent",
+    "panel_count",
+    "mean_p_value",
+    "mean_actual_percentile",
+    "mean_RCSI_z",
+    "significant_panel_rate",
+    "outperform_rate",
+    "evidence_label",
+    "verdict_label",
+    "number_of_outer_runs",
+    "simulations_per_run",
+    "test_bars",
+    "step_bars",
+    "min_trades_per_panel",
+    "ticker_count",
+    "tickers"
+  ],
+  "created_at_utc": "2026-05-30T01:15:59Z",
+  "dependencies": [],
+  "parameters": {
+    "intervals": [
+      "1d",
+      "4h",
+      "1h"
+    ]
+  },
+  "pipeline_profile": "standard",
+  "producer": "frequency_robustness_summary.main",
+  "research_grade": false,
+  "row_count": 16,
+  "run_id": "phase5_frequency_summary_20260529",
+  "ticker": "MULTI_FREQUENCY",
+  "versioned_artifact_path": "/Users/aryanpatel/Desktop/Fortuna/Data_Clean/frequency_robustness_agent_summary__phase5_frequency_summary_20260529.csv"
+}

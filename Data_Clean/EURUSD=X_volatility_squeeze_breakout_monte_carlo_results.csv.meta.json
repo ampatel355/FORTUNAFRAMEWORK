@@ -6,33 +6,33 @@
     "simulation_id",
     "simulated_cumulative_return"
   ],
-  "created_at_utc": "2026-04-02T22:09:35Z",
+  "created_at_utc": "2026-05-01T17:39:55Z",
   "dependencies": [
     {
       "exists": true,
-      "modified_time_ns": 1775167764547073553,
+      "modified_time_ns": 1777657181870009279,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_volatility_squeeze_breakout_trades.csv",
       "sha256": "44fe05e8c64aa713def46a58c70353c7bbab405d646e49e2acbbace297bf4949",
       "size_bytes": 10332
     },
     {
       "exists": true,
-      "modified_time_ns": 1775167753734080838,
+      "modified_time_ns": 1777657174106242181,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_regimes.csv",
-      "sha256": "c60935a92103d7ae19e963e33230a91126dcce35e68251860676f3ea50d54d4e",
-      "size_bytes": 5357272
+      "sha256": "18961dbab7bdf7cc75a730f9ea9cb7e47f241853f6e25df81ff71d26132d9bef",
+      "size_bytes": 5662438
     }
   ],
   "parameters": {
     "agent_name": "volatility_squeeze_breakout",
     "null_model_type": "timing_null_results",
-    "simulation_count": 5000
+    "simulation_count": 2000
   },
   "pipeline_profile": "standard",
   "producer": "monte_carlo.save_simulation_results",
-  "research_grade": true,
-  "row_count": 5000,
-  "run_id": "run_20260402T220731Z_pid31473",
+  "research_grade": false,
+  "row_count": 2000,
+  "run_id": "run_20260501T173928Z_pid57449",
   "ticker": "EURUSD=X",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_volatility_squeeze_breakout_monte_carlo_results__run_20260402T220731Z_pid31473.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_volatility_squeeze_breakout_monte_carlo_results__run_20260501T173928Z_pid57449.csv"
 }

@@ -1,3 +1,9 @@
-matplotlib==3.10.8
-pandas==2.3.3
-yfinance==1.2.0
+# Reproducibility environment for Fortuna
+# Python 3.11+ (developed under 3.14). The standard library covers everything else
+# (os, pathlib, json, dataclasses, math, hashlib, random, ...).
+numpy>=2.0,<3.0
+pandas>=2.2,<3.0
+matplotlib>=3.9,<4.0
+# Only needed to re-download raw price data with Code/data_loader.py;
+# not required to reproduce the published numbers from Data_Clean/.
+yfinance>=0.2,<1.0

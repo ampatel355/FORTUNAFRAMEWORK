@@ -24,10 +24,10 @@ import pandas as pd
 
 try:
     from strategy_config import AGENT_COLORS, AGENT_DISPLAY_NAMES, AGENT_ORDER, format_strategy_name
-    from timeframe_config import RESEARCH_TIMEFRAME_LABEL, timeframe_title_suffix
+    from timeframe_config import RESEARCH_TIMEFRAME_LABEL, timeframe_output_suffix, timeframe_title_suffix
 except ModuleNotFoundError:
     from Code.strategy_config import AGENT_COLORS, AGENT_DISPLAY_NAMES, AGENT_ORDER, format_strategy_name
-    from Code.timeframe_config import RESEARCH_TIMEFRAME_LABEL, timeframe_title_suffix
+    from Code.timeframe_config import RESEARCH_TIMEFRAME_LABEL, timeframe_output_suffix, timeframe_title_suffix
 
 
 # The master pipeline can turn off interactive popups while charts are being built.
@@ -124,13 +124,20 @@ def resolve_named_dir(lowercase_name: str, uppercase_name: str) -> Path:
 
 
 def data_clean_dir() -> Path:
-    """Return the clean-data folder."""
-    return resolve_named_dir("data_clean", "Data_Clean")
+    """Return the clean-data folder for the active timeframe.
+
+    On daily data (the default) this returns ``Data_Clean`` for backward
+    compatibility.  On other timeframes it returns e.g. ``Data_Clean_1h``
+    so artifacts from different intervals never collide.
+    """
+    suffix = timeframe_output_suffix()
+    return resolve_named_dir(f"data_clean{suffix}", f"Data_Clean{suffix}")
 
 
 def charts_dir() -> Path:
-    """Return the charts folder."""
-    return resolve_named_dir("charts", "Charts")
+    """Return the charts folder for the active timeframe."""
+    suffix = timeframe_output_suffix()
+    return resolve_named_dir(f"charts{suffix}", f"Charts{suffix}")
 
 
 def format_agent_name(agent_name: str, short: bool = True) -> str:

@@ -1,0 +1,38 @@
+{
+  "artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean_1h/ES=F_donchian_trend_reentry_monte_carlo_results.csv",
+  "canonical_policy": "always",
+  "canonical_updated": true,
+  "column_names": [
+    "simulation_id",
+    "simulated_cumulative_return"
+  ],
+  "created_at_utc": "2026-04-03T21:00:51Z",
+  "dependencies": [
+    {
+      "exists": true,
+      "modified_time_ns": 1775250038328773495,
+      "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean_1h/ES=F_donchian_trend_reentry_trades.csv",
+      "sha256": "b314138fc2bc1c3b99bd8a7b7dbbbc547b0a9406e303f41f7c81f745988bd55f",
+      "size_bytes": 15114
+    },
+    {
+      "exists": true,
+      "modified_time_ns": 1775250019958261518,
+      "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean_1h/ES=F_regimes.csv",
+      "sha256": "0def47484cbf1b8381b67219d7354177e318c3a671648315b02fd4565c05b68a",
+      "size_bytes": 11672081
+    }
+  ],
+  "parameters": {
+    "agent_name": "donchian_trend_reentry",
+    "null_model_type": "timing_null_results",
+    "simulation_count": 2000
+  },
+  "pipeline_profile": "standard",
+  "producer": "monte_carlo.save_simulation_results",
+  "research_grade": false,
+  "row_count": 2000,
+  "run_id": "run_20260403T210015Z_pid16089",
+  "ticker": "ES=F",
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean_1h/ES=F_donchian_trend_reentry_monte_carlo_results__run_20260403T210015Z_pid16089.csv"
+}

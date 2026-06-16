@@ -19,14 +19,14 @@
     "stop_loss_exit_rate",
     "take_profit_exit_rate"
   ],
-  "created_at_utc": "2026-04-03T12:02:38Z",
+  "created_at_utc": "2026-04-03T21:39:56Z",
   "dependencies": [
     {
       "exists": true,
-      "modified_time_ns": 1775217752215723355,
+      "modified_time_ns": 1775252387215895183,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/NQ=F_donchian_trend_reentry_trades.csv",
-      "sha256": "baa77bc5445c942603f4751f3de7f8042de4c0258bd1741abc3640077123bb71",
-      "size_bytes": 43382
+      "sha256": "9304b160e32bdaf1e01d86556057f16b118490960a0ea0d70caf032bab9c738d",
+      "size_bytes": 43350
     }
   ],
   "parameters": {
@@ -36,7 +36,7 @@
   "producer": "create_and_save_metrics",
   "research_grade": true,
   "row_count": 1,
-  "run_id": "run_20260403T120216Z_pid73820",
+  "run_id": "run_20260403T213929Z_pid21915",
   "ticker": "NQ=F",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/NQ=F_donchian_trend_reentry_metrics__run_20260403T120216Z_pid73820.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/NQ=F_donchian_trend_reentry_metrics__run_20260403T213929Z_pid21915.csv"
 }

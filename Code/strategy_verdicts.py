@@ -30,7 +30,10 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from pipeline_utils import data_clean_dir
+try:
+    from pipeline_utils import data_clean_dir
+except ModuleNotFoundError:
+    from Code.pipeline_utils import data_clean_dir
 
 try:
     from monte_carlo import (

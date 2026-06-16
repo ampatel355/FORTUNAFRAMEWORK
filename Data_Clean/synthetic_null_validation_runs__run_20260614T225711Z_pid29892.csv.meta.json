@@ -1,0 +1,48 @@
+{
+  "artifact_path": "/Users/aryanpatel/Desktop/Fortuna/Data_Clean/synthetic_null_validation_runs.csv",
+  "canonical_policy": "auto",
+  "column_names": [
+    "experiment",
+    "world",
+    "replication",
+    "signal_strength",
+    "horizon_bars",
+    "trade_count",
+    "simulations",
+    "actual_cumulative_return",
+    "simulated_mean",
+    "simulated_std",
+    "p_value",
+    "percentile",
+    "RCSI",
+    "RCSI_z",
+    "reject_alpha",
+    "profitable_actual"
+  ],
+  "created_at_utc": "2026-06-14T22:57:11Z",
+  "dependencies": [],
+  "parameters": {
+    "alpha": 0.05,
+    "base_seed": 9100,
+    "horizon_bars": 1250,
+    "power_replications": 30,
+    "power_signal_strengths": [
+      0.0,
+      0.0005,
+      0.001,
+      0.002,
+      0.0035,
+      0.005
+    ],
+    "replications": 50,
+    "simulations": 1000,
+    "trade_count": 40
+  },
+  "pipeline_profile": "standard",
+  "producer": "synthetic_timing_experiments.main",
+  "research_grade": false,
+  "row_count": 430,
+  "run_id": "run_20260614T225711Z_pid29892",
+  "ticker": "",
+  "versioned_artifact_path": "/Users/aryanpatel/Desktop/Fortuna/Data_Clean/synthetic_null_validation_runs__run_20260614T225711Z_pid29892.csv"
+}

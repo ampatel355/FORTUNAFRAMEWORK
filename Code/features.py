@@ -53,6 +53,8 @@ try:
         infer_bars_per_year,
         interval_looks_compatible,
         normalize_timestamp_series,
+        normalize_interval,
+        scale_daily_bars,
         timeframe_output_suffix,
     )
 except ModuleNotFoundError:
@@ -100,6 +102,8 @@ except ModuleNotFoundError:
         infer_bars_per_year,
         interval_looks_compatible,
         normalize_timestamp_series,
+        normalize_interval,
+        scale_daily_bars,
         timeframe_output_suffix,
     )
 
@@ -107,8 +111,8 @@ except ModuleNotFoundError:
 ticker = os.environ.get("TICKER", "SPY")
 
 
-def resolve_data_raw_dir(project_root: Path) -> Path:
-    """Return the project's raw-data folder, preferring the uppercase path."""
+def resolve_data_raw_root(project_root: Path) -> Path:
+    """Return the project's raw-data root, preferring the uppercase path."""
     lowercase_dir = project_root / "data_raw"
     uppercase_dir = project_root / "Data_Raw"
 
@@ -119,6 +123,12 @@ def resolve_data_raw_dir(project_root: Path) -> Path:
 
     uppercase_dir.mkdir(parents=True, exist_ok=True)
     return uppercase_dir
+
+
+def resolve_data_raw_dir(project_root: Path, interval: str | None = None) -> Path:
+    """Return the interval-specific raw-data folder."""
+    canonical_interval = normalize_interval(interval or RESEARCH_INTERVAL)
+    return resolve_data_raw_root(project_root) / canonical_interval
 
 
 def resolve_data_clean_dir(project_root: Path) -> Path:
@@ -384,12 +394,21 @@ def build_feature_dataframe(raw_df: pd.DataFrame) -> pd.DataFrame:
     df[RELATIVE_STRENGTH_RETURN_COLUMN] = (
         df["Close"] / df["Close"].shift(MOMENTUM_LOOKBACK_DAYS)
     ) - 1.0
-    df["trailing_return_5"] = (
+    df[f"trailing_return_{SHORT_RETURN_LOOKBACK_BARS}"] = (
         df["Close"] / df["Close"].shift(SHORT_RETURN_LOOKBACK_BARS)
     ) - 1.0
-    df["trailing_return_20"] = (
+    # Legacy aliases so downstream code can use either the dynamic or fixed name.
+    df["trailing_return_5"] = df[f"trailing_return_{SHORT_RETURN_LOOKBACK_BARS}"]
+    df[f"trailing_return_{MEDIUM_RETURN_LOOKBACK_BARS}"] = (
         df["Close"] / df["Close"].shift(MEDIUM_RETURN_LOOKBACK_BARS)
     ) - 1.0
+    df["trailing_return_20"] = df[f"trailing_return_{MEDIUM_RETURN_LOOKBACK_BARS}"]
+    df["trailing_return_60"] = df[RELATIVE_STRENGTH_RETURN_COLUMN]
+    annual_momentum_lookback_bars = scale_daily_bars(252)
+    df[f"trailing_return_{annual_momentum_lookback_bars}"] = (
+        df["Close"] / df["Close"].shift(annual_momentum_lookback_bars)
+    ) - 1.0
+    df["trailing_return_252"] = df[f"trailing_return_{annual_momentum_lookback_bars}"]
 
     # Legacy aliases are kept so the rest of the project can continue to load
     # shared names without caring which strategy uses them.
@@ -397,6 +416,10 @@ def build_feature_dataframe(raw_df: pd.DataFrame) -> pd.DataFrame:
     df[BREAKOUT_LOW_COLUMN] = df[f"rolling_low_{BREAKOUT_STOP_LOOKBACK_DAYS}_prev"]
     df[TREND_PULLBACK_STOP_LOW_COLUMN] = df[f"rolling_low_{TREND_PULLBACK_STOP_LOOKBACK_DAYS}_prev"]
     df[TREND_PULLBACK_TARGET_HIGH_COLUMN] = df[f"rolling_high_{TREND_PULLBACK_TARGET_LOOKBACK_DAYS}_prev"]
+    df["rolling_high_20_prev"] = df[BREAKOUT_HIGH_COLUMN]
+    df["rolling_low_10_prev"] = df[BREAKOUT_LOW_COLUMN]
+    df["rolling_high_55_prev"] = df[DONCHIAN_BREAKOUT_HIGH_COLUMN]
+    df["rolling_low_20_prev"] = df[donchian_low_col]
 
     # Relative filters compare today's volatility with each asset's own recent
     # history, which is more robust than using one absolute threshold across
@@ -447,7 +470,7 @@ def build_features_for_ticker(
 ) -> pd.DataFrame:
     """Load one ticker, build the feature table, and optionally save it."""
     project_root = project_root or Path(__file__).resolve().parents[1]
-    raw_dir = resolve_data_raw_dir(project_root)
+    raw_dir = resolve_data_raw_dir(project_root, RESEARCH_INTERVAL)
     clean_dir = resolve_data_clean_dir(project_root)
     input_path = raw_dir / f"{current_ticker}.csv"
     output_path = clean_dir / f"{current_ticker}_features.csv"

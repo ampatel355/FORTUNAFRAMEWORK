@@ -1,0 +1,127 @@
+\section{Validation}
+\label{sec:simulation-validation}
+
+Before applying the test, we establish that it behaves correctly where the truth is known. We summarize three results here---calibration, power, and a head-to-head comparison against return-based tests---and defer the constructions to the supplement: the five synthetic worlds and the positive-control schedule (Section~\ref{sec:supp-synthetic}), the realistic-signal mechanisms (Section~\ref{sec:supp-signals}), and the full calibration and power figures (Section~\ref{sec:supp-calibration-figs}).
+
+\paragraph{Calibration.} Across the no-entry-skill worlds the test is correctly sized. At $1{,}500$ replications the $\alpha=0.05$ rejection rate is $0.051$ under IID returns, $0.049$ under volatility clustering, $0.056$ under pure drift, and $0.055$ in a high-exposure structural world---each within about one Monte Carlo standard error ($\approx 0.006$) of nominal. A Kolmogorov--Smirnov test cannot reject uniformity of the no-skill $p$-values in any world (KS $p$ between $0.52$ and $0.70$), so the test is calibrated in distribution, not merely at the $5\%$ point. The structural-exposure world is the sharpest case: it is profitable in $92.9\%$ of replications yet rejects at only $0.055$, because long exposure to a favorable path is conditioned away rather than counted as entry-placement skill. Construction details are in Section~\ref{sec:supp-synthetic}.
+
+\paragraph{Power.} Power rises monotonically with injected entry signal: in the synthetic power curve the $5\%$ rejection estimate climbs from $0.043$ with no signal to $0.130$ at $5$ basis points per event bar, $0.475$ at $10$, $0.925$ at $20$, and $1.000$ at $35$ (Section~\ref{sec:supp-calibration-figs}). A positive control on the real GC=F path confirms this where it matters: injecting genuine timing skill moves the same null from a calibrated baseline ($50.5$th percentile, mean $\mathrm{RCSI}_z$ of $0.03$, rejection within Monte Carlo error of $5\%$) to certain rejection as the injected-skill fraction rises (Section~\ref{sec:supp-positive-control}). Driving placement with realistic, imperfect signals---noisy, AR(1)-smoothed, momentum, and regime-conditional---yields power that rises smoothly with realized signal quality, giving a minimum detectable signal--forward-return correlation of roughly $\rho\approx0.15$ for $80\%$ power at the GC=F trade counts (Section~\ref{sec:supp-signals}). A non-rejection therefore reflects the strategy, not a mis-sized or powerless test.
+
+\subsection{Where return-based tests fail: a head-to-head comparison}
+\label{sec:competitor}
+
+The validity argument of Section~\ref{sec:theory} is that randomized placement reproduces the realized structural exposure, so the structure-preserving null is orthogonal to the exposure that drives profit but not timing. We make that argument visible by running the standard return-based competitors on the same known-truth worlds. Four tests are compared on identical data: the structure-preserving timing null of this paper (\textbf{SP}); a moving-block bootstrap of the return path that replays the realized schedule (\textbf{Path}, block length $20$); the single-strategy specialization of White's Reality Check \cite{white2000} (\textbf{RC}); and Hansen's Superior Predictive Ability test \cite{hansen2005} (\textbf{SPA}). SP and Path ask whether \emph{placement} is informative; RC and SPA ask whether \emph{the mean trade return} is positive. Five worlds span the relevant cases: three no-skill worlds (i.i.d., pure drift, and volatility clustering), the decisive \emph{structural-exposure} world (a genuinely profitable strategy built from drift times exposure but with entries placed at random, so it has \emph{no} timing skill), and a genuine entry-skill world. A correct test of timing should reject only in the last.
+
+\begin{table}[H]
+\centering
+\caption{Size and power of four tests across five known-truth worlds ($400$ replications each; SP uses $M=2{,}000$ structure-preserving draws, the bootstrap tests $B=999$ resamples). Entries are rejection rates at the $5\%$ level; the Monte Carlo standard error at a true size of $0.05$ is $0.011$. Only the last column is genuine skill---every test should reject there and nowhere else.}
+\label{tab:competitor}
+{\small
+\renewcommand{\arraystretch}{1.15}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+& \multicolumn{4}{c}{No timing skill (should \emph{not} reject)} & Genuine skill \\
+\cmidrule(lr){2-5}\cmidrule(lr){6-6}
+Test & IID & Drift only & Vol.\ clustering & \textbf{Structural exposure} & Entry placement \\
+\midrule
+SP (structure-preserving, timing) & 0.053 & 0.060 & 0.063 & \textbf{0.050} & 1.000 \\
+Path (block bootstrap, timing)    & 0.025 & 0.038 & 0.035 & 0.000 & 1.000 \\
+RC (Reality Check, profit)        & 0.138 & 0.388 & 0.125 & \textbf{0.660} & 1.000 \\
+SPA (profit)                      & 0.128 & 0.393 & 0.123 & \textbf{0.638} & 1.000 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+}
+\par\vspace{0.5em}
+\begin{minipage}{0.95\textwidth}
+\centering
+\footnotesize\emph{Notes.} The structural-exposure strategy is profitable by construction (positive drift, long exposure) but times its entries at random. The genuine entry-skill world injects a per-event signal of $0.0035$. All four tests have full power against real timing skill; the difference is entirely in the no-skill worlds.
+\end{minipage}
+\end{table}
+
+Two facts stand out. First, all four tests detect genuine skill perfectly (rightmost column, rejection rate $1.000$): the comparison is not about power against a real edge, where the methods agree. Second, they part company sharply in the no-skill worlds. The structure-preserving test holds its nominal size everywhere---$0.050$ to $0.063$, all within Monte Carlo error of $0.05$---and the block bootstrap is, if anything, conservative. The profit tests do not. Reality Check and SPA reject far above nominal whenever the realized mean trade return is positive for reasons unrelated to timing: $0.39$ under a pure drift that no rule placed well, and---decisively---$0.66$ and $0.64$ in the structural-exposure world, where the strategy is profitable but its entries are random. A practitioner running Reality Check on that strategy would conclude it has significant ability two times in three; the truth is that it has none. (The milder over-rejection on i.i.d.\ returns, $0.13$ to $0.14$, is a separate, known finite-sample size distortion of bootstrap mean tests under the skewness of multiplicative trade returns at $N_s=40$; it compounds, rather than causes, the confound.)
+
+Figure~\ref{fig:competitor} shows the pattern. The structural-exposure cluster is the crux: it is exactly the configuration the framework was built to handle, and exactly where the return-based tests fail. This is the finite-sample shadow of the asymptotic orthogonality of Section~\ref{sec:theory}---the structure-preserving null carries zero noncentrality against the exposure direction, so a profitable-but-untimed strategy stays central under $\mathbb{Q}$, while the profit tests inherit the full exposure signal and reject. The methods disagree not because one is more powerful but because they answer different questions, and only one of them is the timing question.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.92\textwidth]{competitor_comparison.png}
+\caption{Rejection rates of the four tests across the five known-truth worlds (dashed line: nominal $5\%$). All four detect genuine entry skill (right). In the no-skill worlds only the structure-preserving and block-bootstrap timing tests hold size; Reality Check and SPA reject a profitable-but-untimed strategy roughly two-thirds of the time (fourth cluster), because they test profitability rather than placement.}
+\label{fig:competitor}
+\end{figure}
+
+\section{Empirical results}
+
+\subsection{The central panel}
+
+Table~\ref{tab:main} reports the eleven-strategy GC=F panel on the common window 2002-03-04 to 2026-04-02. The pattern is a systematic divergence between profitability and timing evidence. Ten of the eleven strategies post positive cumulative return---realized returns span $-0.010$ to $0.803$---against a buy-and-hold benchmark of $14.670$ that measures how much long-horizon appreciation the sample contained. Yet under the structure-preserving null no strategy crosses $p\le0.05$, before or after Benjamini--Hochberg adjustment; Squeeze Breakout comes closest at $p=0.053$. The classifier assigns no moderate or strong skill: four strategies are weak skill, five random or luck, and two below the null median.
+
+\begin{table}[p]
+\centering
+\caption{GC=F daily panel. Verified strategy outcomes and skill diagnostics (three-decimal formatting where appropriate).}
+\label{tab:main}
+{\small
+\renewcommand{\arraystretch}{1.15}
+\setlength{\tabcolsep}{5pt}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{@{}lrrrrrrl@{}}
+\toprule
+Strategy & Cum.\ return & Trades & RCSI (mean$\pm$SD) & $p$-value & Percentile & $\mathrm{RCSI}_z$ & Verdict \\
+\midrule
+Trend Pullback      & 0.083 &  77 & $-0.361\pm0.005$ & 0.870 & 13.0 & -1.03 & Below null median \\
+Breakout Vol+Mom    & 0.297 &  46 & $\phantom{-}0.158\pm0.003$ & 0.176 & 82.4 & \phantom{-}0.91 & Weak skill \\
+Mean Rev Vol Filter & -0.010 & 13 & $-0.029\pm0.001$ & 0.662 & 33.8 & -0.44 & Random or luck \\
+Validation AVM      & 0.219 &  35 & $\phantom{-}0.059\pm0.003$ & 0.345 & 65.5 & \phantom{-}0.32 & Random or luck \\
+ADX Trend           & 0.803 & 110 & $\phantom{-}0.387\pm0.005$ & 0.141 & 85.9 & \phantom{-}1.08 & Weak skill \\
+Oversold Reversion  & 0.082 &  30 & $\phantom{-}0.034\pm0.001$ & 0.341 & 65.9 & \phantom{-}0.35 & Random or luck \\
+Squeeze Breakout    & 0.065 &   4 & $\phantom{-}0.055\pm0.000$ & 0.053 & 94.7 & \phantom{-}1.50 & Weak skill \\
+Connors RSI2        & 0.118 &  41 & $\phantom{-}0.094\pm0.001$ & 0.143 & 85.7 & \phantom{-}1.07 & Weak skill \\
+Donchian Reentry    & 0.071 &  60 & $-0.088\pm0.003$ & 0.647 & 35.3 & -0.46 & Random or luck \\
+Turn-of-Month       & 0.323 & 141 & $\phantom{-}0.144\pm0.003$ & 0.234 & 76.7 & \phantom{-}0.65 & Random or luck \\
+Random              & 0.601 & 215 & $-0.103\pm0.523$ & 0.710 & 29.0 & -0.64 & Below null median \\
+\midrule
+Buy \& Hold (benchmark) & 14.670 & --- & --- & --- & --- & --- & Benchmark \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+}
+\par\vspace{0.75em}
+\begin{minipage}{0.95\textwidth}
+\centering
+\footnotesize\emph{Notes.} Cum.\ returns are the final cumulative returns shown in the equity-curve figure for the common window 2002-03-04 to 2026-04-02. Trades are the counts reported in the strategy-specific Monte Carlo distribution captions. RCSI is reported as mean $\pm$ SD across outer-run seeds from the robustness figure (outer runs = 100, simulations per run = 5{,}000, transaction cost = 0.000470). The verdict and ($p$-value, percentile, $\mathrm{RCSI}_z$) reproduce the classifier-aligned values from the supplied Skill vs Luck Summary output image.
+\end{minipage}
+\end{table}
+
+The divergence has a direct cause: gold appreciated over the sample, so any sufficiently long-biased rule captures part of that trend regardless of when it enters, and the structure-preserving null absorbs the drift by repricing the same trades on the same appreciating path. The embedded random baseline makes the point sharpest. The Random strategy enters with probability $0.07$ per bar, ignores every market feature, and is nonetheless profitable at $0.601$---more than nine of the ten rule-based strategies---yet it classifies as \emph{below null median} ($p=0.710$, percentile $29.0$). Its return comes entirely from long exposure to an appreciating asset; its random timing sits near the center of its own null, and the seed-$42$ realization falls just below. Profit without timing information is exactly what the null is built to expose. Per-strategy Monte Carlo summaries, the comparison to return-based alternative nulls, the anatomy of the four weak-skill strategies, and the seed-robustness of these classifications are reported in the supplement (Sections~\ref{sec:supp-mc-summaries}--\ref{sec:supp-seed-robustness}).
+
+\subsection{Cross-asset breadth under multiplicity control}
+\label{sec:cross-asset-multiplicity}
+
+The GC=F panel is one asset. A complementary question is what happens when every completed full-sample test is pooled and judged jointly, with explicit correction for the fact that many tests are run at once. We aggregate the structure-preserving result for every strategy on every asset for which a completed run exists on disk: $322$ strategy-by-asset tests across $47$ instruments spanning equities, ETFs, futures, commodities, FX, and crypto. The verdict at breadth is unambiguous. After Benjamini--Hochberg or Bonferroni correction there are zero discoveries across all $322$ tests, and the raw count of nominal rejections ($13$) is below the $16.1$ expected under a global no-skill null. The panel $p$-values skew conservative (mean $0.567$): their mass concentrates at high values, which is what a deficit of genuine timing skill, net of transaction costs, produces. The identity of the nominal hits is the most direct evidence that they are luck rather than skill---the single smallest $p$-value in the panel ($0.0014$) belongs to a \emph{random}-entry baseline, and random baselines occupy three of the thirteen nominal rejections. A diagnostic that flags purely random strategies as its top performers is recovering chance, not edge. The fixed-rule design, the availability sample of assets, the embedded random-entry negative control, and the survivorship argument are detailed in Section~\ref{sec:supp-cross-asset}, alongside the exploratory multi-asset walk-forward panel (Section~\ref{sec:supp-walk-forward}) and the bounded daily/4-hour/hourly frequency check (Section~\ref{sec:supp-frequency}), which likewise show no broad, stable entry-placement advantage.
+
+\subsection{Schedule-measure sensitivity}
+\label{sec:schedule-sensitivity}
+
+The choice of schedule measure $\mathbb{Q}$ is part of the null hypothesis, so the verdict must be checked against nearby measures. Re-evaluating the full panel under a leading-gap feasibility restriction---forbidding the first simulated entry inside the universal $200$-bar signal warm-up---changes no verdict and crosses no threshold: the headline is robust to the concern that the null might place trades in pre-signal bars a real strategy could not have used. The picture changes under the context-matched measure, which restricts each random entry to bars whose trailing-volatility context matches the realized entries. On a strongly trending asset this narrow matched pool can earn far more, or far less, than the realized schedule, and four strategies reject at the $5\%$ level (Connors RSI2 at $p<0.001$, ADX Trend at $p=0.010$, Breakout Vol+Mom at $p=0.022$, Squeeze Breakout at $p=0.030$) while four others fall to the floor of the null ($p\approx1$). We do not read these rejections as competing evidence of skill: the neutral gap-permutation measure rejects none of the eleven, so the conjunctive standard---significance under every defensible measure---is settled by that column alone, and the narrow matched pools can mechanically sharpen tails in either direction. The point is the disagreement itself. A timing verdict that flips across two defensible schedule measures establishes the absence of \emph{robust, measure-invariant} entry-placement skill, which is the paper's central epistemic claim; we treat agreement across schedule measures, not rejection under any single one, as the right bar for a timing claim, and develop the implications in the discussion. The full sensitivity table and the leading-gap column are in Section~\ref{sec:supp-schedule-sensitivity}.
+
+% ---------------------------------------------------------------------------
+% Assumed supplement labels referenced above (to be created in the supplement):
+%   \label{sec:supp-synthetic}            -- five synthetic worlds + Table tab:synthetic_validation; structural-exposure construction
+%   \label{sec:supp-calibration-figs}     -- synthetic calibration + power figures (fig:synthetic_calibration, fig:synthetic_power)
+%   \label{sec:supp-positive-control}     -- positive control on real GC=F path (Table tab:positive_control, fig:pc_curve, fig:pc_hist)
+%   \label{sec:supp-signals}              -- realistic/imperfect signal mechanisms (Table tab:signal_mechanisms, fig:signal_curve)
+%   \label{sec:supp-mc-summaries}         -- per-strategy Monte Carlo distribution summaries (Table tab:mc, fig:mc_panel)
+%   \label{sec:supp-null-benchmark}       -- comparison to alternative nulls (Table tab:null_benchmark, fig:null_method_comparison)
+%   \label{sec:supp-weak-skill}           -- anatomy of weak skill
+%   \label{sec:supp-seed-robustness}      -- seed-robustness of RCSI and percentile classifications
+%   \label{sec:supp-cross-asset}          -- cross-asset multiplicity full detail (Table tab:cross_asset_multiplicity, fig:cross_asset; "what the panel is, and is not")
+%   \label{sec:supp-walk-forward}         -- multi-asset walk-forward panel (Table tab:multi_asset_walk_forward, fig:multi_asset_inference)
+%   \label{sec:supp-frequency}            -- frequency robustness (Table tab:frequency_robustness, fig:frequency_robustness)
+%   \label{sec:supp-schedule-sensitivity} -- schedule-measure sensitivity full table (Table tab:schedule_sensitivity)
+%   \label{sec:supp-regime}               -- market-regime analysis (Table tab:regimes, fig:regime_heatmap)
+% NOTE: \ref{sec:supp-mc-summaries}--\ref{sec:supp-seed-robustness} in the central-panel paragraph
+%       assumes these five supplement subsections are numbered consecutively in that order.
+% All numeric values above are quoted verbatim from paper.tex; no value was invented or altered.
+% sec:competitor, tab:competitor, fig:competitor, tab:main, sec:cross-asset-multiplicity,
+% sec:schedule-sensitivity, and \cite{white2000,hansen2005} are existing labels/keys retained unchanged.

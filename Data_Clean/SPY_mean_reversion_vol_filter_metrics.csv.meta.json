@@ -19,14 +19,14 @@
     "stop_loss_exit_rate",
     "take_profit_exit_rate"
   ],
-  "created_at_utc": "2026-04-02T23:33:04Z",
+  "created_at_utc": "2026-04-03T20:49:20Z",
   "dependencies": [
     {
       "exists": true,
-      "modified_time_ns": 1775172773094937563,
+      "modified_time_ns": 1775249348137601270,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/SPY_mean_reversion_vol_filter_trades.csv",
-      "sha256": "d31703677fd34bb5fd57eaa5513a4b6f578e43062ca5e4b2dd750ae4066c7a1c",
-      "size_bytes": 9096
+      "sha256": "bc1ce00f8ce61fdfeaeadc8eda392461cc4016c5494362e2a301161c6b69e2f4",
+      "size_bytes": 9105
     }
   ],
   "parameters": {
@@ -36,7 +36,7 @@
   "producer": "create_and_save_metrics",
   "research_grade": true,
   "row_count": 1,
-  "run_id": "run_20260402T233246Z_pid64730",
+  "run_id": "run_20260403T204901Z_pid9279",
   "ticker": "SPY",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/SPY_mean_reversion_vol_filter_metrics__run_20260402T233246Z_pid64730.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/SPY_mean_reversion_vol_filter_metrics__run_20260403T204901Z_pid9279.csv"
 }

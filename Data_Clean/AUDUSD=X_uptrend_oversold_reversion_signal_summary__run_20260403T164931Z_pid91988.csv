@@ -1,0 +1,2 @@
+ticker,agent,timeframe_label,data_interval,signal_count,executed_trade_count,rejected_signal_count,months_covered
+AUDUSD=X,uptrend_oversold_reversion,Daily,1d,30,30,0,209.44558521560575

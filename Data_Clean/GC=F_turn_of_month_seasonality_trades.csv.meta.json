@@ -1,5 +1,5 @@
 {
-  "artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GC=F_turn_of_month_seasonality_trades.csv",
+  "artifact_path": "/Users/aryanpatel/Desktop/Fortuna/Data_Clean/GC=F_turn_of_month_seasonality_trades.csv",
   "canonical_policy": "always",
   "canonical_updated": true,
   "column_names": [
@@ -41,7 +41,7 @@
     "timeframe_label",
     "data_interval"
   ],
-  "created_at_utc": "2026-04-02T23:26:09Z",
+  "created_at_utc": "2026-06-14T23:05:28Z",
   "dependencies": [],
   "parameters": {
     "agent_name": "turn_of_month_seasonality",
@@ -50,8 +50,8 @@
   "pipeline_profile": "standard",
   "producer": "save_trade_outputs",
   "research_grade": true,
-  "row_count": 143,
-  "run_id": "run_20260402T232555Z_pid63687",
+  "row_count": 141,
+  "run_id": "run_20260614T230522Z_pid30201",
   "ticker": "GC=F",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GC=F_turn_of_month_seasonality_trades__run_20260402T232555Z_pid63687.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Desktop/Fortuna/Data_Clean/GC=F_turn_of_month_seasonality_trades__run_20260614T230522Z_pid30201.csv"
 }

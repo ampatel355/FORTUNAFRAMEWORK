@@ -19,11 +19,11 @@
     "stop_loss_exit_rate",
     "take_profit_exit_rate"
   ],
-  "created_at_utc": "2026-04-02T22:23:44Z",
+  "created_at_utc": "2026-04-03T20:22:48Z",
   "dependencies": [
     {
       "exists": true,
-      "modified_time_ns": 1775168611964087340,
+      "modified_time_ns": 1775247759569459631,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/ES=F_adx_trend_following_trades.csv",
       "sha256": "3a82f29611620c640e584593e2c42d257d6f03ab583fd08d6ea98761cd6c9397",
       "size_bytes": 45096
@@ -36,7 +36,7 @@
   "producer": "create_and_save_metrics",
   "research_grade": true,
   "row_count": 1,
-  "run_id": "run_20260402T222318Z_pid35202",
+  "run_id": "run_20260403T202229Z_pid4725",
   "ticker": "ES=F",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/ES=F_adx_trend_following_metrics__run_20260402T222318Z_pid35202.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/ES=F_adx_trend_following_metrics__run_20260403T202229Z_pid4725.csv"
 }

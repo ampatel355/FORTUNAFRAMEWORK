@@ -28,25 +28,26 @@
     "signal_count",
     "trades_per_month",
     "average_holding_bars",
+    "average_holding_days",
     "average_holding_hours",
     "activity_status",
     "activity_warning"
   ],
-  "created_at_utc": "2026-04-02T01:59:27Z",
+  "created_at_utc": "2026-04-03T22:00:59Z",
   "dependencies": [
     {
       "exists": true,
-      "modified_time_ns": 1775095141351310954,
+      "modified_time_ns": 1775253646173553237,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GBPUSD=X_monte_carlo_summary.csv",
-      "sha256": "b481a0e278507e7b2015fa73825ad42a2aee29637419bc52ff9e51058b55446d",
-      "size_bytes": 2086
+      "sha256": "d4776c062bfffcea73e5a553ce1b1dec4432fec39345ec043f8b24407ce0ebe8",
+      "size_bytes": 4189
     },
     {
       "exists": true,
-      "modified_time_ns": 1775095141864474089,
+      "modified_time_ns": 1775253646710804764,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GBPUSD=X_rcsi.csv",
-      "sha256": "3a7499f32510f905d37455b3a7507f2209ddc67206019cfd883a511f668f6bb6",
-      "size_bytes": 1103
+      "sha256": "d2e37fbce9c123e7dfc72f76d082e95c8cd2c05ea5275070306ef13ede5571b8",
+      "size_bytes": 2257
     }
   ],
   "parameters": {
@@ -55,8 +56,8 @@
   "pipeline_profile": "standard",
   "producer": "compare_agents.main",
   "research_grade": false,
-  "row_count": 6,
-  "run_id": "run_20260402T015823Z_pid14331",
+  "row_count": 12,
+  "run_id": "run_20260403T220013Z_pid25029",
   "ticker": "GBPUSD=X",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GBPUSD=X_full_comparison__run_20260402T015823Z_pid14331.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GBPUSD=X_full_comparison__run_20260403T220013Z_pid25029.csv"
 }

@@ -6,21 +6,21 @@
     "simulation_id",
     "simulated_cumulative_return"
   ],
-  "created_at_utc": "2026-04-02T23:33:10Z",
+  "created_at_utc": "2026-04-03T20:49:27Z",
   "dependencies": [
     {
       "exists": true,
-      "modified_time_ns": 1775172781581288449,
+      "modified_time_ns": 1775249358065115778,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/SPY_turn_of_month_seasonality_trades.csv",
-      "sha256": "34f8170cc986079c7106a694ce9e4bbb66d1088cca1099bc4035c9903b069019",
-      "size_bytes": 121807
+      "sha256": "6016e2c9ef62118d9a4a9453c2d7dca05082f0aad7acb35a2cc3f9a93cdeb7a8",
+      "size_bytes": 123755
     },
     {
       "exists": true,
-      "modified_time_ns": 1775172769077878921,
+      "modified_time_ns": 1775249343890845271,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/SPY_regimes.csv",
-      "sha256": "d04156ff6acd2bf7827f1d97a5a0b1eb2f097f0236da9291abeaa532087c2bd5",
-      "size_bytes": 8268494
+      "sha256": "2185f300a59f1095a475391e0a64d743f76254be45ef8332356adabbceda824d",
+      "size_bytes": 8389741
     }
   ],
   "parameters": {
@@ -32,7 +32,7 @@
   "producer": "monte_carlo.save_simulation_results",
   "research_grade": false,
   "row_count": 2000,
-  "run_id": "run_20260402T233246Z_pid64730",
+  "run_id": "run_20260403T204901Z_pid9279",
   "ticker": "SPY",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/SPY_turn_of_month_seasonality_monte_carlo_results__run_20260402T233246Z_pid64730.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/SPY_turn_of_month_seasonality_monte_carlo_results__run_20260403T204901Z_pid9279.csv"
 }

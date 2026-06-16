@@ -71,6 +71,16 @@ ENTRY_CONTEXT_LOOKBACK_BARS = (
 CONTEXT_MATCHING_ENABLED = os.environ.get("MONTE_CARLO_CONTEXT_MATCHING", "0") == "1"
 CONTEXT_BUCKET_COUNT = max(2, int(os.environ.get("MONTE_CARLO_CONTEXT_BUCKET_COUNT", "5")))
 SIMULATE_EXECUTION_COSTS = os.environ.get("MONTE_CARLO_SIMULATE_EXECUTION_COSTS", "1") == "1"
+# Optional feasibility floor on the leading gap: the first simulated entry cannot
+# be placed before this calendar index (e.g. a universal signal warm-up region a
+# real strategy could not have traded in). Default 0 reproduces the original
+# gap-permutation null exactly; used only for the leading-gap robustness check.
+MIN_LEADING_INDEX = max(0, int(os.environ.get("MONTE_CARLO_MIN_LEADING_INDEX", "0")))
+# Optional regime/block-preserving measure: restrict each randomized entry to bars
+# carrying the SAME market-regime label (calm/neutral/stressed) as the realized entry,
+# holding regime occupancy fixed instead of randomizing across regimes. Default 0
+# reproduces the gap-permutation null exactly; used only for the regime-sensitivity check.
+REGIME_MATCHING_ENABLED = os.environ.get("MONTE_CARLO_REGIME_MATCHING", "0") == "1"
 MIN_RESEARCH_GRADE_SIMULATIONS = int(os.environ.get("MIN_RESEARCH_GRADE_SIMULATIONS", "5000"))
 STRICT_HOLDING_BARS_VALIDATION = (
     os.environ.get("STRICT_HOLDING_BARS_VALIDATION", "0") == "1"
@@ -649,6 +659,47 @@ def build_context_entry_candidate_pools(
     return tuple(candidate_pools)
 
 
+def build_regime_entry_candidate_pools(
+    trade_structure: TradeStructure,
+    regime_labels: np.ndarray,
+    max_open_index: int,
+) -> tuple[np.ndarray, ...]:
+    """Build feasible entry pools that preserve each trade's realized market-regime occupancy.
+
+    Each realized entry is re-placed only among bars carrying the same regime label
+    (calm/neutral/stressed) as the bar it actually occupied, so the randomized schedule
+    holds market-regime context fixed rather than treating regime as part of the
+    randomized placement. This is the block/regime-preserving measure of the schedule
+    family. The regime labels are the forward-safe labels of the regime pipeline, so the
+    conditioning is measurable with respect to information available at entry. If a
+    trade's realized regime label is missing, or no same-regime bar admits the trade's
+    duration, the pool falls back to all feasible bars.
+    """
+    labels = np.asarray(regime_labels, dtype=object)
+    candidate_index_base = np.arange(max_open_index + 1, dtype=np.int64)
+    candidate_pools: list[np.ndarray] = []
+    for trade_index, duration in enumerate(
+        trade_structure.durations.astype(np.int64, copy=False)
+    ):
+        actual_entry_index = int(trade_structure.entry_indices[trade_index])
+        feasible_mask = candidate_index_base <= (max_open_index - int(duration))
+        actual_label = (
+            labels[actual_entry_index] if actual_entry_index < len(labels) else None
+        )
+        label_missing = actual_label is None or (
+            isinstance(actual_label, float) and np.isnan(actual_label)
+        )
+        if label_missing:
+            candidate_pool = candidate_index_base[feasible_mask]
+        else:
+            same_regime_mask = labels == actual_label
+            candidate_pool = candidate_index_base[feasible_mask & same_regime_mask]
+            if len(candidate_pool) == 0:
+                candidate_pool = candidate_index_base[feasible_mask]
+        candidate_pools.append(candidate_pool.astype(np.int64, copy=False))
+    return tuple(candidate_pools)
+
+
 def calculate_tail_minimum_span(
     durations: np.ndarray,
     transition_gap_floors: np.ndarray,
@@ -815,15 +866,20 @@ def prepare_agent_null_model_inputs(
     )
     single_asset_open_prices = market_df["Open"].to_numpy(dtype=float)
     calendar_dates = tuple(pd.to_datetime(market_df["Date"], errors="coerce"))
-    candidate_pools = (
-        build_context_entry_candidate_pools(
+    if REGIME_MATCHING_ENABLED and "regime" in market_df.columns:
+        candidate_pools = build_regime_entry_candidate_pools(
+            trade_structure=trade_structure,
+            regime_labels=market_df["regime"].to_numpy(),
+            max_open_index=single_asset_open_prices.shape[0] - 1,
+        )
+    elif CONTEXT_MATCHING_ENABLED:
+        candidate_pools = build_context_entry_candidate_pools(
             trade_structure=trade_structure,
             open_price_matrix=single_asset_open_prices.reshape(1, -1),
             calendar_dates=calendar_dates,
         )
-        if CONTEXT_MATCHING_ENABLED
-        else tuple()
-    )
+    else:
+        candidate_pools = tuple()
     return NullModelInputs(
         open_price_matrix=single_asset_open_prices.reshape(1, -1),
         trade_structure=trade_structure,
@@ -1002,8 +1058,9 @@ def build_structure_preserving_schedule_batch(
     if trade_structure.internal_gap_sizes.size > 0 and np.any(trade_structure.internal_gap_sizes < 0):
         raise ValueError("Internal gap sizes must be non-negative.")
 
+    leading_low = min(MIN_LEADING_INDEX, trade_structure.external_slack)
     leading_gap = rng.integers(
-        0,
+        leading_low,
         trade_structure.external_slack + 1,
         size=(batch_size, 1),
         dtype=np.int64,
@@ -1397,7 +1454,7 @@ def simulate_structure_preserving_cumulative_returns(
 
     for batch_start in range(0, simulation_count, SIMULATION_BATCH_SIZE):
         batch_size = min(SIMULATION_BATCH_SIZE, simulation_count - batch_start)
-        if CONTEXT_MATCHING_ENABLED and null_model_inputs.context_entry_candidate_pools:
+        if (CONTEXT_MATCHING_ENABLED or REGIME_MATCHING_ENABLED) and null_model_inputs.context_entry_candidate_pools:
             entry_indices, exit_indices = build_context_preserving_schedule_batch(
                 trade_structure=trade_structure,
                 max_open_index=max_open_index,

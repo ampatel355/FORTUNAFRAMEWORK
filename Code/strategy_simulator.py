@@ -78,8 +78,10 @@ try:
         VOLATILITY_SQUEEZE_VOLUME_RATIO_MIN,
         CONNORS_RSI2_ENTRY_MAX,
         CONNORS_RSI2_EXIT_MIN,
+        CONNORS_RSI2_EXIT_SMA_BARS,
         CONNORS_RSI2_MAX_HOLDING_BARS,
         CONNORS_RSI2_REQUIRE_SMA200_FILTER,
+        CONNORS_RSI2_RSI_LOOKBACK_BARS,
         CONNORS_RSI2_STOP_ATR_MULTIPLIER,
         DONCHIAN_ADX_MIN,
         DONCHIAN_BREAKOUT_HIGH_COLUMN,
@@ -92,6 +94,8 @@ try:
         TURN_OF_MONTH_MAX_HOLDING_BARS,
         TURN_OF_MONTH_REQUIRE_SMA200_FILTER,
         TURN_OF_MONTH_STOP_ATR_MULTIPLIER,
+        MEDIUM_RETURN_COLUMN,
+        RELATIVE_STRENGTH_RETURN_COLUMN,
     )
     from timeframe_config import timeframe_output_suffix
 except ModuleNotFoundError:
@@ -164,8 +168,10 @@ except ModuleNotFoundError:
         VOLATILITY_SQUEEZE_VOLUME_RATIO_MIN,
         CONNORS_RSI2_ENTRY_MAX,
         CONNORS_RSI2_EXIT_MIN,
+        CONNORS_RSI2_EXIT_SMA_BARS,
         CONNORS_RSI2_MAX_HOLDING_BARS,
         CONNORS_RSI2_REQUIRE_SMA200_FILTER,
+        CONNORS_RSI2_RSI_LOOKBACK_BARS,
         CONNORS_RSI2_STOP_ATR_MULTIPLIER,
         DONCHIAN_ADX_MIN,
         DONCHIAN_BREAKOUT_HIGH_COLUMN,
@@ -178,6 +184,8 @@ except ModuleNotFoundError:
         TURN_OF_MONTH_MAX_HOLDING_BARS,
         TURN_OF_MONTH_REQUIRE_SMA200_FILTER,
         TURN_OF_MONTH_STOP_ATR_MULTIPLIER,
+        MEDIUM_RETURN_COLUMN,
+        RELATIVE_STRENGTH_RETURN_COLUMN,
     )
     from Code.timeframe_config import timeframe_output_suffix
 
@@ -233,14 +241,23 @@ def _build_random_decision_generator(seed_override: int | None = None):
     return random.SystemRandom()
 
 
-def _compute_rsi_2(close_series: pd.Series) -> pd.Series:
-    """Return Connors-style RSI(2) using Wilder smoothing."""
+def _compute_rsi_2(close_series: pd.Series, lookback: int | None = None) -> pd.Series:
+    """Return Connors-style short-horizon RSI using Wilder smoothing.
+
+    On daily bars the default lookback is 2 (the classic Connors RSI(2)).
+    On faster timeframes the lookback is scaled via CONNORS_RSI2_RSI_LOOKBACK_BARS
+    so the indicator still covers the same calendar horizon.
+    """
+    period = lookback if lookback is not None else CONNORS_RSI2_RSI_LOOKBACK_BARS
+    period = max(period, 1)
+    alpha = 1.0 / period
+
     close_change = close_series.diff()
     gains = close_change.clip(lower=0.0)
     losses = -close_change.clip(upper=0.0)
 
-    average_gain = gains.ewm(alpha=0.5, adjust=False, min_periods=2).mean()
-    average_loss = losses.ewm(alpha=0.5, adjust=False, min_periods=2).mean()
+    average_gain = gains.ewm(alpha=alpha, adjust=False, min_periods=period).mean()
+    average_loss = losses.ewm(alpha=alpha, adjust=False, min_periods=period).mean()
 
     relative_strength = average_gain / average_loss.replace(0.0, pd.NA)
     rsi_2 = 100.0 - (100.0 / (1.0 + relative_strength))
@@ -277,19 +294,21 @@ def _resolve_strategy_ticker(market_df: pd.DataFrame, ticker: str | None = None)
     return None
 
 
-def _first_daily_exit_reason(
+def _first_bar_exit_reason(
     row: pd.Series,
     stop_loss_used: float | None,
     take_profit_used: float | None,
 ) -> str | None:
     """Check stop/target breaches using only the completed current bar.
 
+    This function is timeframe-agnostic — it works identically for daily,
+    hourly, and 4-hour bars because it only inspects the bar's High and Low.
+
     Practical simplification for bar data:
     - Signals are generated after the close.
     - Entries and exits happen at the next bar's open.
     - If both stop and target are touched inside the same bar, we do not
-      know which came first intraday, so we choose the stop-loss path
-      conservatively.
+      know which came first, so we choose the stop-loss path conservatively.
     """
     stop_hit = (
         stop_loss_used is not None
@@ -510,7 +529,7 @@ def run_trend_pullback_strategy(market_df: pd.DataFrame, ticker: str | None = No
             else:
                 rejected_signal_count += 1
         else:
-            exit_reason = _first_daily_exit_reason(
+            exit_reason = _first_bar_exit_reason(
                 row,
                 open_position.stop_loss_used,
                 open_position.take_profit_used,
@@ -669,7 +688,7 @@ def run_breakout_volume_momentum_strategy(
             else:
                 rejected_signal_count += 1
         else:
-            exit_reason = _first_daily_exit_reason(
+            exit_reason = _first_bar_exit_reason(
                 row,
                 open_position.stop_loss_used,
                 open_position.take_profit_used,
@@ -823,7 +842,7 @@ def run_mean_reversion_vol_filter_strategy(
             else:
                 rejected_signal_count += 1
         else:
-            exit_reason = _first_daily_exit_reason(
+            exit_reason = _first_bar_exit_reason(
                 row,
                 open_position.stop_loss_used,
                 open_position.take_profit_used,
@@ -1022,10 +1041,10 @@ def run_trend_momentum_verification_strategy(
             "macd_signal",
             "atr_percent_ratio_60",
             "volume_ratio_20",
-            "rolling_high_20_prev",
-            "rolling_low_10_prev",
-            "trailing_return_20",
-            "trailing_return_60",
+            BREAKOUT_HIGH_COLUMN,
+            BREAKOUT_LOW_COLUMN,
+            MEDIUM_RETURN_COLUMN,
+            RELATIVE_STRENGTH_RETURN_COLUMN,
             "regime",
         ],
     )
@@ -1046,8 +1065,8 @@ def run_trend_momentum_verification_strategy(
         if open_position is None:
             trend_up = row.Close > row.sma_200 and row.sma_50 >= row.sma_200
             momentum_positive = (
-                row.trailing_return_20 > 0
-                and row.trailing_return_60 > 0
+                row[MEDIUM_RETURN_COLUMN] > 0
+                and row[RELATIVE_STRENGTH_RETURN_COLUMN] > 0
                 and row.macd_line > row.macd_signal
                 and row.adx_14 >= VALIDATION_MOMENTUM_ADX_MIN
             )
@@ -1061,8 +1080,8 @@ def run_trend_momentum_verification_strategy(
             )
             volume_confirmation = pd.isna(row.volume_ratio_20) or float(row.volume_ratio_20) >= 0.9
             breakout_continuation = (
-                row.Close > row.rolling_high_20_prev
-                and previous_row.Close <= previous_row.rolling_high_20_prev
+                row.Close > row[BREAKOUT_HIGH_COLUMN]
+                and previous_row.Close <= previous_row[BREAKOUT_HIGH_COLUMN]
                 and volume_confirmation
             )
             trigger_signal = pullback_reclaim or breakout_continuation
@@ -1083,7 +1102,7 @@ def run_trend_momentum_verification_strategy(
                 rejected_signal_count += 1
                 continue
 
-            initial_stop_from_structure = _safe_stop(row.rolling_low_10_prev)
+            initial_stop_from_structure = _safe_stop(row[BREAKOUT_LOW_COLUMN])
             initial_stop_from_atr = _safe_stop(
                 row.Close - (VALIDATION_MOMENTUM_STOP_ATR_MULTIPLIER * row.atr_14)
             )
@@ -1133,7 +1152,7 @@ def run_trend_momentum_verification_strategy(
             if float(row.Close) > highest_close_since_entry:
                 highest_close_since_entry = float(row.Close)
 
-            exit_reason = _first_daily_exit_reason(
+            exit_reason = _first_bar_exit_reason(
                 row,
                 open_position.stop_loss_used,
                 open_position.take_profit_used,
@@ -1219,7 +1238,7 @@ def run_adx_trend_following_strategy(
             "atr_14",
             "atr_percent_ratio_60",
             "trailing_return_20",
-            "rolling_low_10_prev",
+            BREAKOUT_LOW_COLUMN,
             "regime",
         ],
     )
@@ -1260,7 +1279,7 @@ def run_adx_trend_following_strategy(
                 continue
 
             stop_loss_used = _safe_stop(
-                min(row.rolling_low_10_prev, row.Close - (ADX_TREND_FOLLOWING_STOP_ATR_MULTIPLIER * row.atr_14))
+                min(row[BREAKOUT_LOW_COLUMN], row.Close - (ADX_TREND_FOLLOWING_STOP_ATR_MULTIPLIER * row.atr_14))
             )
             take_profit_used = _safe_stop(
                 row.Close + (ADX_TREND_FOLLOWING_TARGET_ATR_MULTIPLIER * row.atr_14)
@@ -1287,7 +1306,7 @@ def run_adx_trend_following_strategy(
             else:
                 rejected_signal_count += 1
         else:
-            exit_reason = _first_daily_exit_reason(
+            exit_reason = _first_bar_exit_reason(
                 row,
                 open_position.stop_loss_used,
                 open_position.take_profit_used,
@@ -1422,7 +1441,7 @@ def run_uptrend_oversold_reversion_strategy(
             else:
                 rejected_signal_count += 1
         else:
-            exit_reason = _first_daily_exit_reason(
+            exit_reason = _first_bar_exit_reason(
                 row,
                 open_position.stop_loss_used,
                 open_position.take_profit_used,
@@ -1487,8 +1506,8 @@ def run_volatility_squeeze_breakout_strategy(
             "macd_signal",
             "volume_ratio_20",
             "bollinger_width_ratio_60",
-            "rolling_high_20_prev",
-            "rolling_low_10_prev",
+            BREAKOUT_HIGH_COLUMN,
+            BREAKOUT_LOW_COLUMN,
             "regime",
         ],
     )
@@ -1509,8 +1528,8 @@ def run_volatility_squeeze_breakout_strategy(
         if open_position is None:
             compression = row.bollinger_width_ratio_60 <= VOLATILITY_SQUEEZE_BB_WIDTH_RATIO_MAX
             breakout = (
-                row.Close > row.rolling_high_20_prev
-                and previous_row.Close <= previous_row.rolling_high_20_prev
+                row.Close > row[BREAKOUT_HIGH_COLUMN]
+                and previous_row.Close <= previous_row[BREAKOUT_HIGH_COLUMN]
             )
             momentum_filter = (
                 row.macd_line > row.macd_signal
@@ -1541,7 +1560,7 @@ def run_volatility_squeeze_breakout_strategy(
 
             stop_loss_used = _safe_stop(
                 min(
-                    row.rolling_low_10_prev,
+                    row[BREAKOUT_LOW_COLUMN],
                     row.Close - (VOLATILITY_SQUEEZE_STOP_ATR_MULTIPLIER * row.atr_14),
                 )
             )
@@ -1574,7 +1593,7 @@ def run_volatility_squeeze_breakout_strategy(
             if float(row.Close) > highest_close_since_entry:
                 highest_close_since_entry = float(row.Close)
 
-            exit_reason = _first_daily_exit_reason(
+            exit_reason = _first_bar_exit_reason(
                 row,
                 open_position.stop_loss_used,
                 open_position.take_profit_used,
@@ -1646,7 +1665,7 @@ def run_connors_rsi2_pullback_strategy(
     )
     df["rsi_2"] = _compute_rsi_2(df["Close"])
     df["sma_5"] = pd.to_numeric(
-        df["Close"].rolling(window=5).mean(),
+        df["Close"].rolling(window=CONNORS_RSI2_EXIT_SMA_BARS).mean(),
         errors="coerce",
     )
     df = df.dropna(subset=["rsi_2", "sma_5"]).reset_index(drop=True)
@@ -1713,7 +1732,7 @@ def run_connors_rsi2_pullback_strategy(
                 continue
             open_position = candidate_position
         else:
-            exit_reason = _first_daily_exit_reason(
+            exit_reason = _first_bar_exit_reason(
                 row,
                 open_position.stop_loss_used,
                 open_position.take_profit_used,
@@ -1860,7 +1879,7 @@ def run_donchian_trend_reentry_strategy(
                 continue
             open_position = candidate_position
         else:
-            exit_reason = _first_daily_exit_reason(
+            exit_reason = _first_bar_exit_reason(
                 row,
                 open_position.stop_loss_used,
                 open_position.take_profit_used,
@@ -1981,7 +2000,7 @@ def run_turn_of_month_seasonality_strategy(
                 continue
             open_position = candidate_position
         else:
-            exit_reason = _first_daily_exit_reason(
+            exit_reason = _first_bar_exit_reason(
                 row,
                 open_position.stop_loss_used,
                 open_position.take_profit_used,

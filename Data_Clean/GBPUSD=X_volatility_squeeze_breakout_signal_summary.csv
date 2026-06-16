@@ -1,2 +1,2 @@
 ticker,agent,timeframe_label,data_interval,signal_count,executed_trade_count,rejected_signal_count,months_covered
-GBPUSD=X,volatility_squeeze_breakout,Daily,1d,13,13,0,247.52361396303903
+GBPUSD=X,volatility_squeeze_breakout,Daily,1d,12,12,0,228.2710472279261

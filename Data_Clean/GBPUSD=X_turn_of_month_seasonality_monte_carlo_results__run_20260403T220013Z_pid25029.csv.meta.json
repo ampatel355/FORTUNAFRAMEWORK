@@ -1,0 +1,37 @@
+{
+  "artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GBPUSD=X_turn_of_month_seasonality_monte_carlo_results.csv",
+  "canonical_policy": "always",
+  "column_names": [
+    "simulation_id",
+    "simulated_cumulative_return"
+  ],
+  "created_at_utc": "2026-04-03T22:00:46Z",
+  "dependencies": [
+    {
+      "exists": true,
+      "modified_time_ns": 1775253631961282913,
+      "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GBPUSD=X_turn_of_month_seasonality_trades.csv",
+      "sha256": "fcae4b9b80e7a40b5bdfd96e4219c0460c7882df9d7b61a560940f14eb4b8390",
+      "size_bytes": 57545
+    },
+    {
+      "exists": true,
+      "modified_time_ns": 1775253616784936719,
+      "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GBPUSD=X_regimes.csv",
+      "sha256": "575f8e8a0408dfd46945b885ea41cdf2f4e240061e51d045de5707c6ff3429cc",
+      "size_bytes": 5653921
+    }
+  ],
+  "parameters": {
+    "agent_name": "turn_of_month_seasonality",
+    "null_model_type": "timing_null_results",
+    "simulation_count": 2000
+  },
+  "pipeline_profile": "standard",
+  "producer": "monte_carlo.save_simulation_results",
+  "research_grade": false,
+  "row_count": 2000,
+  "run_id": "run_20260403T220013Z_pid25029",
+  "ticker": "GBPUSD=X",
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/GBPUSD=X_turn_of_month_seasonality_monte_carlo_results__run_20260403T220013Z_pid25029.csv"
+}

@@ -1,26 +1,23 @@
-"""Create a one-page Skill vs Luck classification summary chart for the active ticker."""
+"""Create a plain current-run skill-vs-luck summary table for the active ticker."""
 
 from __future__ import annotations
 
 import math
 import os
+import textwrap
 
-from matplotlib.patches import Rectangle
 import matplotlib.pyplot as plt
 import pandas as pd
 
 from plot_config import (
-    AGENT_COLORS,
     BACKGROUND_COLOR,
     GRID_COLOR,
-    SPINE_COLOR,
     SUBTITLE_SIZE,
-    TABLE_BODY_SIZE,
-    TABLE_HEADER_SIZE,
     TEXT_COLOR,
     TITLE_SIZE,
     add_figure_caption,
     format_agent_name,
+    lighten_color,
     save_chart,
     show_chart,
 )
@@ -32,6 +29,9 @@ except ModuleNotFoundError:
 
 
 ticker = os.environ.get("TICKER", "SPY")
+TABLE_BBOX = [0.03, 0.19, 0.94, 0.61]
+HEADER_FONT_SIZE = 7.1
+BODY_FONT_SIZE = 6.9
 
 
 def format_numeric_or_na(value, decimals: int) -> str:
@@ -47,195 +47,142 @@ def format_numeric_or_na(value, decimals: int) -> str:
     return f"{numeric_value:.{decimals}f}"
 
 
-def add_rect(ax, x0: float, y0: float, width: float, height: float, **kwargs) -> None:
-    """Add a square-cornered rectangle in axis coordinates."""
-    ax.add_patch(
-        Rectangle(
-            (x0, y0),
-            width,
-            height,
-            transform=ax.transAxes,
-            **kwargs,
-        )
-    )
-
-
-def cell_center(x0: float, width: float, y0: float, height: float) -> tuple[float, float]:
-    """Return the visual center of one table cell."""
-    return x0 + width / 2, y0 + height / 2
-
-
-def compact_cell_text(text: str, max_chars: int) -> str:
-    """Compact long cell labels to avoid spillover in narrow table columns."""
+def wrap_cell_text(text: str, width: int) -> str:
+    """Wrap one cell so the full label stays visible inside the table."""
     value = str(text).strip()
-    if len(value) <= max_chars:
-        return value
-    return f"{value[: max_chars - 1]}…"
-
-
-def draw_table(ax, verdict_df) -> None:
-    """Draw a clean academic summary table."""
-    left = 0.03
-    bottom = 0.23
-    width = 0.94
-    height = 0.55
-
-    col_widths = [0.18, 0.20, 0.12, 0.10, 0.10, 0.09, 0.09, 0.12]
-    x_edges = [left]
-    for col_width in col_widths:
-        x_edges.append(x_edges[-1] + width * col_width)
-
-    header_height = 0.11
-    row_height = (height - header_height) / max(len(verdict_df), 1)
-
-    add_rect(
-        ax,
-        x0=left,
-        y0=bottom,
+    return textwrap.fill(
+        value,
         width=width,
-        height=height,
-        facecolor="#FFFFFF",
-        edgecolor=SPINE_COLOR,
-        linewidth=0.9,
-    )
-    add_rect(
-        ax,
-        x0=left,
-        y0=bottom + height - header_height,
-        width=width,
-        height=header_height,
-        facecolor="#F3F5F8",
-        edgecolor=SPINE_COLOR,
-        linewidth=0.9,
+        break_long_words=False,
+        break_on_hyphens=False,
     )
 
-    headers = ["Strategy", "Classification", "Verdict", "Confidence", "p-value", "Prom.", "Pctile", "RCSI_z"]
-    header_fontsize = min(TABLE_HEADER_SIZE, 8.5)
-    for index, header in enumerate(headers):
-        x0 = x_edges[index]
-        x1 = x_edges[index + 1]
-        x_center, y_center = cell_center(
-            x0=x0,
-            width=x1 - x0,
-            y0=bottom + height - header_height,
-            height=header_height,
-        )
-        ax.text(
-            x_center,
-            y_center,
-            header,
-            transform=ax.transAxes,
-            fontsize=header_fontsize,
-            fontweight="semibold",
-            color=TEXT_COLOR,
-            ha="center",
-            va="center",
-        )
 
-    for x_edge in x_edges[1:-1]:
-        ax.plot(
-            [x_edge, x_edge],
-            [bottom, bottom + height],
-            transform=ax.transAxes,
-            color=GRID_COLOR,
-            linewidth=0.8,
-        )
+def line_count(text: str) -> int:
+    """Return the number of wrapped lines in one cell."""
+    return max(1, str(text).count("\n") + 1)
 
-    ax.plot(
-        [left, left + width],
-        [bottom + height - header_height, bottom + height - header_height],
-        transform=ax.transAxes,
-        color=SPINE_COLOR,
-        linewidth=0.9,
-    )
 
-    row_count = len(verdict_df)
-    body_fontsize = 7.8 if row_count >= 8 else 8.2
-    compact_fontsize = max(7.0, body_fontsize - 0.5)
+def apply_table_heights(
+    table,
+    wrapped_rows: list[list[str]],
+    *,
+    bbox_height: float,
+    column_count: int,
+) -> None:
+    """Scale row heights so wrapped text fits inside the fixed table area."""
+    row_heights = [0.080]
+    for row in wrapped_rows:
+        max_lines = max(line_count(cell_text) for cell_text in row)
+        row_heights.append(0.060 + (max_lines - 1) * 0.022)
 
-    for row_index, (_, row) in enumerate(verdict_df.iterrows()):
-        y0 = bottom + height - header_height - ((row_index + 1) * row_height)
-        row_fill = "#FFFFFF" if row_index % 2 == 0 else "#F8FAFC"
-        add_rect(
-            ax,
-            x0=left,
-            y0=y0,
-            width=width,
-            height=row_height,
-            facecolor=row_fill,
-            edgecolor="none",
-        )
-        if row_index < len(verdict_df) - 1:
-            ax.plot(
-                [left, left + width],
-                [y0, y0],
-                transform=ax.transAxes,
-                color=GRID_COLOR,
-                linewidth=0.8,
-            )
+    total_height = sum(row_heights)
+    scale = bbox_height / total_height if total_height > 0 else 1.0
+    scaled_heights = [height * scale for height in row_heights]
 
-        strategy_text = compact_cell_text(format_agent_name(str(row["agent"]), short=True), max_chars=15)
-        evidence_text = compact_cell_text(str(row["evidence_label"]), max_chars=13)
-        verdict_text = compact_cell_text(str(row["verdict_label"]), max_chars=13)
-        confidence_text = str(row["confidence_label"])
+    for row_index, row_height in enumerate(scaled_heights):
+        for cell_index in range(column_count):
+            table[row_index, cell_index].set_height(row_height)
+
+
+def build_wrapped_rows(verdict_df: pd.DataFrame, wrap_widths: list[int]) -> list[list[str]]:
+    """Build wrapped row text for the summary table."""
+    wrapped_rows: list[list[str]] = []
+    for _, row in verdict_df.iterrows():
         p_value_value = pd.to_numeric(pd.Series([row["reference_p_value"]]), errors="coerce").iloc[0]
-        p_value_text = format_numeric_or_na(p_value_value, 3)
         prominence_text = "n/a"
         if pd.notna(p_value_value):
             prominence_text = f"{(-math.log10(max(float(p_value_value), 1e-12))):.2f}"
-        percentile_text = format_numeric_or_na(row["reference_percentile"], 1)
-        rcsi_z_text = format_numeric_or_na(row["reference_rcsi_z"], 2)
 
         row_values = [
-            strategy_text,
-            evidence_text,
-            verdict_text,
-            confidence_text,
-            p_value_text,
+            format_agent_name(str(row["agent"]), short=True),
+            str(row["evidence_label"]),
+            str(row["verdict_label"]),
+            str(row["confidence_label"]),
+            format_numeric_or_na(p_value_value, 3),
             prominence_text,
-            percentile_text,
-            rcsi_z_text,
+            format_numeric_or_na(row["reference_percentile"], 1),
+            format_numeric_or_na(row["reference_rcsi_z"], 2),
         ]
-        row_colors = [
-            AGENT_COLORS.get(str(row["agent"]), TEXT_COLOR),
-            EVIDENCE_COLORS.get(str(row["evidence_bucket"]), TEXT_COLOR),
-            VERDICT_COLORS.get(str(row["skill_luck_verdict"]), TEXT_COLOR),
-            TEXT_COLOR,
-            TEXT_COLOR,
-            TEXT_COLOR,
-            TEXT_COLOR,
-            TEXT_COLOR,
-        ]
-        row_weights = ["semibold", "semibold", "bold", "normal", "normal", "normal", "normal", "normal"]
+        wrapped_rows.append(
+            [wrap_cell_text(value, width) for value, width in zip(row_values, wrap_widths)]
+        )
+    return wrapped_rows
 
-        for cell_index, (value, color, weight) in enumerate(
-            zip(row_values, row_colors, row_weights)
-        ):
-            x0 = x_edges[cell_index]
-            x1 = x_edges[cell_index + 1]
-            x_center, y_center = cell_center(
-                x0=x0,
-                width=x1 - x0,
-                y0=y0,
-                height=row_height,
-            )
-            is_text_heavy_column = cell_index in {0, 1, 2}
-            cell_fontsize = compact_fontsize if is_text_heavy_column else body_fontsize
-            if is_text_heavy_column:
-                x_center = x0 + (x1 - x0) * 0.03
-            alignment = "left" if is_text_heavy_column else "center"
-            ax.text(
-                x_center,
-                y_center,
-                value,
-                transform=ax.transAxes,
-                fontsize=cell_fontsize,
-                fontweight=weight,
-                color=color,
-                ha=alignment,
-                va="center",
-                linespacing=0.98,
-            )
+
+def classify_row_colors(row: pd.Series) -> tuple[str, str, str]:
+    """Return subtle row, evidence, and verdict colors for one table row."""
+    evidence_bucket = str(row.get("evidence_bucket", "")).strip().lower()
+    verdict_bucket = str(row.get("skill_luck_verdict", "")).strip().lower()
+    evidence_color = EVIDENCE_COLORS.get(evidence_bucket, TEXT_COLOR)
+    verdict_color = VERDICT_COLORS.get(verdict_bucket, evidence_color)
+    row_color = verdict_color if verdict_bucket else evidence_color
+    return row_color, evidence_color, verdict_color
+
+
+def draw_table(ax, verdict_df: pd.DataFrame) -> None:
+    """Draw a plain wrapped summary table with minimal styling."""
+    headers = [
+        "Strategy",
+        "Classification",
+        "Verdict",
+        "Confidence",
+        "p-value",
+        "Prominence",
+        "Percentile",
+        "RCSI_z",
+    ]
+    col_widths = [0.20, 0.20, 0.14, 0.12, 0.09, 0.10, 0.09, 0.06]
+    wrap_widths = [18, 18, 14, 12, 8, 10, 10, 8]
+    alignments = ["left", "left", "left", "left", "center", "center", "center", "center"]
+
+    wrapped_rows = build_wrapped_rows(verdict_df, wrap_widths)
+    table = ax.table(
+        cellText=wrapped_rows,
+        colLabels=headers,
+        colLoc="center",
+        cellLoc="left",
+        colWidths=col_widths,
+        bbox=TABLE_BBOX,
+    )
+    table.auto_set_font_size(False)
+    table.set_fontsize(BODY_FONT_SIZE)
+    apply_table_heights(
+        table,
+        wrapped_rows,
+        bbox_height=TABLE_BBOX[3],
+        column_count=len(headers),
+    )
+
+    row_colors = [classify_row_colors(row) for _, row in verdict_df.iterrows()]
+
+    for (row_index, cell_index), cell in table.get_celld().items():
+        cell.set_edgecolor(GRID_COLOR)
+        cell.set_linewidth(0.6)
+        cell.PAD = 0.03
+        cell.get_text().set_color(TEXT_COLOR)
+        cell.get_text().set_fontweight("normal")
+        cell.get_text().set_linespacing(1.08)
+        if row_index == 0:
+            cell.set_facecolor("#F2F2F2")
+            cell.get_text().set_fontsize(HEADER_FONT_SIZE)
+            cell.get_text().set_ha("center")
+        else:
+            row_color, _, _ = row_colors[row_index - 1]
+            cell.set_facecolor(lighten_color(row_color, amount=0.94))
+            cell.get_text().set_fontsize(BODY_FONT_SIZE)
+            cell.get_text().set_ha(alignments[cell_index])
+            cell.get_text().set_va("center")
+
+    for row_index, (row_color, evidence_color, verdict_color) in enumerate(row_colors, start=1):
+        evidence_cell = table[row_index, 1]
+        verdict_cell = table[row_index, 2]
+        strategy_cell = table[row_index, 0]
+        evidence_cell.set_facecolor(lighten_color(evidence_color, amount=0.88))
+        verdict_cell.set_facecolor(lighten_color(verdict_color, amount=0.88))
+        strategy_cell.set_facecolor(lighten_color(row_color, amount=0.91))
+        evidence_cell.get_text().set_color(evidence_color)
+        verdict_cell.get_text().set_color(verdict_color)
 
 
 def main() -> None:
@@ -243,7 +190,7 @@ def main() -> None:
     output_filename = f"{ticker}_skill_luck_summary.png"
     verdict_df = load_strategy_verdicts(ticker)
 
-    fig, ax = plt.subplots(figsize=(8.6, 6.8))
+    fig, ax = plt.subplots(figsize=(8.8, 6.9))
     fig.patch.set_facecolor(BACKGROUND_COLOR)
     ax.set_facecolor(BACKGROUND_COLOR)
     ax.axis("off")
@@ -251,7 +198,7 @@ def main() -> None:
     ax.text(
         0.03,
         0.955,
-        f"{ticker}: Skill vs Luck Classification",
+        f"{ticker}: Skill vs Luck Summary",
         transform=ax.transAxes,
         fontsize=TITLE_SIZE,
         fontweight="normal",
@@ -262,7 +209,7 @@ def main() -> None:
     ax.text(
         0.03,
         0.905,
-        "Classification uses all three metrics together: p-value, percentile, and RCSI_z (distance from randomness).",
+        "Current-run summary using p-value, percentile, and RCSI_z.",
         transform=ax.transAxes,
         fontsize=SUBTITLE_SIZE,
         color="#4B5563",
@@ -270,17 +217,13 @@ def main() -> None:
         va="top",
     )
 
-    ax.plot([0.03, 0.97], [0.875, 0.875], transform=ax.transAxes, color=SPINE_COLOR, linewidth=0.9)
-
     draw_table(ax, verdict_df)
 
     add_figure_caption(
         fig,
         (
-            "Green rows indicate stronger evidence of skill, gray indicates Random / Luck, "
-            "red indicates Negative Skill, and orange indicates Suspicious metric disagreement. "
-            "Prom. reports -log10(p), so larger values indicate rarer outcomes under the null. "
-            "Classification uses RCSI_z, p-value, and percentile together."
+            "Prominence is reported as -log10(p). "
+            "This table uses the current run's classifier-aligned p-value, percentile, and RCSI_z outputs."
         ),
     )
     save_chart(fig, output_filename)

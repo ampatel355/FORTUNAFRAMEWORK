@@ -30,7 +30,13 @@ try:
         adjust_trade_returns,
     )
     from single_ticker_agent_common import load_regime_data, save_trade_outputs
-    from strategy_config import EXPERIMENTAL_AGENT_ORDER, format_strategy_name
+    from strategy_config import (
+        BREAKOUT_HIGH_COLUMN,
+        BREAKOUT_LOW_COLUMN,
+        EXPERIMENTAL_AGENT_ORDER,
+        MEDIUM_RETURN_COLUMN,
+        format_strategy_name,
+    )
     from strategy_metrics_common import create_and_save_metrics
     from strategy_simulator import resolve_data_clean_dir, run_strategy
     from strategy_verdicts import classify_metrics, evidence_label
@@ -56,7 +62,13 @@ except ModuleNotFoundError:
         adjust_trade_returns,
     )
     from Code.single_ticker_agent_common import load_regime_data, save_trade_outputs
-    from Code.strategy_config import EXPERIMENTAL_AGENT_ORDER, format_strategy_name
+    from Code.strategy_config import (
+        BREAKOUT_HIGH_COLUMN,
+        BREAKOUT_LOW_COLUMN,
+        EXPERIMENTAL_AGENT_ORDER,
+        MEDIUM_RETURN_COLUMN,
+        format_strategy_name,
+    )
     from Code.strategy_metrics_common import create_and_save_metrics
     from Code.strategy_simulator import resolve_data_clean_dir, run_strategy
     from Code.strategy_verdicts import classify_metrics, evidence_label
@@ -86,9 +98,9 @@ def _required_columns() -> list[str]:
         "macd_signal",
         "atr_percent_ratio_60",
         "volume_ratio_20",
-        "rolling_high_20_prev",
-        "rolling_low_10_prev",
-        "trailing_return_20",
+        BREAKOUT_HIGH_COLUMN,
+        BREAKOUT_LOW_COLUMN,
+        MEDIUM_RETURN_COLUMN,
         "zscore_20",
         "bollinger_lower",
         "bollinger_width_ratio_60",

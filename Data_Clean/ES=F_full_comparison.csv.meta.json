@@ -33,21 +33,21 @@
     "activity_status",
     "activity_warning"
   ],
-  "created_at_utc": "2026-04-02T22:24:04Z",
+  "created_at_utc": "2026-04-03T17:07:22Z",
   "dependencies": [
     {
       "exists": true,
-      "modified_time_ns": 1775168632000722226,
+      "modified_time_ns": 1775236031651657033,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/ES=F_monte_carlo_summary.csv",
-      "sha256": "7aa999aa6e03c406d05d9fe4bead37e116a6f5c4acb50061b305062ecc533990",
+      "sha256": "c10f39d0f7c0fe504c05fe3dd1f13a6424c3556f0b711fe85c23806233377a89",
       "size_bytes": 4134
     },
     {
       "exists": true,
-      "modified_time_ns": 1775168632518833959,
+      "modified_time_ns": 1775236032000529648,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/ES=F_rcsi.csv",
-      "sha256": "3062fc8e92f688ab0761906bbcbef7627e9482c83489a071a9edc8e40fe071b4",
-      "size_bytes": 2228
+      "sha256": "4a0bc7130c1bdd7e0799aae64d23549d7aeb74a4025230723dd5d010f6b66406",
+      "size_bytes": 2229
     }
   ],
   "parameters": {
@@ -57,7 +57,7 @@
   "producer": "compare_agents.main",
   "research_grade": false,
   "row_count": 12,
-  "run_id": "run_20260402T222318Z_pid35202",
+  "run_id": "run_20260403T170648Z_pid92733",
   "ticker": "ES=F",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/ES=F_full_comparison__run_20260402T222318Z_pid35202.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/ES=F_full_comparison__run_20260403T170648Z_pid92733.csv"
 }

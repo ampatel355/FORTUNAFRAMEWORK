@@ -12,7 +12,7 @@
     "rejected_signal_count",
     "months_covered"
   ],
-  "created_at_utc": "2026-04-02T22:09:17Z",
+  "created_at_utc": "2026-05-01T17:39:36Z",
   "dependencies": [],
   "parameters": {
     "agent_name": "breakout_volume_momentum",
@@ -22,7 +22,7 @@
   "producer": "save_trade_outputs",
   "research_grade": true,
   "row_count": 1,
-  "run_id": "run_20260402T220731Z_pid31473",
+  "run_id": "run_20260501T173928Z_pid57449",
   "ticker": "EURUSD=X",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_breakout_volume_momentum_signal_summary__run_20260402T220731Z_pid31473.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_breakout_volume_momentum_signal_summary__run_20260501T173928Z_pid57449.csv"
 }

@@ -19,14 +19,14 @@
     "stop_loss_exit_rate",
     "take_profit_exit_rate"
   ],
-  "created_at_utc": "2026-04-02T23:33:07Z",
+  "created_at_utc": "2026-04-03T20:49:23Z",
   "dependencies": [
     {
       "exists": true,
-      "modified_time_ns": 1775172781581288449,
+      "modified_time_ns": 1775249358065115778,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/SPY_turn_of_month_seasonality_trades.csv",
-      "sha256": "34f8170cc986079c7106a694ce9e4bbb66d1088cca1099bc4035c9903b069019",
-      "size_bytes": 121807
+      "sha256": "6016e2c9ef62118d9a4a9453c2d7dca05082f0aad7acb35a2cc3f9a93cdeb7a8",
+      "size_bytes": 123755
     }
   ],
   "parameters": {
@@ -36,7 +36,7 @@
   "producer": "create_and_save_metrics",
   "research_grade": true,
   "row_count": 1,
-  "run_id": "run_20260402T233246Z_pid64730",
+  "run_id": "run_20260403T204901Z_pid9279",
   "ticker": "SPY",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/SPY_turn_of_month_seasonality_metrics__run_20260402T233246Z_pid64730.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/SPY_turn_of_month_seasonality_metrics__run_20260403T204901Z_pid9279.csv"
 }

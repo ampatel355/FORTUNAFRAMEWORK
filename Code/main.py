@@ -22,8 +22,8 @@ except ModuleNotFoundError:
 
 def ask_yes_no(prompt: str, *, default: bool) -> bool:
     """Ask a simple yes/no question with a readable default."""
-    default_label = "Y/n" if default else "y/N"
-    user_input = input(f"{prompt} [{default_label}]: ").strip().lower()
+    default_label = "yes" if default else "no"
+    user_input = input(f"{prompt} [yes/no, default: {default_label}]: ").strip().lower()
     if not user_input:
         return default
     if user_input in {"y", "yes"}:
@@ -184,6 +184,14 @@ def run_walk_forward_cli() -> None:
         tickers = ask_for_walk_forward_tickers()
         interval, timeframe_label = ask_for_timeframe()
         fast_mode = ask_for_fast_mode()
+        show_plots = ask_yes_no(
+            "Display charts during the run?",
+            default=True,
+        )
+        save_outputs = ask_yes_no(
+            "Save charts to disk? This is off by default to avoid clutter.",
+            default=False,
+        )
     except ValueError as error:
         print(f"Error: {error}")
         return
@@ -198,6 +206,8 @@ def run_walk_forward_cli() -> None:
         env_overrides=timeframe_overrides,
         event_callback=print_event,
         fast_test_mode=fast_mode,
+        show_plots=show_plots,
+        save_outputs=save_outputs,
     )
     if not result.success:
         print(result.error_message or "Walk-forward workflow stopped.", flush=True)
@@ -207,6 +217,8 @@ def run_walk_forward_cli() -> None:
     print("\nWalk-forward evaluation complete.", flush=True)
     print(f"Timeframe: {timeframe_label} ({interval})", flush=True)
     print(f"Run mode: {'fast test' if fast_mode else 'full research'}", flush=True)
+    print(f"Charts displayed: {'yes' if show_plots else 'no'}", flush=True)
+    print(f"Charts saved: {'yes' if save_outputs else 'no'}", flush=True)
     print("Key files:", flush=True)
     print(f"- Data_Clean{suffix}/multi_asset_walk_forward_runs.csv", flush=True)
     print(f"- Data_Clean{suffix}/multi_asset_walk_forward_panel_summary.csv", flush=True)

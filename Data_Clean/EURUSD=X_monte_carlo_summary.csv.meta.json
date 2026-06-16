@@ -24,90 +24,104 @@
     "null_model",
     "bh_adjusted_p_value"
   ],
-  "created_at_utc": "2026-04-02T22:09:35Z",
+  "created_at_utc": "2026-05-01T17:39:55Z",
   "dependencies": [
     {
       "exists": true,
-      "modified_time_ns": 1775167753734080838,
+      "modified_time_ns": 1777657174106242181,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_regimes.csv",
-      "sha256": "c60935a92103d7ae19e963e33230a91126dcce35e68251860676f3ea50d54d4e",
-      "size_bytes": 5357272
+      "sha256": "18961dbab7bdf7cc75a730f9ea9cb7e47f241853f6e25df81ff71d26132d9bef",
+      "size_bytes": 5662438
     },
     {
       "exists": true,
-      "modified_time_ns": 1775167775031041046,
+      "modified_time_ns": 1777657194791886585,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_trend_pullback_monte_carlo_results.csv",
-      "sha256": "65b44048e77ee30c5ef9e3b21fa218e38a4e327c076e5a66a78f5d84d7614fbd",
-      "size_bytes": 127199
+      "sha256": "de49b5fb66b22f4fafa169cb417a905f8992a62280e2dd2143f542c88167144a",
+      "size_bytes": 49959
     },
     {
       "exists": true,
-      "modified_time_ns": 1775167775148720670,
+      "modified_time_ns": 1777657194844184407,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_breakout_volume_momentum_monte_carlo_results.csv",
-      "sha256": "8e9e078b6e56233325d7aca08f234099e85970d637fbfcd91c4fdf64d82d52b3",
-      "size_bytes": 127494
+      "sha256": "c3029ea3b5b0644d4f49249b167ea3b838beaa86c9f3e0fc4b183892cb64a940",
+      "size_bytes": 50246
     },
     {
       "exists": true,
-      "modified_time_ns": 1775167775229611454,
+      "modified_time_ns": 1777657194894576555,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_mean_reversion_vol_filter_monte_carlo_results.csv",
-      "sha256": "948cfbf6b56589f4be9261e27192de4c67ad3a6b3f186e89772a89f41d208ec4",
-      "size_bytes": 127900
+      "sha256": "787634a1e48e3f0a9d7b7f39a6fb878eddacac101a9f84838ab6805551756bca",
+      "size_bytes": 50513
     },
     {
       "exists": true,
-      "modified_time_ns": 1775167775308085689,
+      "modified_time_ns": 1777657194941338272,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_trend_momentum_verification_monte_carlo_results.csv",
-      "sha256": "5393b502f4013429fd1ec51991360fbae2a59c60a89e6a3d5b4b8f4479d4308b",
-      "size_bytes": 126989
+      "sha256": "0144c9b5206259adb013546ca8c7ad82482b35fafabecf4bb63b9336ea50b0c8",
+      "size_bytes": 50110
     },
     {
       "exists": true,
-      "modified_time_ns": 1775167775391445729,
+      "modified_time_ns": 1777657194989620621,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_adx_trend_following_monte_carlo_results.csv",
-      "sha256": "7e6339496d2f1bc740978ff1bf15389b123f2742fec1727e1df3a8ef76a71049",
-      "size_bytes": 126998
+      "sha256": "d875ddda3982bd1b92fb17984df5c22a98baf85836d80d3cc797b727cb243843",
+      "size_bytes": 49926
     },
     {
       "exists": true,
-      "modified_time_ns": 1775167775472707507,
+      "modified_time_ns": 1777657195036561214,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_uptrend_oversold_reversion_monte_carlo_results.csv",
-      "sha256": "ceed9eee9975574d82d463bd79861e1d05533e406033de226bdf5a9d3cc725f5",
-      "size_bytes": 128265
+      "sha256": "e521951ef24d4c8f1205c151d2f4d0830479fa329e654cbb6f39d70fef6c0fff",
+      "size_bytes": 50559
     },
     {
       "exists": true,
-      "modified_time_ns": 1775167775647923795,
+      "modified_time_ns": 1777657195080100545,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_volatility_squeeze_breakout_monte_carlo_results.csv",
-      "sha256": "a25748bc62ff1c669f36e5db9f6d7ea569377a5a7aab3ca851c8d050c2b1085d",
-      "size_bytes": 128099
+      "sha256": "5024c284b65b2fcc63dbebb362cf57142eaf702e414a6f27bd83df040830b73b",
+      "size_bytes": 50632
     },
     {
       "exists": true,
-      "modified_time_ns": 1775167775727514098,
+      "modified_time_ns": 1777657195125789008,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_connors_rsi2_pullback_monte_carlo_results.csv",
-      "sha256": "0ff88a5774aa6e9c4ca50cb53de44cbfe0363dda4647b5e343949746e556d979",
-      "size_bytes": 128614
+      "sha256": "101f8b2fac5ee34dabe7a9192e88f5c8c3776a8698307c1345f718e6b1a34f95",
+      "size_bytes": 50768
     },
     {
       "exists": true,
-      "modified_time_ns": 1775167775878362449,
+      "modified_time_ns": 1777657195169759840,
+      "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_donchian_trend_reentry_monte_carlo_results.csv",
+      "sha256": "19fd1d61e7f23ec91e2aa6461bb00e0ad94a3912f93b829cd8e3ed26bc34b62c",
+      "size_bytes": 50335
+    },
+    {
+      "exists": true,
+      "modified_time_ns": 1777657195228014435,
+      "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_turn_of_month_seasonality_monte_carlo_results.csv",
+      "sha256": "ce7f4987d2728d2ab45d9e74a0c0d77be04baf3d16d2eb471af3d431e29e7451",
+      "size_bytes": 50351
+    },
+    {
+      "exists": true,
+      "modified_time_ns": 1777657195318340733,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_random_monte_carlo_results.csv",
-      "sha256": "5723c3dad35179bea189d295f394ecd881328911a92b3f0347a724a77e91a144",
-      "size_bytes": 126655
+      "sha256": "e37f30bfb13ed36d49c0500e3f42e629a897f09742ae7872e760c129c1ff4b8e",
+      "size_bytes": 50000
     }
   ],
   "parameters": {
     "context_bucket_count": 5,
     "context_matching_enabled": false,
     "simulate_execution_costs": true,
-    "simulation_count": 5000
+    "simulation_count": 2000
   },
   "pipeline_profile": "standard",
   "producer": "monte_carlo.main",
-  "research_grade": true,
-  "row_count": 9,
-  "run_id": "run_20260402T220731Z_pid31473",
+  "research_grade": false,
+  "row_count": 11,
+  "run_id": "run_20260501T173928Z_pid57449",
   "ticker": "EURUSD=X",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_monte_carlo_summary__run_20260402T220731Z_pid31473.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/EURUSD=X_monte_carlo_summary__run_20260501T173928Z_pid57449.csv"
 }

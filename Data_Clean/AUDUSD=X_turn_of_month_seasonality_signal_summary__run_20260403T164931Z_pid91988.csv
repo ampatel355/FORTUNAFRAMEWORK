@@ -1,0 +1,2 @@
+ticker,agent,timeframe_label,data_interval,signal_count,executed_trade_count,rejected_signal_count,months_covered
+AUDUSD=X,turn_of_month_seasonality,Daily,1d,92,90,2,219.07186858316223

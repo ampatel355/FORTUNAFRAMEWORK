@@ -1,0 +1,4 @@
+interval,timeframe_label,strategy_count,ticker_count,panel_rows,total_agent_panels,min_strategy_mean_p_value,max_strategy_mean_percentile,best_percentile_agent,mean_significant_panel_rate,mean_outperform_rate,number_of_outer_runs,simulations_per_run,test_bars,step_bars,min_trades_per_panel,tickers
+1d,Daily,6,3,18,18,0.2435064935064935,75.74925074925075,turn_of_month_seasonality,0.0,0.4166666666666667,1,1000,126,126,5,"BTC-USD,QQQ,SPY"
+4h,4-Hour,5,3,10,10,0.5934065934065934,40.759240759240754,uptrend_oversold_reversion,0.0,0.05,1,1000,252,252,5,"BTC-USD,QQQ,SPY"
+1h,Hourly,5,3,15,15,0.2355644355644355,76.54345654345654,uptrend_oversold_reversion,0.04,0.36,1,1000,882,882,5,"BTC-USD,QQQ,SPY"

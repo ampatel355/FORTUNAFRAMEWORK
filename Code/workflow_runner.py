@@ -14,11 +14,23 @@ import pandas as pd
 
 try:
     from artifact_provenance import current_run_id, pipeline_profile
-    from pipeline_utils import charts_dir, data_clean_dir, data_raw_dir
+    from pipeline_utils import (
+        charts_dir,
+        data_clean_dir,
+        data_raw_dir,
+        legacy_raw_prices_path,
+        raw_prices_path,
+    )
     from strategy_config import AGENT_ORDER, BENCHMARK_NAME
 except ModuleNotFoundError:
     from Code.artifact_provenance import current_run_id, pipeline_profile
-    from Code.pipeline_utils import charts_dir, data_clean_dir, data_raw_dir
+    from Code.pipeline_utils import (
+        charts_dir,
+        data_clean_dir,
+        data_raw_dir,
+        legacy_raw_prices_path,
+        raw_prices_path,
+    )
     from Code.strategy_config import AGENT_ORDER, BENCHMARK_NAME
 
 
@@ -137,6 +149,12 @@ EXTENDED_PLOTTING_STEPS: list[tuple[str, str]] = [
     ("Running Monte Carlo plots...", "monte_carlo_plot.py"),
     ("Running robustness plots...", "monte_carlo_robustness_plot.py"),
     ("Running p-value plot...", "p_value_plot.py"),
+]
+
+WALK_FORWARD_VISUALIZATION_STEPS: list[tuple[str, str]] = [
+    ("Displaying multi-asset equity curve...", "walk_forward_equity_curve.py"),
+    ("Displaying multi-asset skill vs luck summary...", "walk_forward_verdict_plot.py"),
+    ("Displaying multi-asset inference comparison...", "walk_forward_inference_plot.py"),
 ]
 
 
@@ -536,6 +554,8 @@ def run_walk_forward_pipeline(
     env_overrides: dict[str, str] | None = None,
     event_callback: EventCallback | None = None,
     fast_test_mode: bool = False,
+    show_plots: bool = False,
+    save_outputs: bool = False,
 ) -> WorkflowRunResult:
     """Run the multi-asset walk-forward workflow."""
     workflow_name = "Multi-Asset Walk-Forward Evaluation"
@@ -552,9 +572,14 @@ def run_walk_forward_pipeline(
     env_payload["WALK_FORWARD_TICKERS"] = ",".join(normalized_tickers)
     script_dir, python_executable, env = build_runtime_context(
         env_overrides=env_payload,
-        show_plots=False,
-        save_outputs=False,
+        show_plots=show_plots,
+        save_outputs=save_outputs,
     )
+    walk_forward_steps = [
+        ("Running multi-asset walk-forward evaluation...", "multi_asset_walk_forward.py"),
+    ]
+    if show_plots or save_outputs:
+        walk_forward_steps.extend(WALK_FORWARD_VISUALIZATION_STEPS)
 
     _emit(
         event_callback,
@@ -568,24 +593,30 @@ def run_walk_forward_pipeline(
         ),
     )
 
-    step_result = _run_script_capture(
-        workflow_name=workflow_name,
-        script_dir=script_dir,
-        python_executable=python_executable,
-        env=env,
-        label="Running multi-asset walk-forward evaluation...",
-        script_name="multi_asset_walk_forward.py",
-        step_index=1,
-        total_steps=1,
-        event_callback=event_callback,
-    )
-    finished_at = time.time()
+    step_results: list[StepRunResult] = []
+    total_steps = len(walk_forward_steps)
     error_message = None
-    if step_result.returncode != 0:
-        error_message = (
-            "multi_asset_walk_forward.py failed with exit code "
-            f"{step_result.returncode}. See the captured logs for details."
+    for step_index, (label, script_name) in enumerate(walk_forward_steps, start=1):
+        step_result = _run_script_capture(
+            workflow_name=workflow_name,
+            script_dir=script_dir,
+            python_executable=python_executable,
+            env=env,
+            label=label,
+            script_name=script_name,
+            step_index=step_index,
+            total_steps=total_steps,
+            event_callback=event_callback,
         )
+        step_results.append(step_result)
+        if step_result.returncode != 0:
+            error_message = (
+                f"{script_name} failed with exit code {step_result.returncode}. "
+                "See the captured logs for details."
+            )
+            break
+
+    finished_at = time.time()
 
     _emit(
         event_callback,
@@ -604,11 +635,13 @@ def run_walk_forward_pipeline(
         success=error_message is None,
         started_at=started_at,
         finished_at=finished_at,
-        step_results=[step_result],
+        step_results=step_results,
         error_message=error_message,
         metadata={
             "tickers": ",".join(normalized_tickers),
             "run_mode": "fast_test" if fast_test_mode else "full",
+            "show_plots": "1" if show_plots else "0",
+            "save_outputs": "1" if save_outputs else "0",
         },
     )
 
@@ -617,7 +650,7 @@ def existing_tickers() -> list[str]:
     """Return the tickers currently available from raw or clean project files."""
     ticker_names = {
         path.stem.upper()
-        for path in data_raw_dir().glob("*.csv")
+        for path in data_raw_dir().rglob("*.csv")
         if path.is_file()
     }
     for path in data_clean_dir().glob("*_regimes.csv"):
@@ -636,10 +669,13 @@ def ticker_data_files(ticker: str) -> list[Path]:
     """Return every saved CSV artifact associated with one ticker."""
     ticker = ticker.upper()
     clean_paths = sorted(data_clean_dir().glob(f"{ticker}_*.csv"))
-    raw_path = data_raw_dir() / f"{ticker}.csv"
     files = [path for path in clean_paths if path.is_file()]
-    if raw_path.exists():
-        files.insert(0, raw_path)
+    preferred_raw_path = raw_prices_path(ticker)
+    legacy_raw_path = legacy_raw_prices_path(ticker)
+    if preferred_raw_path.exists():
+        files.insert(0, preferred_raw_path)
+    elif legacy_raw_path.exists():
+        files.insert(0, legacy_raw_path)
     return files
 
 

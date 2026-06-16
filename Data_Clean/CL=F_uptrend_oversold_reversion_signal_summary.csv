@@ -1,0 +1,2 @@
+ticker,agent,timeframe_label,data_interval,signal_count,executed_trade_count,rejected_signal_count,months_covered
+CL=F,uptrend_oversold_reversion,Daily,1d,48,48,0,256.3285420944558

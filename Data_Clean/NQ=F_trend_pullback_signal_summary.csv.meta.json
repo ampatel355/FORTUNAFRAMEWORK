@@ -12,7 +12,7 @@
     "rejected_signal_count",
     "months_covered"
   ],
-  "created_at_utc": "2026-04-03T12:02:23Z",
+  "created_at_utc": "2026-04-03T21:39:34Z",
   "dependencies": [],
   "parameters": {
     "agent_name": "trend_pullback",
@@ -22,7 +22,7 @@
   "producer": "save_trade_outputs",
   "research_grade": true,
   "row_count": 1,
-  "run_id": "run_20260403T120216Z_pid73820",
+  "run_id": "run_20260403T213929Z_pid21915",
   "ticker": "NQ=F",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/NQ=F_trend_pullback_signal_summary__run_20260403T120216Z_pid73820.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/NQ=F_trend_pullback_signal_summary__run_20260403T213929Z_pid21915.csv"
 }

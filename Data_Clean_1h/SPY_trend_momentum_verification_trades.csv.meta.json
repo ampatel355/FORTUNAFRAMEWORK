@@ -41,7 +41,7 @@
     "timeframe_label",
     "data_interval"
   ],
-  "created_at_utc": "2026-04-03T14:07:43Z",
+  "created_at_utc": "2026-04-03T20:48:00Z",
   "dependencies": [],
   "parameters": {
     "agent_name": "trend_momentum_verification",
@@ -50,8 +50,8 @@
   "pipeline_profile": "standard",
   "producer": "save_trade_outputs",
   "research_grade": true,
-  "row_count": 0,
-  "run_id": "run_20260403T140738Z_pid77972",
+  "row_count": 13,
+  "run_id": "run_20260403T204755Z_pid9049",
   "ticker": "SPY",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean_1h/SPY_trend_momentum_verification_trades__run_20260403T140738Z_pid77972.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean_1h/SPY_trend_momentum_verification_trades__run_20260403T204755Z_pid9049.csv"
 }

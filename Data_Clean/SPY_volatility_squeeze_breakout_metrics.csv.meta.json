@@ -19,14 +19,14 @@
     "stop_loss_exit_rate",
     "take_profit_exit_rate"
   ],
-  "created_at_utc": "2026-04-02T23:33:06Z",
+  "created_at_utc": "2026-04-03T20:49:22Z",
   "dependencies": [
     {
       "exists": true,
-      "modified_time_ns": 1775172778162574648,
+      "modified_time_ns": 1775249353604671799,
       "path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/SPY_volatility_squeeze_breakout_trades.csv",
-      "sha256": "5e06d51c7d6627d274fb878938f60970280b9c3003d62df8bb8d7390135970f5",
-      "size_bytes": 16518
+      "sha256": "b7f583124fc62939a5d2edda705f198bee69ad2c717138ba20e80022d308a61f",
+      "size_bytes": 16519
     }
   ],
   "parameters": {
@@ -36,7 +36,7 @@
   "producer": "create_and_save_metrics",
   "research_grade": true,
   "row_count": 1,
-  "run_id": "run_20260402T233246Z_pid64730",
+  "run_id": "run_20260403T204901Z_pid9279",
   "ticker": "SPY",
-  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/SPY_volatility_squeeze_breakout_metrics__run_20260402T233246Z_pid64730.csv"
+  "versioned_artifact_path": "/Users/aryanpatel/Downloads/Virtu_Fortuna_Project/Data_Clean/SPY_volatility_squeeze_breakout_metrics__run_20260403T204901Z_pid9279.csv"
 }

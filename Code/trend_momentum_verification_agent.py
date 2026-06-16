@@ -7,9 +7,21 @@ from pathlib import Path
 
 try:
     from single_ticker_agent_common import load_regime_data, save_trade_outputs
+    from strategy_config import (
+        BREAKOUT_HIGH_COLUMN,
+        BREAKOUT_LOW_COLUMN,
+        MEDIUM_RETURN_COLUMN,
+        RELATIVE_STRENGTH_RETURN_COLUMN,
+    )
     from strategy_simulator import resolve_data_clean_dir, run_strategy
 except ModuleNotFoundError:
     from Code.single_ticker_agent_common import load_regime_data, save_trade_outputs
+    from Code.strategy_config import (
+        BREAKOUT_HIGH_COLUMN,
+        BREAKOUT_LOW_COLUMN,
+        MEDIUM_RETURN_COLUMN,
+        RELATIVE_STRENGTH_RETURN_COLUMN,
+    )
     from Code.strategy_simulator import resolve_data_clean_dir, run_strategy
 
 
@@ -39,10 +51,10 @@ def main() -> None:
         "macd_signal",
         "atr_percent_ratio_60",
         "volume_ratio_20",
-        "rolling_high_20_prev",
-        "rolling_low_10_prev",
-        "trailing_return_20",
-        "trailing_return_60",
+        BREAKOUT_HIGH_COLUMN,
+        BREAKOUT_LOW_COLUMN,
+        MEDIUM_RETURN_COLUMN,
+        RELATIVE_STRENGTH_RETURN_COLUMN,
         "regime",
     ]
     df = load_regime_data(input_path, required_columns)
