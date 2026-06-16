@@ -59,4 +59,4 @@ above.
 **Acknowledgments:** The author thanks the maintainers of the open-source scientific Python
 and TeX ecosystems on which this work relies.
 
-**ORCID:** *(author to supply ORCID iD at submission.)*
+**ORCID:** Aryan Patel, https://orcid.org/0009-0008-2097-6170

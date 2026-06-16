@@ -52,7 +52,7 @@ This repository reproduces every table and figure in the paper and its Online
 Supplement. The method is **structure-preserving randomization inference**: a
 conditional randomization test that holds the realized trade structure and the
 exogenous price path fixed and re-randomizes only the *placement* of trades on
-the calendar, from a known conditional law. Validity is finite-sample exact under
+the calendar, from a known conditional law. It is finite-sample valid under
 exchangeability of placements. The leading application is entry timing on gold
 futures (`GC=F`); the headline is a null — no robust, measure-invariant
 entry-placement skill — confirmed on an 11-strategy `GC=F` panel, a 322-test
@@ -234,7 +234,7 @@ abstract: >-
   Replication code and derived data for a conditional randomization-inference
   framework for decision timing. The structure-preserving null holds the realized
   trade structure and price path fixed and re-randomizes only trade placement,
-  yielding a finite-sample-exact test, a measure-family sensitivity range with an
+  yielding a finite-sample valid test, a measure-family sensitivity range with an
   intersection-union reading, a comparison against White's Reality Check and
   Hansen's SPA, and a 322-test cross-asset panel under multiplicity control.
 type: software
@@ -249,7 +249,7 @@ keywords:
   - model risk
   - uncertainty quantification
   - Monte Carlo methods
-  - partial identification
+  - sensitivity analysis
   - backtesting
   - data snooping
   - reproducibility

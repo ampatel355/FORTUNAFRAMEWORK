@@ -1,3 +1,14 @@
+> **STATUS (final pre-submission build, 2026-06-16).** The MDPI port is COMPLETE. The
+> submission artifact is `paper_mdpi.tex` / `paper_mdpi.pdf` (class
+> `\documentclass[risks,article,submit]{Definitions/mdpi}`), with all MDPI front/back-matter
+> macros, JEL/MSC codes, Chicago author-date references via `\bibliography{fortuna}`, ORCID
+> `0009-0008-2097-6170`, and a 199-word single-paragraph abstract. The checklist below is the
+> ORIGINAL pre-port plan (written against the `elsarticle` `paper.tex`); every item marked
+> "convert to MDPI" is now satisfied by that build. Remaining genuine author actions:
+> (1) confirm the Zenodo record metadata matches the paper and re-archive the cleaned repo;
+> (2) supply suggested-reviewer institutional emails; (3) decide and add a generative-AI use
+> disclosure; (4) confirm the current APC rate; (5) upload via the submission portal.
+
 ## A. Template & document class
 - [ ] ⚠️ **Convert to official MDPI class.** Manuscript is currently `\documentclass[preprint,12pt]{elsarticle}` (Elsevier). MDPI requires the **`mdpi.cls`** LaTeX template (or the MDPI Word template). This is the single largest pre-submission task — most items below depend on it.
 - [ ] ⚠️ **Add MDPI front-matter fields.** `\Title`, `\Author`, `\address`, `\corres`, `\firstnote`, plus journal/volume metadata supplied by the class are not present (elsarticle uses `\title`/`\author` only).

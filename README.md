@@ -12,7 +12,7 @@ This repository reproduces every table and figure in the paper and its Online
 Supplement. The method is **structure-preserving randomization inference**: a
 conditional randomization test that holds the realized trade structure and the
 exogenous price path fixed and re-randomizes only the *placement* of trades on
-the calendar, from a known conditional law. Validity is finite-sample exact under
+the calendar, from a known conditional law. It is finite-sample valid under
 exchangeability of placements. The leading application is entry timing on gold
 futures (`GC=F`); the headline is a null — no robust, measure-invariant
 entry-placement skill — confirmed on an 11-strategy `GC=F` panel, a 322-test
@@ -42,7 +42,7 @@ needed; all dependencies are pure-Python wheels.
 
 ```bash
 git clone https://github.com/ampatel355/FORTUNAFRAMEWORK.git
-cd Fortuna
+cd FORTUNAFRAMEWORK
 python3 -m venv .venv
 ./.venv/bin/python -m pip install --upgrade pip
 ./.venv/bin/python -m pip install -r requirements.txt
