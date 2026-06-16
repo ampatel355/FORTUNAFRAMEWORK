@@ -7,5 +7,27 @@ __pycache__/
 *.fls
 *.fdb_latexmk
 *.synctex.gz
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.spl
 .rendered*/
 Data_Clean/**/*__run_*Z_pid*.csv
+
+# OS / editor / caches
+.DS_Store
+.matplotlib/
+.vscode/
+
+# Raw vendor data: subject to Yahoo Finance terms; NOT redistributed (see paper Data Availability).
+# Re-downloadable with the included data loader; only derived Data_Clean/ is published.
+Data_Raw/
+
+# Unrelated tool that happens to live in this folder
+imessage-exporter/
+
+# Internal working / scratch docs, not part of the published artifact
+Notes/
+revision/
+REVISION_ACTION_PLAN.md
