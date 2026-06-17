@@ -27,7 +27,7 @@ keywords:
   - reproducibility
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.20695539
+    value: 10.5281/zenodo.20724999
     description: "Archived release on Zenodo"
 preferred-citation:
   type: article

@@ -1,10 +1,12 @@
 # Fortuna — Structure-Preserving Randomization Inference for Decision Timing
 
+[![DOI](https://zenodo.org/badge/1196681146.svg)](https://doi.org/10.5281/zenodo.20724999)
+
 Replication code and derived data for:
 
 > Aryan Patel. *Structure-Preserving Randomization Inference for Decision Timing.*
 > Submitted to **Risks** (MDPI).
-> Archived: https://github.com/ampatel355/FORTUNAFRAMEWORK · DOI: https://doi.org/10.5281/zenodo.20695539
+> Archived: https://github.com/ampatel355/FORTUNAFRAMEWORK · DOI: https://doi.org/10.5281/zenodo.20724999
 
 ## Overview
 
@@ -152,4 +154,4 @@ by Yahoo Finance's terms of use.
 ## Citation
 
 See `CITATION.cff`, or cite the archived release at
-https://doi.org/10.5281/zenodo.20695539.
+https://doi.org/10.5281/zenodo.20724999.

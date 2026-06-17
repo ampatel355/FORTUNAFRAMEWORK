@@ -29,7 +29,7 @@ manuscript.
 every table and figure in this article, together with the online Supplementary Material,
 are openly available in the *Fortuna* repository at
 <https://github.com/ampatel355/FORTUNAFRAMEWORK> and are permanently archived on Zenodo at
-<https://doi.org/10.5281/zenodo.20695539>. The underlying price series (gold futures and
+<https://doi.org/10.5281/zenodo.20724999>. The underlying price series (gold futures and
 the cross-asset universe) were obtained from Yahoo Finance through the `yfinance` package
 and are redistributed only in the derived form—regime-labeled OHLCV series, realized trade
 logs, and per-asset result tables—required for reproduction; raw vendor feeds remain

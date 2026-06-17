@@ -223,7 +223,7 @@ data pipeline, forward-safe regime labeling, next-bar execution and fill model,
 strategy rule definitions, the verdict classifier, the Monte Carlo and seed-robustness
 protocols, and the full reproduction commands are in the Online Supplement
 (Sections~S1 and~S7); code and derived data are archived at
-\url{https://github.com/ampatel355/Fortuna} and \url{https://doi.org/10.5281/zenodo.20695539}.
+\url{https://github.com/ampatel355/Fortuna} and \url{https://doi.org/10.5281/zenodo.20724999}.
 """
 
 bib = blk(1197, len(SRC))  # \bibliographystyle ... thebibliography ... \end{document}

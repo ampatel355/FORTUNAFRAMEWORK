@@ -44,7 +44,7 @@ Replication code and derived data for:
 
 > Aryan Patel. *Structure-Preserving Randomization Inference for Decision Timing.*
 > Submitted to **Risks** (MDPI).
-> Archived: https://github.com/ampatel355/FORTUNAFRAMEWORK · DOI: https://doi.org/10.5281/zenodo.20695539
+> Archived: https://github.com/ampatel355/FORTUNAFRAMEWORK · DOI: https://doi.org/10.5281/zenodo.20724999
 
 ## Overview
 
@@ -197,7 +197,7 @@ remains governed by Yahoo Finance's terms of use.
 ## Citation
 
 See `CITATION.cff`, or cite the archived release at
-https://doi.org/10.5281/zenodo.20695539.
+https://doi.org/10.5281/zenodo.20724999.
 ```
 
 ---
@@ -255,7 +255,7 @@ keywords:
   - reproducibility
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.20695539
+    value: 10.5281/zenodo.20724999
     description: "Archived release on Zenodo"
 preferred-citation:
   type: article

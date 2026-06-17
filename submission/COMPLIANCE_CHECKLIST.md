@@ -49,7 +49,7 @@
 ## G. Reproducibility (code + data + DOI)
 - [x] ✅ **Code** archived: GitHub `https://github.com/ampatel355/FORTUNAFRAMEWORK` (`Code/`, `Data_Clean/`, `requirements.txt`).
 - [x] ✅ **Data** redistributed in derived form with re-download path via `yfinance` loader; deterministic seed protocol stated.
-- [x] ✅ **Persistent DOI**: Zenodo `10.5281/zenodo.20695539`, cited in Data Availability + Appendix.
+- [x] ✅ **Persistent DOI**: Zenodo `10.5281/zenodo.20724999`, cited in Data Availability + Appendix.
 - [ ] ◻️ Confirm the Zenodo archive is **public and the version matches the submitted manuscript** (tag the exact commit).
 
 ## H. Author identifiers & submission portal items
