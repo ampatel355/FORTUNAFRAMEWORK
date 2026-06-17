@@ -5,6 +5,7 @@
 % packages not preloaded by the MDPI class
 \usepackage[ruled,linesnumbered]{algorithm2e}
 \usepackage{adjustbox}
+\usepackage{xurl}% allow long URLs to break at any character so they never overflow the narrow two-column measure
 \graphicspath{{ProvidedFigures/}{Charts/}}
 
 \firstpage{1}
@@ -1315,7 +1316,7 @@ The divergence has a direct cause: gold appreciated over the sample, so any suff
 \subsection{Cross-asset breadth under multiplicity control}
 \label{sec:cross-asset-multiplicity}
 
-The GC=F panel is one asset. Pooling every completed full-sample test on disk ($322$ strategy-by-asset tests across $47$ instruments) and correcting jointly, no discovery survives Benjamini--Hochberg or Bonferroni control, the raw nominal-rejection count ($13$) is below the $16.1$ expected by chance, and the panel $p$-values skew conservative (mean $0.567$). The clearest sign that the nominal hits are luck is their identity: the smallest $p$-value in the panel ($0.0014$) belongs to a \emph{random}-entry baseline, and random baselines occupy three of the thirteen. This is an availability sample, not a designed universe, and the seed-robust evidence remains single-asset; the panel construction, the exploratory multi-asset walk-forward, and the bounded daily/4-hour/hourly frequency check, all pointing the same way, are in the Online Supplement (Section~S3).
+The GC=F panel is one asset. Pooling every completed full-sample test on disk ($322$ strategy-by-asset tests across $47$ instruments) and correcting jointly, no discovery survives Benjamini--Hochberg or Bonferroni control, the raw nominal-rejection count ($13$) is below the $16.1$ expected by chance, and the panel $p$-values skew conservative (mean $0.567$). The clearest sign that the nominal hits are luck is their identity: the smallest $p$-value in the panel ($0.0014$) belongs to a \emph{random}-entry baseline, and random baselines occupy three of the thirteen. This is an availability sample, not a designed universe, and the seed-robust evidence remains single-asset; the panel construction, the exploratory multi-asset walk-forward, and the bounded daily/\allowbreak 4-hour/\allowbreak hourly frequency check, all pointing the same way, are in the Online Supplement (Section~S3).
 
 \subsection{Schedule-measure sensitivity}
 \label{sec:schedule-sensitivity}
@@ -1601,7 +1602,7 @@ concentrate exactly where the mechanism predicts, on the dollar-pegged USDC-USD 
 and on templates with $N\le 2$ trades. None of the low-dispersion tests is a discovery
 under Benjamini-Hochberg or Bonferroni, so path-degeneracy, while present at the panel's
 thin-instrument margin, does not affect the headline. The scan is reproducible via
-\texttt{Code/cross\_asset\_dispersion\_scan.py}.
+\texttt{Code/cross\_asset\_\allowbreak dispersion\_\allowbreak scan.py}.
 
 \paragraph{The neutral measure may be misspecified for regime-filtered strategies, and
 this bears directly on the four context-matched rejections.} Several panel strategies

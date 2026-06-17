@@ -53,6 +53,7 @@ PREAMBLE = r"""%% MDPI / Risks submission build of "Structure-Preserving Randomi
 % packages not preloaded by the MDPI class
 \usepackage[ruled,linesnumbered]{algorithm2e}
 \usepackage{adjustbox}
+\usepackage{xurl}% allow long URLs to break at any character so they never overflow the narrow two-column measure
 \graphicspath{{ProvidedFigures/}{Charts/}}
 
 \firstpage{1}
