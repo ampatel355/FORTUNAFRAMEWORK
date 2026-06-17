@@ -97,6 +97,9 @@ BACKMATTER = r"""
 
 \acknowledgments{The author thanks the maintainers of the open-source scientific Python and \TeX{} ecosystems on which this work relies.}
 
+\vspace{6pt}
+\noindent\textbf{Use of Generative AI:} During the preparation of this manuscript, the author used generative AI tools (large language model assistants) to help write portions of the analysis code, to review the writing, to correct spelling and grammar, and to improve phrasing. The author reviewed and edited all such output and takes full responsibility for the content of the publication.
+
 \conflictsofinterest{The author declares no conflicts of interest.}
 """
 
