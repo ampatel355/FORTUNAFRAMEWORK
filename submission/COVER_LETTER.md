@@ -10,9 +10,9 @@ Methodologically, the contribution is a finite-sample valid conditional randomiz
 
 All code and derived data are publicly archived on GitHub (https://github.com/ampatel355/FORTUNAFRAMEWORK) and on Zenodo (DOI 10.5281/zenodo.20724999). The pipeline uses deterministic seeds, and a full supplement documents the constructions, proofs, and replication artifacts, so every reported figure and table can be regenerated end to end.
 
-I confirm that the manuscript is original, has not been published elsewhere, and is not under consideration by another journal, and that there are no conflicts of interest. Given the emphasis on model risk, uncertainty quantification, and Monte Carlo inference, I believe the paper would be well served by an Associate Editor in statistical or computational risk methodology, and I am happy to suggest reviewers on request.
+I confirm that neither the manuscript nor any parts of its content are currently under consideration for publication with, or published in, another journal. As the sole author, I have approved the manuscript and agree with its submission to Risks, and I declare no conflicts of interest. Given the emphasis on model risk, uncertainty quantification, and Monte Carlo inference, I believe the paper would be well served by an Associate Editor in statistical or computational risk methodology, and I am happy to suggest reviewers on request.
 
-In the interest of full transparency, I disclose that generative AI tools (large language model assistants) were used during preparation to help write portions of the analysis code, to review the writing, to correct spelling and grammar, and to improve phrasing; I reviewed and edited all such output and take full responsibility for the content.
+In the interest of full transparency, I disclose that the generative AI assistant Claude (Anthropic) was used during preparation to help write portions of the analysis code and to review and refine the writing; I reviewed and edited all such output and take full responsibility for the content.
 
 Thank you for your consideration.
 
