@@ -1591,9 +1591,17 @@ dispersion is not separately discussed. The liquid daily GC=F path is unlikely t
 trigger this, but the broader cross-asset panel of
 Section~\ref{sec:cross-asset-multiplicity} spans instruments where thin or flat windows
 are possible. We flag any strategy whose null dispersion is near zero as
-path-degenerate and do not interpret its percentile; a dispersion scan across the full
-panel to identify such cases remains to be run against the implementation, so we report
-no count of affected tests.
+path-degenerate and do not interpret its percentile. We can now report the scan rather
+than defer it. Recovering the realized null dispersion for all $322$ panel tests directly
+from the committed per-asset summaries, through the identity
+$\mathrm{std}_{\mathrm{sim}}=\mathrm{RCSI}/\mathrm{RCSI}_z$, the dispersion is bounded
+away from zero for all but a thin tail: the panel median is $0.33$ in cumulative-return
+units, while $8$ of the $322$ tests fall below $0.01$ and $5$ below $0.005$. These
+concentrate exactly where the mechanism predicts, on the dollar-pegged USDC-USD stablecoin
+and on templates with $N\le 2$ trades. None of the low-dispersion tests is a discovery
+under Benjamini-Hochberg or Bonferroni, so path-degeneracy, while present at the panel's
+thin-instrument margin, does not affect the headline. The scan is reproducible via
+\texttt{Code/cross\_asset\_dispersion\_scan.py}.
 
 \paragraph{The neutral measure may be misspecified for regime-filtered strategies, and
 this bears directly on the four context-matched rejections.} Several panel strategies
@@ -1771,6 +1779,9 @@ measure family returns as the object to specify.
 \dataavailability{The code and the derived data required to reproduce every table and figure in this article, together with the online Supplementary Material, are openly available in the \emph{Fortuna} repository at \url{https://github.com/ampatel355/FORTUNAFRAMEWORK} and are permanently archived on Zenodo at \url{https://doi.org/10.5281/zenodo.20695539}. The underlying price series (gold futures and the cross-asset universe) were obtained from Yahoo Finance through the \texttt{yfinance} package and are redistributed only in the derived form (regime-labeled OHLCV series, realized trade logs, and per-asset result tables) required for reproduction; raw vendor feeds remain subject to Yahoo Finance's terms of use and can be re-downloaded with the included data loader. All Monte Carlo runs are deterministic under the documented seed protocol.}
 
 \acknowledgments{The author thanks the maintainers of the open-source scientific Python and \TeX{} ecosystems on which this work relies.}
+
+\vspace{6pt}
+\noindent\textbf{Use of Generative AI:} During the preparation of this manuscript, the author used generative AI tools (large language model assistants) to help write portions of the analysis code, to review the writing, to correct spelling and grammar, and to improve phrasing. The author reviewed and edited all such output and takes full responsibility for the content of the publication.
 
 \conflictsofinterest{The author declares no conflicts of interest.}
 
